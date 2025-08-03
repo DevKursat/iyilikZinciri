@@ -43,6 +43,18 @@ body {
     margin-bottom: 1rem;
 }
 
+.mobile-logo-container {
+    display: none; /* Hidden by default */
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.mobile-app-logo {
+    width: 60px; /* Adjust size as needed */
+    height: 60px;
+}
+
 .auth-container-animated {
     background-color: var(--card-background);
     border-radius: 30px;
@@ -250,35 +262,69 @@ body {
 }
 
 @media (max-width: 768px) {
+    .app-logo {
+        display: none; /* Hide desktop logo on mobile */
+    }
+    .mobile-logo-container {
+        display: block; /* Show mobile logo */
+    }
+    body {
+        flex-direction: column; /* Ensure body stacks vertically */
+    }
+    #auth-page-container {
+        padding: 0; /* Remove padding for full width */
+        height: 100vh; /* Take full viewport height */
+    }
     .auth-container-animated {
         max-width: 100%;
         min-height: 100vh;
         border-radius: 0;
+        box-shadow: none; /* Remove shadow on full screen mobile */
+        display: flex; /* Use flexbox for forms */
+        flex-direction: column; /* Stack forms vertically */
+        justify-content: center;
+        align-items: center;
     }
     .toggle-container {
-        display: none;
+        display: none; /* Hide the toggle container on mobile */
     }
     .form-container {
-        width: 100%;
+        position: relative; /* Override absolute positioning */
+        width: 100%; /* Take full width */
+        height: auto; /* Adjust height based on content */
+        padding: 20px; /* Add some padding */
+        box-shadow: none; /* Remove individual form shadows if any */
+        transition: opacity 0.3s ease-in-out; /* For simple fade transition */
     }
-    .sign-up {
-        /* Mobil'de geçiş için farklı bir mantık gerekir, şimdilik gizli */
-        display: block; /* Mobil'de görünür yap */
-        position: relative; /* Konumlandırmayı düzelt */
-        left: 0; /* Konumlandırmayı düzelt */
-        opacity: 1; /* Görünür yap */
-        z-index: 1; /* Katman sırasını düzelt */
-        transform: none; /* Dönüşümü sıfırla */
+    .sign-in, .sign-up {
+        left: auto; /* Remove left positioning */
+        width: 100%; /* Full width */
+        height: auto; /* Auto height */
+        position: relative; /* Override absolute positioning */
+        opacity: 1; /* Default to visible */
+        z-index: 1; /* Default z-index */
+        transform: none; /* Remove any transforms */
+        display: flex; /* Ensure forms are flex containers */
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
-    .sign-in {
-        width: 100%;
-    }
+    /* Control visibility with active class on mobile */
     .auth-container-animated.active .sign-in {
-        transform: translateX(0%); /* Mobil'de kaydırmayı sıfırla */
+        display: none; /* Hide sign-in when active (showing sign-up) */
     }
     .auth-container-animated.active .sign-up {
-        transform: translateX(0%); /* Mobil'de kaydırmayı sıfırla */
-        animation: none; /* Animasyonu kaldır */
+        display: flex; /* Show sign-up when active */
     }
-    /* Mobil için toggle butonları formların içine eklenebilir, bu örnekte basit tutulmuştur. */
+    /* Default state: show sign-in, hide sign-up */
+    .auth-container-animated:not(.active) .sign-in {
+        display: flex;
+    }
+    .auth-container-animated:not(.active) .sign-up {
+        display: none;
+    }
+    /* Adjust form padding for mobile */
+    .auth-container-animated form {
+        padding: 20px 20px; /* Reduced padding for mobile */
+    }
 }
