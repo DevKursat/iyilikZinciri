@@ -8,8 +8,8 @@ const app = {
     nav: {},
     config: {
         cognito: {
-            UserPoolId: 'eu-north-1_brdMkzj67', // Buraya senin UserPoolId'n gelecek
-            ClientId: '11ri73f3j2ma53auguuaaas09l' // Buraya senin UserPoolClientId'n gelecek
+            UserPoolId: 'eu-north-1_brdMkzj67',
+            ClientId: '11ri73f3j2ma53auguuaaas09l'
         }
     },
 
