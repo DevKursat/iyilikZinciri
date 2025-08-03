@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: İyilik Zinciri Projesi için temel AWS altyapısı (Cognito, S3, IAM Rolleri)
+Description: İyilik Zinciri Projesi için temel AWS altyapısı (Cognito, S3, IAM Rolleri, Frontend Hosting)
 
 Resources:
   # CodePipeline Artifacts için S3 Kovası
@@ -19,7 +19,7 @@ Resources:
     Type: AWS::IAM::Role
     Properties:
       RoleName: iyilik-zinciri-codepipeline-service-role
-      AssumeRolePolicyDocument:
+      AssumeRolePolicyDocument: # Bu rolü kimler üstlenebilir
         Version: '2012-10-17'
         Statement:
           - Effect: Allow
@@ -30,7 +30,7 @@ Resources:
         - arn:aws:iam::aws:policy/AdministratorAccess # Basitlik için tam yetki, daha sonra kısıtlanabilir
       Policies:
         - PolicyName: CodePipelineAccess
-          PolicyDocument:
+          PolicyDocument: # Bu rolün ne yapmasına izin verilir
             Version: '2012-10-17'
             Statement:
               - Effect: Allow
@@ -117,6 +117,77 @@ Resources:
         - http://localhost:3000
         - https://<PROD_URL>
 
+  # 2. Frontend Hosting için S3 Kovası
+  FrontendBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "iyilik-zinciri-frontend-${AWS::AccountId}-${AWS::Region}"
+      AccessControl: Private # CloudFront üzerinden erişim için
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+
+  # 3. CloudFront OAI (Origin Access Identity) - S3'e güvenli erişim için
+  CloudFrontOAI:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: OAI for iyilik-zinciri frontend bucket
+
+  # 4. S3 Kovası Politikası - OAI'nin S3'e erişmesine izin verir
+  FrontendBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref FrontendBucket
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !Sub "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOAI}"
+            Action:
+              - s3:GetObject
+            Resource:
+              - !Sub "${FrontendBucket.Arn}/*"
+
+  # 5. CloudFront Dağıtımı - Uygulamayı yayınlar
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Origins:
+          - DomainName: !GetAtt FrontendBucket.RegionalDomainName
+            Id: S3Origin
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOAI}"
+        Enabled: true
+        DefaultCacheBehavior:
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+        DefaultRootObject: index.html
+        CustomErrorResponses:
+          - ErrorCachingMinTTL: 300
+            ErrorCode: 403
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+          - ErrorCachingMinTTL: 300
+            ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: true
+
 Outputs:
   UserPoolId:
     Description: Cognito Kullanıcı Havuzu ID'si
@@ -133,3 +204,9 @@ Outputs:
   CodePipelineArtifactsBucketName:
     Description: CodePipeline Artifacts S3 Kovası Adı
     Value: !Ref CodePipelineArtifactsBucket
+  FrontendBucketName:
+    Description: Frontend S3 Kovası Adı
+    Value: !Ref FrontendBucket
+  CloudFrontDistributionDomainName:
+    Description: CloudFront Da??t?m Alan Ad?
+    Value: !GetAtt CloudFrontDistribution.DomainName
