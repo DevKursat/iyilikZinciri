@@ -133,25 +133,37 @@ const app = {
         if (!authFormSlider) return;
 
         let translateXValue = 0;
+        let targetPageId = '';
+
         switch (subPageName) {
             case 'login':
                 translateXValue = 0;
+                targetPageId = 'login-page';
                 break;
             case 'signup':
                 translateXValue = -100;
+                targetPageId = 'signup-page';
                 break;
             case 'confirmSignup':
                 translateXValue = -200;
+                targetPageId = 'confirm-signup-page';
                 break;
             default:
                 translateXValue = 0;
+                targetPageId = 'login-page';
         }
         authFormSlider.style.transform = `translateX(${translateXValue}%)`;
 
         // Remove active class from all sub-pages and add to the target one for potential styling (not positioning)
         const authSubPages = document.querySelectorAll('#auth-container .auth-sub-page');
         authSubPages.forEach(page => page.classList.remove('active'));
-        document.getElementById(subPageName).classList.add('active');
+        
+        const targetPage = document.getElementById(targetPageId);
+        if (targetPage) {
+            targetPage.classList.add('active');
+        } else {
+            console.error(`Auth sub page with ID "${targetPageId}" not found.`);
+        }
     },
 
     updateNavigationVisibility() {
