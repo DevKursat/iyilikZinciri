@@ -44,11 +44,28 @@ const app = {
         this.nav.desktopNav = document.getElementById('desktop-nav'); // Masaüstü navigasyon
 
         // Form geçiş linkleri
-        const showLoginLink = document.getElementById('show-login');
-        const showSignupLink = document.getElementById('show-signup');
+        // Form geçiş linkleri
+        const showLoginBtn = document.getElementById('show-login');
+        const showSignupBtn = document.getElementById('show-signup');
+        const authContainerAnimated = document.querySelector('.auth-container-animated');
+
+        if (showLoginBtn && showSignupBtn && authContainerAnimated) {
+            showLoginBtn.addEventListener('click', () => {
+                authContainerAnimated.classList.remove('active');
+            });
+
+            showSignupBtn.addEventListener('click', () => {
+                authContainerAnimated.classList.add('active');
+            });
+        }
+
         const logoutBtn = document.getElementById('logout-btn');
         const resendCodeLink = document.getElementById('resend-code');
         const startButton = document.getElementById('start-button');
+        const googleLoginBtn = document.getElementById('google-login-btn');
+        const appleLoginBtn = document.getElementById('apple-login-btn');
+        const googleSignupBtn = document.getElementById('google-signup-btn');
+        const appleSignupBtn = document.getElementById('apple-signup-btn');
 
         // Formları al
         this.forms = {};
@@ -142,44 +159,6 @@ const app = {
         // Navigasyon butonlarını güncelle
         this.updateNavigationButtons(pageName);
         this.updateNavigationVisibility();
-    },
-
-    navigateToAuthSubPage(subPageName) {
-        const authFormSlider = document.querySelector('.auth-form-slider');
-        if (!authFormSlider) return;
-
-        let translateXValue = 0;
-        let targetPageId = '';
-
-        switch (subPageName) {
-            case 'login':
-                translateXValue = 0;
-                targetPageId = 'login-page';
-                break;
-            case 'signup':
-                translateXValue = -100;
-                targetPageId = 'signup-page';
-                break;
-            case 'confirmSignup':
-                translateXValue = -200;
-                targetPageId = 'confirm-signup-page';
-                break;
-            default:
-                translateXValue = 0;
-                targetPageId = 'login-page';
-        }
-        authFormSlider.style.transform = `translateX(${translateXValue}%)`;
-
-        // Remove active class from all sub-pages and add to the target one for potential styling (not positioning)
-        const authSubPages = document.querySelectorAll('#auth-container .auth-sub-page');
-        authSubPages.forEach(page => page.classList.remove('active'));
-        
-        const targetPage = document.getElementById(targetPageId);
-        if (targetPage) {
-            targetPage.classList.add('active');
-        } else {
-            console.error(`Auth sub page with ID "${targetPageId}" not found.`);
-        }
     },
 
     updateNavigationVisibility() {

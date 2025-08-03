@@ -75,18 +75,35 @@
                     </div>
 
                     <div class="auth-form-section">
-                        <div class="auth-form-slider">
-                            <!-- Giriş Sayfası -->
-                            <div id="login-page" class="auth-sub-page active">
-                                <header>
-                                    <h1>Giriş Yap</h1>
-                                    <p>İyiliğe katılmak için giriş yap.</p>
-                                </header>
+                        <div class="auth-container-animated">
+                            <!-- Sign Up -->
+                            <div class="container-form container-signup">
+                                <form id="signup-form" class="auth-form">
+                                    <header>
+                                        <h1>Kayıt Ol</h1>
+                                        <p>Hemen bir hesap oluştur.</p>
+                                    </header>
+                                    <input type="email" id="signup-email" placeholder="E-posta" required>
+                                    <input type="password" id="signup-password" placeholder="Şifre (en az 8 karakter)" required>
+                                    <button type="submit">Kayıt Ol</button>
+                                    <div class="social-login-divider"><span>veya</span></div>
+                                    <div class="social-login-buttons">
+                                        <button type="button" id="google-signup-btn" class="social-login-btn google"><i class="fab fa-google"></i> Google ile Kayıt Ol</button>
+                                        <button type="button" id="apple-signup-btn" class="social-login-btn apple"><i class="fab fa-apple"></i> Apple ile Kayıt Ol</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Sign In -->
+                            <div class="container-form container-signin">
                                 <form id="login-form" class="auth-form">
+                                    <header>
+                                        <h1>Giriş Yap</h1>
+                                        <p>İyiliğe katılmak için giriş yap.</p>
+                                    </header>
                                     <input type="email" id="login-email" placeholder="E-posta" required>
                                     <input type="password" id="login-password" placeholder="Şifre" required>
                                     <button type="submit">Giriş Yap</button>
-                                    <p class="toggle-form">Hesabın yok mu? <a href="#" id="show-signup">Kayıt Ol</a></p>
                                     <div class="social-login-divider"><span>veya</span></div>
                                     <div class="social-login-buttons">
                                         <button type="button" id="google-login-btn" class="social-login-btn google"><i class="fab fa-google"></i> Google ile Giriş Yap</button>
@@ -95,32 +112,16 @@
                                 </form>
                             </div>
 
-                            <!-- Kayıt Olma Sayfası -->
-                            <div id="signup-page" class="auth-sub-page">
-                                <header>
-                                    <h1>Kayıt Ol</h1>
-                                    <p>Hemen bir hesap oluştur.</p>
-                                </header>
-                                <form id="signup-form" class="auth-form">
-                                    <input type="email" id="signup-email" placeholder="E-posta" required>
-                                    <input type="password" id="signup-password" placeholder="Şifre (en az 8 karakter)" required>
-                                    <button type="submit">Kayıt Ol</button>
-                                    <p class="toggle-form">Zaten hesabın var mı? <a href="#" id="show-login">Giriş Yap</a></p>
-                                </form>
-                            </div>
-
-                            <!-- Doğrulama Kodu Sayfası -->
-                            <div id="confirm-signup-page" class="auth-sub-page">
-                                <header>
-                                    <h1>Hesabını Doğrula</h1>
-                                    <p>E-postana gönderilen doğrulama kodunu gir.</p>
-                                </header>
-                                <form id="confirm-signup-form" class="auth-form">
-                                    <input type="email" id="confirm-email" placeholder="E-posta" required>
-                                    <input type="text" id="confirmation-code" placeholder="Doğrulama Kodu" required>
-                                    <button type="submit">Doğrula</button>
-                                    <p class="toggle-form"><a href="#" id="resend-code">Kodu Yeniden Gönder</a></p>
-                                </form>
+                            <!-- Overlay -->
+                            <div class="container-overlay">
+                                <div class="overlay">
+                                    <div class="overlay-panel overlay-left">
+                                        <button class="btn" id="show-login">Giriş Yap</button>
+                                    </div>
+                                    <div class="overlay-panel overlay-right">
+                                        <button class="btn" id="show-signup">Kayıt Ol</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
