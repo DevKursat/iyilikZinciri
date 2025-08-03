@@ -1,790 +1,269 @@
-/* Genel Değişkenler ve Temel Stiller */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
 :root {
-    --primary-color: #4CAF50; /* Yeşil - İyilik temasına uygun */
-    --secondary-color: #2196F3; /* Mavi - Destekleyici */
-    --accent-color: #FFC107; /* Sarı - Vurgu */
+    --primary-color: #4CAF50;
+    --secondary-color: #45a049;
     --background-color: #f0f2f5;
     --card-background: #ffffff;
-    --text-color: #333333;
-    --light-text-color: #666666;
+    --text-color: #333;
+    --light-text-color: #666;
+    --white-color: #fff;
     --border-color: #e0e0e0;
     --shadow-light: rgba(0, 0, 0, 0.1);
-    --nav-height: 60px;
-    --header-height: 70px;
+    --shadow-dark: rgba(0, 0, 0, 0.2);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    font-family: 'Roboto', sans-serif; /* Daha modern bir font */
-    margin: 0;
-    padding: 0;
     background-color: var(--background-color);
-    color: var(--text-color);
-    overflow-x: hidden; /* Yatay kaydırmayı engelle */
-}
-
-/* Google Fonts - Roboto ve Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@300;400;500&display=swap');
-
-#app-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    position: relative;
-    overflow: hidden;
-}
-
-.app-header {
+    font-family: 'Poppins', sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#auth-page-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
     padding: 1rem;
-    background-color: var(--card-background);
-    box-shadow: 0 2px 4px var(--shadow-light);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    height: var(--header-height);
 }
 
 .app-logo {
-    width: 50px;
-    height: 50px;
-    margin-right: 10px;
-}
-
-.app-title {
-    font-family: 'Poppins', sans-serif;
-    color: var(--primary-color);
-    margin: 0;
-    font-size: 1.8rem;
-}
-
-#app-main {
-    flex-grow: 1;
-    position: relative;
-    overflow: hidden;
-}
-
-.page {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    opacity: 0;
-    transform: translateX(100%);
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* Daha yumuşak geçiş */
-    background-color: var(--background-color);
-    overflow-y: auto; /* İçerik kaydırması */
-    padding-bottom: var(--nav-height); /* Alt navigasyon için boşluk */
-    box-sizing: border-box;
-}
-
-.page.active {
-    opacity: 1;
-    transform: translateX(0%);
-}
-
-h1, h2 {
-    font-family: 'Poppins', sans-serif;
-    color: var(--primary-color);
-}
-
-/* Tanıtım Ekranı Stilleri */
-#intro-page {
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 2rem;
-    box-sizing: border-box;
-}
-
-.intro-container {
-    max-width: 400px;
-    background-color: var(--card-background);
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px var(--shadow-light);
-}
-
-.intro-tagline {
-    font-size: 1.2rem;
-    color: var(--light-text-color);
-    margin-bottom: 2rem;
-}
-
-.intro-button {
-    padding: 1rem 2rem;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.1s ease;
-}
-
-.intro-button:hover {
-    background-color: #45a049;
-    transform: translateY(-2px);
-}
-
-/* Kimlik Doğrulama Ana Konteyneri */
-#auth-container {
-    flex-direction: row; /* Masaüstünde yan yana */
-    justify-content: center;
-    align-items: center;
-    padding: 0;
-}
-
-.auth-split-container {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    max-width: 900px; /* Masaüstü için daha geniş */
-    border-radius: 12px;
-    box-shadow: 0 8px 16px var(--shadow-light);
-    overflow: hidden;
-}
-
-.auth-intro-section {
-    flex: 1; /* Yarısını kapla */
-    background-color: var(--primary-color);
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 2rem;
-    box-sizing: border-box;
-    position: relative;
-    overflow: hidden;
-}
-
-.auth-form-section {
-    flex: 1; /* Yarısını kapla */
-    background-color: var(--card-background);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    box-sizing: border-box;
-    position: relative;
-    overflow: hidden; /* Hide overflowing sub-pages */
-}
-
-/* New slider container for auth forms */
-.auth-form-slider {
-    display: flex;
-    width: 100%; /* Take full width of parent */
-    height: 100%; /* Take full height of parent */
-    transition: transform 0.5s ease-in-out; /* Smooth sliding transition */
-}
-
-.auth-sub-page {
-    min-width: 100%; /* Each sub-page takes full width */
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0; /* Prevent shrinking */
-}
-
-
-/* Carousel Stilleri */
-.intro-carousel, .auth-intro-carousel {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.carousel-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-.carousel-item.active {
-    opacity: 1;
-}
-
-.carousel-item h2 {
-    color: white;
-    margin-top: 1rem;
-}
-
-.carousel-item p {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1rem;
-}
-
-.lottie-animation-container {
-    width: 150px;
-    height: 150px;
+    width: 80px;
+    height: 80px;
     margin-bottom: 1rem;
-}
-
-/* Kimlik Doğrulama Formları */
-.auth-form-section {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    padding: 0;
 }
 
 .auth-container-animated {
     background-color: var(--card-background);
-    border-radius: 12px;
-    box-shadow: 0 8px 16px var(--shadow-light);
-    height: 480px;
-    max-width: 758px;
-    overflow: hidden;
+    border-radius: 30px;
+    box-shadow: 0 5px 15px var(--shadow-dark);
     position: relative;
+    overflow: hidden;
     width: 100%;
+    max-width: 768px;
+    min-height: 480px;
 }
 
-.container-form {
-    height: 100%;
-    position: absolute;
-    top: 0;
-    transition: all 0.6s ease-in-out;
+.auth-container-animated p {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.3px;
+    margin: 20px 0;
 }
 
-.container-signin {
-    left: 0;
-    width: 50%;
-    z-index: 2;
+.auth-container-animated span {
+    font-size: 12px;
+    color: var(--light-text-color);
+    margin-bottom: 10px;
 }
 
-.auth-container-animated.active .container-signin {
-    transform: translateX(100%);
+.auth-container-animated a {
+    color: var(--text-color);
+    font-size: 13px;
+    text-decoration: none;
+    margin: 15px 0 10px;
 }
 
-.container-signup {
-    left: 0;
-    opacity: 0;
-    width: 50%;
-    z-index: 1;
-}
-
-.auth-container-animated.active .container-signup {
-    animation: show 0.6s;
-    opacity: 1;
-    transform: translateX(100%);
-    z-index: 5;
-}
-
-.container-overlay {
-    height: 100%;
-    left: 50%;
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    transition: transform 0.6s ease-in-out;
-    width: 50%;
-    z-index: 100;
-}
-
-.auth-container-animated.active .container-overlay {
-    transform: translateX(-100%);
-}
-
-.overlay {
+.auth-container-animated button {
     background-color: var(--primary-color);
-    background-image: linear-gradient(to right, var(--primary-color), #45a049);
-    height: 100%;
-    left: -100%;
-    position: relative;
-    transform: translateX(0);
-    transition: transform 0.6s ease-in-out;
-    width: 200%;
+    color: var(--white-color);
+    font-size: 12px;
+    padding: 10px 45px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
 }
 
-.auth-container-animated.active .overlay {
-    transform: translateX(50%);
+.auth-container-animated button.hidden {
+    background-color: transparent;
+    border-color: var(--white-color);
 }
 
-.overlay-panel {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: center;
-    position: absolute;
-    text-align: center;
-    top: 0;
-    transform: translateX(0);
-    transition: transform 0.6s ease-in-out;
-    width: 50%;
+.auth-container-animated button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 3px 8px var(--shadow-light);
 }
 
-.overlay-left {
-    transform: translateX(-20%);
-}
-
-.auth-container-animated.active .overlay-left {
-    transform: translateX(0);
-}
-
-.overlay-right {
-    right: 0;
-    transform: translateX(0);
-}
-
-.auth-container-animated.active .overlay-right {
-    transform: translateX(20%);
-}
-
-.auth-form {
+.auth-container-animated form {
     background-color: var(--card-background);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 0 3rem;
+    padding: 0 40px;
     height: 100%;
-    text-align: center;
 }
 
-.auth-form input {
+.auth-container-animated input {
     background-color: #eee;
     border: none;
     margin: 8px 0;
     padding: 10px 15px;
-    font-size: 14px;
+    font-size: 13px;
     border-radius: 8px;
     width: 100%;
     outline: none;
 }
 
-.btn {
-    background-color: var(--primary-color);
-    background-image: linear-gradient(to right, #45a049, var(--primary-color));
-    border-radius: 20px;
-    border: 1px solid var(--primary-color);
-    color: #fff;
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-weight: bold;
-    letter-spacing: 0.1rem;
-    padding: 0.9rem 4rem;
-    text-transform: uppercase;
-    transition: transform 80ms ease-in;
+.form-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
 }
 
-.btn:active {
-    transform: scale(0.95);
+.sign-in {
+    left: 0;
+    width: 50%;
+    z-index: 2;
 }
 
-@keyframes show {
+.sign-up {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.auth-container-animated.active .sign-in {
+    transform: translateX(100%);
+}
+
+.auth-container-animated.active .sign-up {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: move 0.6s;
+}
+
+@keyframes move {
     0%, 49.99% {
         opacity: 0;
         z-index: 1;
     }
-
     50%, 100% {
         opacity: 1;
         z-index: 5;
     }
 }
 
-/* Sosyal Medya Giriş Butonları */
-.social-login-divider {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    color: var(--light-text-color);
-    margin: 1.5rem 0;
+.social-icons {
+    margin: 20px 0;
 }
 
-.social-login-divider::before,
-.social-login-divider::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.social-login-divider:not(:empty)::before {
-    margin-right: .25em;
-}
-
-.social-login-divider:not(:empty)::after {
-    margin-left: .25em;
-}
-
-.social-login-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.social-login-btn {
-    padding: 1rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+.social-icons a {
     border: 1px solid var(--border-color);
+    border-radius: 20%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 3px;
+    width: 40px;
+    height: 40px;
+    transition: all 0.2s ease-in-out;
 }
 
-.social-login-btn.google {
-    background-color: #fff;
-    color: #4285F4;
+.social-icons a:hover {
+    transform: scale(1.1);
+    border-color: var(--primary-color);
 }
 
-.social-login-btn.google:hover {
-    background-color: #f1f1f1;
-    box-shadow: 0 2px 4px var(--shadow-light);
-}
-
-.social-login-btn.apple {
-    background-color: #000;
-    color: #fff;
-}
-
-.social-login-btn.apple:hover {
-    background-color: #333;
-    box-shadow: 0 2px 4px var(--shadow-light);
-}
-
-.social-login-btn i {
-    font-size: 1.2rem;
-}
-
-/* Reels Tarzı Akış */
-#feed-page header {
-    background-color: var(--card-background);
-    box-shadow: 0 2px 4px var(--shadow-light);
-    padding: 1rem;
-    text-align: center;
-    position: sticky;
+.toggle-container {
+    position: absolute;
     top: 0;
-    z-index: 5;
-}
-
-.reels-container {
-    height: calc(100% - var(--header-height)); /* Header yüksekliği kadar boşluk bırak */
-    width: 100%;
-    overflow-y: scroll;
-    scroll-snap-type: y mandatory;
-    scroll-behavior: smooth;
-}
-
-.reel {
+    left: 50%;
+    width: 50%;
     height: 100%;
-    width: 100%;
-    scroll-snap-align: start;
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    display: flex;
-    align-items: flex-end;
-    color: white;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    overflow: hidden;
+    transition: all 0.6s ease-in-out;
+    border-radius: 150px 0 0 150px;
+    z-index: 1000;
 }
 
-.reel-content {
-    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-    padding: 1.5rem;
-    width: 100%;
-    box-sizing: border-box;
+.auth-container-animated.active .toggle-container {
+    transform: translateX(-100%);
+    border-radius: 0 150px 150px 0;
 }
 
-.reel-content p {
-    margin: 0;
-    font-size: 1.2rem;
-    font-weight: 500;
-}
-
-/* Profil Sayfası Stilleri */
-.profile-header {
-    text-align: center;
-    padding: 1.5rem;
-    background-color: var(--card-background);
-    box-shadow: 0 2px 4px var(--shadow-light);
-    margin-bottom: 1rem;
-}
-
-.profile-pic {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: 4px solid var(--primary-color);
-    box-shadow: 0 4px 8px var(--shadow-light);
-    object-fit: cover;
-}
-
-.profile-header h1 {
-    margin: 0.5rem 0;
-    font-size: 1.8rem;
-    color: var(--text-color);
-}
-
-.profile-stats {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin: 1rem 0;
-}
-
-.stat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.stat-value {
-    font-size: 1.4rem;
-    font-weight: bold;
-    color: var(--primary-color);
-}
-
-.stat-label {
-    font-size: 0.85rem;
-    color: var(--light-text-color);
-}
-
-.logout-button {
-    background: none;
-    border: 1px solid var(--border-color);
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    color: var(--light-text-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.logout-button:hover {
-    background-color: var(--background-color);
-    color: var(--text-color);
-}
-
-.task-container {
-    padding: 1rem;
-}
-
-.task-card {
-    background-color: var(--card-background);
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px var(--shadow-light);
-    margin-top: 1rem;
-}
-
-.task-card h2 {
-    margin-top: 0;
-    color: var(--secondary-color);
-}
-
-.task-button {
-    width: 100%;
-    padding: 1rem;
-    margin-top: 1.5rem;
+.toggle {
     background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.1s ease;
+    height: 100%;
+    background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+    color: var(--white-color);
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: all 0.6s ease-in-out;
 }
 
-.task-button:hover {
-    background-color: #45a049;
-    transform: translateY(-2px);
+.auth-container-animated.active .toggle {
+    transform: translateX(50%);
 }
 
-.task-button:active {
-    transform: translateY(0);
-}
-
-.gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Daha küçük resimler için */
-    gap: 8px;
-    padding: 1rem;
-}
-
-.gallery img {
-    width: 100%;
-    height: 100px; /* Sabit yükseklik */
-    object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px var(--shadow-light);
-    transition: transform 0.2s ease;
-}
-
-.gallery img:hover {
-    transform: scale(1.05);
-}
-
-/* Alt Navigasyon Menüsü */
-#bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: var(--nav-height);
-    background-color: var(--card-background);
-    border-top: 1px solid var(--border-color);
+.toggle-panel {
+    position: absolute;
+    width: 50%;
+    height: 100%;
     display: flex;
-    justify-content: space-around;
     align-items: center;
-    box-shadow: 0 -2px 4px var(--shadow-light);
-    z-index: 100;
-}
-
-.nav-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    color: var(--light-text-color);
-    display: flex;
+    justify-content: center;
     flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    transition: color 0.3s ease, transform 0.2s ease;
+    padding: 0 30px;
+    text-align: center;
+    top: 0;
+    transform: translateX(0);
+    transition: all 0.6s ease-in-out;
 }
 
-.nav-btn i {
-    font-size: 1.5rem;
+.toggle-left {
+    transform: translateX(-200%);
 }
 
-.nav-btn.active {
-    color: var(--primary-color);
-    transform: translateY(-3px);
+.auth-container-animated.active .toggle-left {
+    transform: translateX(0);
 }
 
-.nav-btn:hover:not(.active) {
-    color: var(--secondary-color);
-    transform: translateY(-2px);
+.toggle-right {
+    right: 0;
+    transform: translateX(0);
 }
 
-/* Masaüstü için responsive ayarlar */
-@media (min-width: 768px) {
-    body {
-        padding-bottom: 0; /* Navigasyon barı altta olmayacak */
-    }
+.auth-container-animated.active .toggle-right {
+    transform: translateX(200%);
+}
 
-    #app-container {
-        flex-direction: row;
-    }
-
-    .app-header {
-        display: none; /* Masaüstünde header'ı gizle */
-    }
-
-    #app-main {
-        flex-grow: 1;
-        height: 100vh;
-        overflow: hidden;
-    }
-
-    .page {
-        padding-bottom: 0; /* Masaüstünde alt navigasyon yok */
-    }
-
-    #auth-container {
-        height: 100vh; /* Ekranın tamamını kapla */
-        max-width: none; /* Genişlik limiti yok */
-        margin: 0; /* Ortalamayı kaldır */
-    }
-
-    .auth-split-container {
-        flex-direction: row; /* Yan yana */
-        height: 100%;
-        width: 100%;
-        border-radius: 0;
-        box-shadow: none;
-    }
-
-    .auth-intro-section {
-        display: flex; /* Masaüstünde göster */
-        justify-content: center;
-        align-items: center;
-    }
-
-    .auth-form-section {
-        border-radius: 0; /* Kenar yuvarlaklığını kaldır */
-        justify-content: center;
-        align-items: center;
-    }
-
-    #intro-page {
-        display: none; /* Masaüstünde tanıtım sayfasını gizle */
-    }
-
-    #bottom-nav {
-        display: none; /* Masaüstünde navigasyon barını gizle */
-    }
-
-    /* Masaüstü için ana navigasyon */
-    #desktop-nav {
-        display: flex;
-        flex-direction: column;
-        width: 200px;
-        background-color: var(--card-background);
-        box-shadow: 2px 0 4px var(--shadow-light);
-        padding-top: 2rem;
-    }
-
-    #desktop-nav .nav-btn {
-        width: 100%;
-        padding: 1rem;
-        justify-content: flex-start;
-        gap: 10px;
+@media (max-width: 768px) {
+    .auth-container-animated {
+        max-width: 100%;
+        min-height: 100vh;
         border-radius: 0;
     }
-
-    #desktop-nav .nav-btn i {
-        font-size: 1.8rem;
-    }
-
-    #desktop-nav .nav-btn span {
-        font-size: 1.1rem;
-    }
-}
-
-/* Mobil için responsive ayarlar */
-@media (max-width: 767px) {
-    .auth-split-container {
-        flex-direction: column;
-    }
-
-    .auth-intro-section {
-        display: none; /* Mobil'de gizle */
-    }
-
-    .auth-form-section {
-        width: 100%;
-        height: 100%;
-    }
-
-    #desktop-nav {
+    .toggle-container {
         display: none;
     }
+    .form-container {
+        width: 100%;
+    }
+    .sign-up {
+        /* Mobil'de geçiş için farklı bir mantık gerekir, şimdilik gizli */
+        display: none; 
+    }
+    /* Mobil için toggle butonları formların içine eklenebilir, bu örnekte basit tutulmuştur. */
 }

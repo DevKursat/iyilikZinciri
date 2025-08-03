@@ -3,196 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İyilik Zinciri</title>
+    <title>İyilik Zinciri - Giriş Yap</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts - Roboto ve Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <!-- Font Awesome ikonları için -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="app-container">
-        <header class="app-header">
-            <img src="./assets/logo.svg" alt="İyilik Zinciri Logo" class="app-logo">
-            <h1 class="app-title">İyilik Zinciri</h1>
-        </header>
-
-        <main id="app-main">
-            <!-- Tanıtım Ekranı (Mobil için ilk, Masaüstü için sol/sağda) -->
-            <section id="intro-page" class="page active">
-                <div class="intro-container">
-                    <div class="intro-carousel">
-                        <div class="carousel-item">
-                            <div class="lottie-animation-container" data-animation-url="https://assets10.lottiefiles.com/packages/lf20_yC2440.json"></div>
-                            <p class="intro-tagline">İyilik Paylaştıkça Çoğalır!</p>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="lottie-animation-container" data-animation-url="https://assets10.lottiefiles.com/packages/lf20_v1y0w0.json"></div>
-                            <h2>Günlük İyilik Görevleri</h2>
-                            <p>Her gün yeni bir iyilikle dünyayı değiştir.</p>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="lottie-animation-container" data-animation-url="https://assets10.lottiefiles.com/packages/lf20_yC2440.json"></div>
-                            <h2>Paylaş ve İlham Ver</h2>
-                            <p>Yaptığın iyilikleri paylaş, zinciri büyüt.</p>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="lottie-animation-container" data-animation-url="https://assets10.lottiefiles.com/packages/lf20_yC2440.json"></div>
-                            <h2>Puanlar ve Başarılar</h2>
-                            <p>İyilik yaptıkça seviye atla, rozetler kazan.</p>
-                        </div>
+    <div id="auth-page-container">
+        <div class="auth-container-animated" id="auth-container-animated">
+            <!-- Kayıt Ol Formu -->
+            <div class="form-container sign-up">
+                <form id="signup-form">
+                    <h1>Hesap Oluştur</h1>
+                    <div class="social-icons">
+                        <a href="#" class="icon" id="google-signup-btn"><i class="fab fa-google"></i></a>
+                        <a href="#" class="icon" id="apple-signup-btn"><i class="fab fa-apple"></i></a>
                     </div>
-                    <button id="start-button" class="intro-button">Hemen Başla!</button>
-                </div>
-            </section>
+                    <span>veya e-postanızı kullanarak kayıt olun</span>
+                    <input type="email" id="signup-email" placeholder="E-posta" required>
+                    <input type="password" id="signup-password" placeholder="Şifre" required>
+                    <button type="submit">Kayıt Ol</button>
+                </form>
+            </div>
 
-            <!-- Kimlik Doğrulama Ana Konteyneri -->
-            <section id="auth-container" class="page">
-                <div class="auth-split-container">
-                    <!-- Tanıtım/Animasyon Bölümü (Masaüstü için) -->
-                    <div class="auth-intro-section">
-                        <div class="auth-intro-carousel">
-                            <div class="carousel-item">
-                                <div class="lottie-animation-container" data-animation-url="https://assets10.lottiefiles.com/packages/lf20_yC2440.json"></div>
-                                <p class="intro-tagline">İyilik Paylaştıkça Çoğalır!</p>
-                            </div>
-                            <div class="carousel-item">
-                                <div class="lottie-animation-container" data-animation-url="https://assets10.lottiefiles.com/packages/lf20_v1y0w0.json"></div>
-                                <h2>Günlük İyilik Görevleri</h2>
-                                <p>Her gün yeni bir iyilikle dünyayı değiştir.</p>
-                            </div>
-                            <div class="carousel-item">
-                                <div class="lottie-animation-container" data-animation-url="https://assets10.lottiefiles.com/packages/lf20_yC2440.json"></div>
-                                <h2>Paylaş ve İlham Ver</h2>
-                                <p>Yaptığın iyilikleri paylaş, zinciri büyüt.</p>
-                            </div>
-                            <div class="carousel-animation-container" data-animation-url="https://assets10.lottiefiles.com/packages/lf20_yC2440.json"></div>
-                            <h2>Puanlar ve Başarılar</h2>
-                            <p>İyilik yaptıkça seviye atla, rozetler kazan.</p>
-                        </div>
+            <!-- Giriş Yap Formu -->
+            <div class="form-container sign-in">
+                <form id="login-form">
+                    <h1>Giriş Yap</h1>
+                    <div class="social-icons">
+                        <a href="#" class="icon" id="google-login-btn"><i class="fab fa-google"></i></a>
+                        <a href="#" class="icon" id="apple-login-btn"><i class="fab fa-apple"></i></a>
                     </div>
+                    <span>veya e-postanızı kullanarak giriş yapın</span>
+                    <input type="email" id="login-email" placeholder="E-posta" required>
+                    <input type="password" id="login-password" placeholder="Şifre" required>
+                    <a href="#">Şifreni mi unuttun?</a>
+                    <button type="submit">Giriş Yap</button>
+                </form>
+            </div>
 
-                    <div class="auth-form-section">
-                        <div class="auth-container-animated">
-                            <!-- Sign Up -->
-                            <div class="container-form container-signup">
-                                <form id="signup-form" class="auth-form">
-                                    <header>
-                                        <h1>Kayıt Ol</h1>
-                                        <p>Hemen bir hesap oluştur.</p>
-                                    </header>
-                                    <input type="email" id="signup-email" placeholder="E-posta" required>
-                                    <input type="password" id="signup-password" placeholder="Şifre (en az 8 karakter)" required>
-                                    <button type="submit">Kayıt Ol</button>
-                                    <div class="social-login-divider"><span>veya</span></div>
-                                    <div class="social-login-buttons">
-                                        <button type="button" id="google-signup-btn" class="social-login-btn google"><i class="fab fa-google"></i> Google ile Kayıt Ol</button>
-                                        <button type="button" id="apple-signup-btn" class="social-login-btn apple"><i class="fab fa-apple"></i> Apple ile Kayıt Ol</button>
-                                    </div>
-                                </form>
-                            </div>
-
-                            <!-- Sign In -->
-                            <div class="container-form container-signin">
-                                <form id="login-form" class="auth-form">
-                                    <header>
-                                        <h1>Giriş Yap</h1>
-                                        <p>İyiliğe katılmak için giriş yap.</p>
-                                    </header>
-                                    <input type="email" id="login-email" placeholder="E-posta" required>
-                                    <input type="password" id="login-password" placeholder="Şifre" required>
-                                    <button type="submit">Giriş Yap</button>
-                                    <div class="social-login-divider"><span>veya</span></div>
-                                    <div class="social-login-buttons">
-                                        <button type="button" id="google-login-btn" class="social-login-btn google"><i class="fab fa-google"></i> Google ile Giriş Yap</button>
-                                        <button type="button" id="apple-login-btn" class="social-login-btn apple"><i class="fab fa-apple"></i> Apple ile Giriş Yap</button>
-                                    </div>
-                                </form>
-                            </div>
-
-                            <!-- Overlay -->
-                            <div class="container-overlay">
-                                <div class="overlay">
-                                    <div class="overlay-panel overlay-left">
-                                        <button class="btn" id="show-login">Giriş Yap</button>
-                                    </div>
-                                    <div class="overlay-panel overlay-right">
-                                        <button class="btn" id="show-signup">Kayıt Ol</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <!-- Animasyonlu Geçiş Katmanı -->
+            <div class="toggle-container">
+                <div class="toggle">
+                    <div class="toggle-panel toggle-left">
+                        <h1>Tekrar Hoş Geldin!</h1>
+                        <p>İyilik yapmaya devam etmek için giriş yap</p>
+                        <button class="hidden" id="show-login">Giriş Yap</button>
+                    </div>
+                    <div class="toggle-panel toggle-right">
+                        <img src="./assets/Logo.png" alt="İyilik Zinciri Logo" class="app-logo">
+                        <h1>Merhaba, İyiliksever!</h1>
+                        <p>İyilik zincirine katılmak için kayıt ol</p>
+                        <button class="hidden" id="show-signup">Kayıt Ol</button>
                     </div>
                 </div>
-            </section>
-
-            <!-- İlham Akışı Sayfası (Reels Tarzı) -->
-            <section id="feed-page" class="page">
-                <header>
-                    <h1>İlham Akışı</h1>
-                </header>
-                <div class="reels-container">
-                    <!-- Gönderiler buraya dinamik olarak eklenecek -->
-                    <div class="reel">
-                        <div class="reel-content">
-                            <p>Yükleniyor...</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Profil Sayfası -->
-            <section id="profile-page" class="page">
-                <header class="profile-header">
-                    <img src="./assets/Logo.png" alt="Profil Fotoğrafı" class="profile-pic">
-                    <h1 id="profile-username">Kullanıcı Adı</h1>
-                    <div class="profile-stats">
-                        <div class="stat">
-                            <span class="stat-value" id="profile-ip">0</span>
-                            <span class="stat-label">İyilik Puanı</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-value" id="profile-streak">🔥 0</span>
-                            <span class="stat-label">Alev</span>
-                        </div>
-                    </div>
-                    <button id="logout-btn" class="logout-button">Çıkış Yap</button>
-                </header>
-                <div class="content">
-                    <div class="task-container">
-                        <h2>Bugünkü Görevin</h2>
-                        <div id="daily-task" class="task-card">
-                            <p>Yükleniyor...</p>
-                            <button class="task-button">Görevi Tamamla</button>
-                        </div>
-                    </div>
-                    <hr>
-                    <h2>İyilik Günlüğüm</h2>
-                    <div id="iyilik-gunlugu" class="gallery">
-                        <!-- Kullanıcının tamamladığı görevler (görseller) buraya gelecek -->
-                        <p>Henüz iyilik yapmadın.</p>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <nav id="bottom-nav">
-            <button id="nav-feed" class="nav-btn active">
-                <i class="fas fa-stream"></i>
-                <span>Akış</span>
-            </button>
-            <button id="nav-profile" class="nav-btn">
-                <i class="fas fa-user"></i>
-                <span>Profil</span>
-            </button>
-        </nav>
+            </div>
+        </div>
     </div>
 
-    <script src="https://unpkg.com/aws-amplify@6.0.17/dist/aws-amplify.min.js"></script> <!-- Güncel ve güvenilir Amplify CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script> <!-- Lottie Player CDN -->
-    <script src="https://unpkg.com/@rive-app/webgl@2.11.1/rive.min.js"></script> <!-- Rive WebGL Runtime CDN -->
+    <script src="https://unpkg.com/aws-amplify@6.0.17/dist/aws-amplify.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
