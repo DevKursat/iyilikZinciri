@@ -3,6 +3,22 @@
 // AWS Amplify kütüphanesini dahil et (index.html'de CDN'den yüklenecek)
 // import { Amplify, Auth } from 'aws-amplify'; // Bu satır CDN kullanımı için gerekli değil
 
+// Amplify'ı yapılandır
+Amplify.configure({
+    Auth: {
+        region: 'eu-north-1',
+        userPoolId: 'eu-north-1_brdMkzj67',
+        userPoolWebClientId: '11ri73f3j2ma53auguuaaas09l',
+        oauth: {
+            domain: 'YOUR_COGNITO_DOMAIN', // Lütfen burayı kendi Cognito alan adınızla değiştirin
+            scope: ['phone', 'email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
+            redirectSignIn: window.location.origin,
+            redirectSignOut: window.location.origin,
+            responseType: 'code' // 'code' veya 'token' olabilir
+        }
+    }
+});
+
 const app = {
     pages: {},
     nav: {},
