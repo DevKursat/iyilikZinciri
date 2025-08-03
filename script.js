@@ -17,14 +17,22 @@ const app = {
         console.log("İyilik Zinciri başlatılıyor...");
 
         // Amplify'ı yapılandır
-        Amplify.configure({
-            Auth: {
-                mandatorySignIn: true,
-                region: this.config.cognito.UserPoolId.split('_')[0], // Bölgeyi UserPoolId'den al
-                userPoolId: this.config.cognito.UserPoolId,
-                userPoolWebClientId: this.config.cognito.ClientId
-            }
-        });
+        try {
+            Amplify.configure({
+                Auth: {
+                    mandatorySignIn: true,
+                    region: this.config.cognito.UserPoolId.split('_')[0], // Bölgeyi UserPoolId'den al
+                    userPoolId: this.config.cognito.UserPoolId,
+                    userPoolWebClientId: this.config.cognito.ClientId
+                }
+            });
+        } catch (error) {
+            console.error("Amplify yapılandırma hatası:", error);
+            console.warn("Amplify kütüphanesi yüklenemedi veya tanımlı değil. Uygulama Amplify bağımlı özellikler olmadan başlatılıyor.");
+            // Amplify yüklenemezse, kullanıcıyı tanıtım sayfasına yönlendir
+            this.navigateTo('intro');
+            return; // Amplify olmadan devam etme
+        }
 
         this.pages.intro = document.getElementById('intro-page');
         this.pages.authContainer = document.getElementById('auth-container');
@@ -345,12 +353,4 @@ const app = {
     }
 };
 
-function waitForAmplify(callback) {
-    if (typeof Amplify !== 'undefined') {
-        callback();
-    } else {
-        setTimeout(() => waitForAmplify(callback), 50); // Check every 50ms
-    }
-}
-
-waitForAmplify(() => app.init());
+window.addEventListener('load', () => app.init());
