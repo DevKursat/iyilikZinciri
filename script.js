@@ -14,16 +14,6 @@ const app = {
     },
 
     init() {
-        // Amplify'ı yapılandır
-        Amplify.configure({
-            Auth: {
-                mandatorySignIn: true,
-                region: this.config.cognito.UserPoolId.split('_')[0], // Bölgeyi UserPoolId'den al
-                userPoolId: this.config.cognito.UserPoolId,
-                userPoolWebClientId: this.config.cognito.ClientId
-            }
-        });
-
         this.pages.intro = document.getElementById('intro-page');
         this.pages.authContainer = document.getElementById('auth-container');
         this.pages.feed = document.getElementById('feed-page');
@@ -88,9 +78,6 @@ const app = {
             await this.auth.confirmSignUp(email, code);
         });
 
-        // Uygulama yüklendiğinde oturum durumunu kontrol et
-        this.checkAuthStatusAndNavigate();
-
         // Carousel'leri başlat
         this.startCarousel('intro-carousel');
         this.startCarousel('auth-intro-carousel');
@@ -101,20 +88,14 @@ const app = {
         // Pencere boyutu değiştiğinde navigasyonu güncelle
         window.addEventListener('resize', () => this.updateNavigationVisibility());
         this.updateNavigationVisibility(); // Başlangıçta navigasyon görünürlüğünü ayarla
-
-        // Hata ayıklama için başlangıçta doğrudan tanıtım sayfasına yönlendir
-        this.navigateTo('intro');
     },
 
     async checkAuthStatusAndNavigate() {
-        console.log("checkAuthStatusAndNavigate çağrıldı.");
         try {
             await Amplify.Auth.currentAuthenticatedUser();
-            console.log("Kullanıcı oturum açmış. Feed sayfasına yönlendiriliyor.");
             // Kullanıcı oturum açmışsa feed sayfasına git
             this.navigateTo('feed', true);
         } catch (error) {
-            console.log("Kullanıcı oturum açmamış. Tanıtım ekranına yönlendiriliyor.");
             // Kullanıcı oturum açmamışsa tanıtım ekranına git
             this.navigateTo('intro');
         }
@@ -367,4 +348,4 @@ const app = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', () => app.init());
+app.init();
