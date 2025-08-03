@@ -1,7 +1,78 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: İyilik Zinciri Projesi için temel AWS altyapısı (Cognito, S3, DynamoDB)
+Description: İyilik Zinciri Projesi için temel AWS altyapısı (Cognito, S3, IAM Rolleri)
 
 Resources:
+  # CodePipeline Artifacts için S3 Kovası
+  CodePipelineArtifactsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "iyilik-zinciri-pipeline-artifacts-${AWS::AccountId}-${AWS::Region}"
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  # CodePipeline Hizmet Rolü (CodePipeline'ın kendisi bu rolü üstlenecek)
+  CodePipelineServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: iyilik-zinciri-codepipeline-service-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codepipeline.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess # Basitlik için tam yetki, daha sonra kısıtlanabilir
+      Policies:
+        - PolicyName: CodePipelineAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:GetObjectVersion
+                  - s3:GetBucketVersioning
+                  - s3:PutObject
+                  - s3:ListBucket
+                Resource:
+                  - !GetAtt CodePipelineArtifactsBucket.Arn
+                  - !Sub "${CodePipelineArtifactsBucket.Arn}/*"
+              - Effect: Allow
+                Action:
+                  - cloudformation:CreateStack
+                  - cloudformation:DeleteStack
+                  - cloudformation:UpdateStack
+                  - cloudformation:CreateChangeSet
+                  - cloudformation:DeleteChangeSet
+                  - cloudformation:DescribeChangeSet
+                  - cloudformation:ExecuteChangeSet
+                  - cloudformation:DescribeStacks
+                  - cloudformation:DescribeStackEvents
+                  - cloudformation:GetTemplate
+                  - iam:PassRole # CloudFormationDeploymentRole'ü geçmek için gerekli
+                Resource: "*" # Daha sonra kısıtlanabilir
+
+  # CloudFormation Dağıtım Rolü (CodePipeline tarafından dağıtıldığında CloudFormation bu rolü üstlenecek)
+  CloudFormationDeploymentRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: iyilik-zinciri-cloudformation-deployment-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: cloudformation.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess # Tüm kaynakları (Cognito, S3, DynamoDB vb.) oluşturacak
+
   # 1. Kullanıcı Yönetimi için Cognito
   CognitoUserPool:
     Type: AWS::Cognito::UserPool
@@ -27,7 +98,7 @@ Resources:
     Properties:
       ClientName: iyilik-zinciri-web-client
       UserPoolId: !Ref CognitoUserPool
-      GenerateSecret: false # Web tabanlı client için secret gerekmez
+      GenerateSecret: false # Web tabanlı istemci için secret gerekmez
       SupportedIdentityProviders:
         - COGNITO
       AllowedOAuthFlows:
@@ -53,3 +124,12 @@ Outputs:
   UserPoolClientId:
     Description: Cognito Uygulama İstemci ID'si
     Value: !Ref CognitoUserPoolClient
+  CodePipelineServiceRoleArn:
+    Description: CodePipeline Hizmet Rolü ARN'si
+    Value: !GetAtt CodePipelineServiceRole.Arn
+  CloudFormationDeploymentRoleArn:
+    Description: CloudFormation Dağıtım Rolü ARN'si
+    Value: !GetAtt CloudFormationDeploymentRole.Arn
+  CodePipelineArtifactsBucketName:
+    Description: CodePipeline Artifacts S3 Kovası Adı
+    Value: !Ref CodePipelineArtifactsBucket
