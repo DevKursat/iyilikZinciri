@@ -54,3 +54,11 @@ Outputs:
   UserPoolClientId:
     Description: Cognito Uygulama İstemci ID'si
     Value: !Ref CognitoUserPoolClient
+
+Outputs:
+  UserPoolId:
+    Description: Cognito Kullanıcı Havuzu ID'si
+    Value: !Ref CognitoUserPool
+  UserPoolClientId:
+    Description: Cognito Uygulama İstemci ID'si
+    Value: !Ref CognitoUserPoolClient
