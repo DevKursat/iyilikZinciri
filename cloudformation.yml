@@ -1,4 +1,3 @@
-
 AWSTemplateFormatVersion: '2010-09-09'
 Description: İyilik Zinciri Projesi için temel AWS altyapısı (Cognito, S3, DynamoDB)
 
@@ -46,14 +45,6 @@ Resources:
       LogoutURLs:
         - http://localhost:3000
         - https://<PROD_URL>
-
-Outputs:
-  UserPoolId:
-    Description: Cognito Kullanıcı Havuzu ID'si
-    Value: !Ref CognitoUserPool
-  UserPoolClientId:
-    Description: Cognito Uygulama İstemci ID'si
-    Value: !Ref CognitoUserPoolClient
 
 Outputs:
   UserPoolId:
