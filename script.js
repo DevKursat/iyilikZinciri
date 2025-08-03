@@ -14,8 +14,6 @@ const app = {
     },
 
     init() {
-        console.log("İyilik Zinciri başlatılıyor... (app.init() çağrıldı)");
-
         // Amplify'ı yapılandır
         Amplify.configure({
             Auth: {
@@ -103,8 +101,6 @@ const app = {
         // Pencere boyutu değiştiğinde navigasyonu güncelle
         window.addEventListener('resize', () => this.updateNavigationVisibility());
         this.updateNavigationVisibility(); // Başlangıçta navigasyon görünürlüğünü ayarla
-
-        console.log("Uygulama başarıyla yüklendi ve hazır.");
 
         // Hata ayıklama için başlangıçta doğrudan tanıtım sayfasına yönlendir
         this.navigateTo('intro');
@@ -371,4 +367,4 @@ const app = {
     }
 };
 
-app.init();
+document.addEventListener('DOMContentLoaded', () => app.init());

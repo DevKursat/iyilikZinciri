@@ -187,17 +187,6 @@
     <script src="https://unpkg.com/aws-amplify@6.0.17/dist/aws-amplify.min.js"></script> <!-- Güncel ve güvenilir Amplify CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script> <!-- Lottie Player CDN -->
     <script src="https://unpkg.com/@rive-app/webgl@2.11.1/rive.min.js"></script> <!-- Rive WebGL Runtime CDN -->
-    <script>
-        function loadScript() {
-            if (typeof Amplify !== 'undefined') {
-                const script = document.createElement('script');
-                script.src = 'script.js';
-                document.body.appendChild(script);
-            } else {
-                setTimeout(loadScript, 50); // Amplify henüz yüklenmediyse 50ms sonra tekrar dene
-            }
-        }
-        loadScript();
-    </script>
+    <script src="script.js" defer></script>
 </body>
 </html>
