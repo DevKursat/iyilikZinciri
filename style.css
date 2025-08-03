@@ -77,6 +77,12 @@ header {
     margin-bottom: 1.5rem;
 }
 
+.app-logo-auth-intro {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 1rem;
+}
+
 h1, h2 {
     font-family: 'Poppins', sans-serif;
     color: var(--primary-color);
@@ -91,7 +97,7 @@ h1, h2 {
     box-sizing: border-box;
 }
 
-.intro-content {
+.intro-container {
     max-width: 400px;
     background-color: var(--card-background);
     padding: 2rem;
@@ -151,6 +157,108 @@ h1, h2 {
     transform: translateY(-2px);
 }
 
+/* Kimlik Doğrulama Ana Konteyneri */
+#auth-container {
+    flex-direction: row; /* Masaüstünde yan yana */
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+.auth-split-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    max-width: 900px; /* Masaüstü için daha geniş */
+    border-radius: 12px;
+    box-shadow: 0 8px 16px var(--shadow-light);
+    overflow: hidden;
+}
+
+.auth-intro-section {
+    flex: 1; /* Yarısını kapla */
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-form-section {
+    flex: 1; /* Yarısını kapla */
+    background-color: var(--card-background);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-sub-page {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.auth-sub-page.active {
+    opacity: 1;
+    transform: translateX(0%);
+    position: relative; /* Aktif olanı öne getir */
+}
+
+/* Carousel Stilleri */
+.carousel-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.carousel-item.active {
+    opacity: 1;
+}
+
+.carousel-item h2 {
+    color: white;
+    margin-top: 1rem;
+}
+
+.carousel-item p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+}
+
+.carousel-item i {
+    font-size: 3rem;
+    color: var(--accent-color);
+}
+
 /* Kimlik Doğrulama Formları */
 .auth-form {
     display: flex;
@@ -158,10 +266,10 @@ h1, h2 {
     gap: 1rem;
     padding: 1.5rem;
     background-color: var(--card-background);
-    margin: 2rem auto;
+    margin: 0; /* Üstteki margin'i kaldır */
     border-radius: 12px;
-    box-shadow: 0 4px 8px var(--shadow-light);
-    max-width: 400px;
+    box-shadow: none; /* Ana konteynerde gölge var */
+    max-width: 100%; /* Kendi bölümünü doldur */
 }
 
 .auth-form input {
@@ -416,4 +524,41 @@ h1, h2 {
 .nav-btn:hover:not(.active) {
     color: var(--secondary-color);
     transform: translateY(-2px);
+}
+
+/* Masaüstü için responsive ayarlar */
+@media (min-width: 768px) {
+    #app {
+        max-width: 1200px; /* Masaüstünde daha geniş */
+    }
+
+    #auth-container {
+        height: 80vh; /* Ekranın %80'ini kapla */
+        max-width: 900px; /* Sabit genişlik */
+        margin: auto; /* Ortala */
+    }
+
+    .auth-split-container {
+        flex-direction: row; /* Yan yana */
+    }
+
+    .auth-intro-section {
+        display: flex; /* Masaüstünde göster */
+    }
+
+    .auth-form-section {
+        border-radius: 0 12px 12px 0; /* Sağ tarafı yuvarla */
+    }
+
+    #intro-page {
+        display: none; /* Masaüstünde tanıtım sayfasını gizle */
+    }
+
+    body {
+        padding-bottom: 0; /* Navigasyon barı altta olmayacak */
+    }
+
+    #bottom-nav {
+        display: none; /* Masaüstünde navigasyon barını gizle */
+    }
 }

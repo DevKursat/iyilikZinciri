@@ -27,6 +27,7 @@ const app = {
         });
 
         this.pages.intro = document.getElementById('intro-page');
+        this.pages.authContainer = document.getElementById('auth-container');
         this.pages.feed = document.getElementById('feed-page');
         this.pages.profile = document.getElementById('profile-page');
         this.pages.login = document.getElementById('login-page');
@@ -49,8 +50,8 @@ const app = {
         // Olay dinleyicileri
         this.nav.feedBtn.addEventListener('click', () => this.navigateTo('feed', true));
         this.nav.profileBtn.addEventListener('click', () => this.navigateTo('profile', true));
-        showLoginLink.addEventListener('click', (e) => { e.preventDefault(); this.navigateTo('login'); });
-        showSignupLink.addEventListener('click', (e) => { e.preventDefault(); this.navigateTo('signup'); });
+        showLoginLink.addEventListener('click', (e) => { e.preventDefault(); this.navigateToAuthSubPage('login'); });
+        showSignupLink.addEventListener('click', (e) => { e.preventDefault(); this.navigateToAuthSubPage('signup'); });
         logoutBtn.addEventListener('click', () => this.auth.logout());
         resendCodeLink.addEventListener('click', async (e) => { 
             e.preventDefault();
@@ -61,7 +62,7 @@ const app = {
                 alert("Lütfen e-posta adresinizi girin.");
             }
         });
-        startButton.addEventListener('click', () => this.navigateTo('login'));
+        startButton.addEventListener('click', () => this.navigateTo('authContainer'));
 
         this.forms.login.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -87,6 +88,10 @@ const app = {
         // Uygulama yüklendiğinde oturum durumunu kontrol et
         this.checkAuthStatusAndNavigate();
 
+        // Carousel'leri başlat
+        this.startCarousel('intro-carousel');
+        this.startCarousel('auth-intro-carousel');
+
         console.log("Uygulama başarıyla yüklendi ve hazır.");
     },
 
@@ -107,7 +112,7 @@ const app = {
             try {
                 await Amplify.Auth.currentAuthenticatedUser();
             } catch (error) {
-                this.navigateTo('login');
+                this.navigateTo('authContainer'); // Korumalı sayfaya erişim yoksa authContainer'a yönlendir
                 return;
             }
         }
@@ -115,12 +120,13 @@ const app = {
         // Ana uygulama arayüzünü (navigasyon menüsü) sadece korumalı sayfalarda göster
         document.getElementById('bottom-nav').style.display = (pageName === 'feed' || pageName === 'profile') ? 'flex' : 'none';
 
-
-        // Tüm sayfaları gizle
+        // Tüm ana sayfaları gizle
         for (let pageId in this.pages) {
-            this.pages[pageId].classList.remove('active');
+            if (this.pages[pageId].classList && this.pages[pageId].classList.contains('page')) {
+                this.pages[pageId].classList.remove('active');
+            }
         }
-        // İstenen sayfayı göster
+        // İstenen ana sayfayı göster
         this.pages[pageName].classList.add('active');
 
         // Eğer korumalı bir sayfaya gidiyorsak, navigasyon butonlarını güncelle
@@ -134,6 +140,36 @@ const app = {
                 this.nav[pageName + 'Btn'].classList.add('active');
             }
         }
+    },
+
+    navigateToAuthSubPage(subPageName) {
+        const authSubPages = document.querySelectorAll('#auth-container .auth-sub-page');
+        authSubPages.forEach(page => page.classList.remove('active'));
+        document.getElementById(subPageName).classList.add('active');
+    },
+
+    startCarousel(carouselId) {
+        const carousel = document.querySelector(`#${carouselId}`);
+        if (!carousel) return;
+
+        const items = carousel.querySelectorAll('.carousel-item');
+        let currentIndex = 0;
+
+        const showItem = (index) => {
+            items.forEach((item, i) => {
+                item.classList.remove('active');
+                if (i === index) {
+                    item.classList.add('active');
+                }
+            });
+        };
+
+        showItem(currentIndex);
+
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % items.length;
+            showItem(currentIndex);
+        }, 5000); // Her 5 saniyede bir geçiş
     },
 
     auth: {
@@ -153,7 +189,7 @@ const app = {
                 await Amplify.Auth.signUp({ username: email, password, attributes: { email } });
                 console.log("Kayıt başarılı.");
                 alert("Kayıt başarılı! E-postanıza gelen doğrulama kodunu girerek hesabınızı onaylayın.");
-                app.navigateTo('confirmSignup'); // Doğrulama kodu ekranına yönlendir
+                app.navigateToAuthSubPage('confirm-signup-page'); // Doğrulama kodu ekranına yönlendir
                 document.getElementById('confirm-email').value = email; // E-postayı otomatik doldur
             } catch (error) {
                 console.error("Kayıt hatası:", error);
@@ -166,7 +202,7 @@ const app = {
                 await Amplify.Auth.confirmSignUp(email, code);
                 console.log("Hesap doğrulandı.");
                 alert("Hesabınız başarıyla doğrulandı! Şimdi giriş yapabilirsiniz.");
-                app.navigateTo('login');
+                app.navigateToAuthSubPage('login');
             } catch (error) {
                 console.error("Doğrulama hatası:", error);
                 alert(error.message);
@@ -188,7 +224,7 @@ const app = {
             try {
                 await Amplify.Auth.signOut();
                 console.log("Çıkış başarılı.");
-                app.navigateTo('login');
+                app.navigateTo('authContainer');
             } catch (error) {
                 console.error("Çıkış hatası:", error);
                 alert(error.message);

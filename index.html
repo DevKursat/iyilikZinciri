@@ -14,76 +14,112 @@
 </head>
 <body>
     <main id="app">
-        <!-- Tanıtım Ekranı -->
+        <!-- Tanıtım Ekranı (Mobil için ilk, Masaüstü için sol/sağda) -->
         <section id="intro-page" class="page active">
-            <div class="intro-content">
-                <img src="./assets/logo.svg" alt="İyilik Zinciri Logo" class="app-logo-intro">
-                <h1>İyilik Zinciri</h1>
-                <p class="intro-tagline">İyilik Paylaştıkça Çoğalır!</p>
-                <div class="intro-features">
-                    <div class="feature-item">
+            <div class="intro-container">
+                <div class="intro-carousel">
+                    <div class="carousel-item">
+                        <img src="./assets/logo.svg" alt="İyilik Zinciri Logo" class="app-logo-intro">
+                        <h1>İyilik Zinciri</h1>
+                        <p class="intro-tagline">İyilik Paylaştıkça Çoğalır!</p>
+                    </div>
+                    <div class="carousel-item">
                         <i class="fas fa-hand-holding-heart"></i>
-                        <p>Günlük İyilik Görevleri</p>
+                        <h2>Günlük İyilik Görevleri</h2>
+                        <p>Her gün yeni bir iyilikle dünyayı değiştir.</p>
                     </div>
-                    <div class="feature-item">
+                    <div class="carousel-item">
                         <i class="fas fa-share-alt"></i>
-                        <p>Sosyal Medyada Paylaşım</p>
+                        <h2>Paylaş ve İlham Ver</h2>
+                        <p>Yaptığın iyilikleri paylaş, zinciri büyüt.</p>
                     </div>
-                    <div class="feature-item">
+                    <div class="carousel-item">
                         <i class="fas fa-trophy"></i>
-                        <p>İyilik Puanları ve Başarılar</p>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-users"></i>
-                        <p>İlham Veren Akış</p>
+                        <h2>Puanlar ve Başarılar</h2>
+                        <p>İyilik yaptıkça seviye atla, rozetler kazan.</p>
                     </div>
                 </div>
                 <button id="start-button" class="intro-button">Hemen Başla!</button>
             </div>
         </section>
 
-        <!-- Giriş Sayfası -->
-        <section id="login-page" class="page">
-            <header>
-                <img src="./assets/logo.svg" alt="İyilik Zinciri Logo" class="app-logo">
-                <h1>İyilik Zinciri</h1>
-                <p>İyiliğe giriş yap.</p>
-            </header>
-            <form id="login-form" class="auth-form">
-                <input type="email" id="login-email" placeholder="E-posta" required>
-                <input type="password" id="login-password" placeholder="Şifre" required>
-                <button type="submit">Giriş Yap</button>
-                <p class="toggle-form">Hesabın yok mu? <a href="#" id="show-signup">Kayıt Ol</a></p>
-            </form>
-        </section>
+        <!-- Kimlik Doğrulama Ana Konteyneri -->
+        <section id="auth-container" class="page">
+            <div class="auth-split-container">
+                <!-- Tanıtım/Animasyon Bölümü (Masaüstü için) -->
+                <div class="auth-intro-section">
+                    <div class="auth-intro-carousel">
+                        <div class="carousel-item">
+                            <img src="./assets/logo.svg" alt="İyilik Zinciri Logo" class="app-logo-auth-intro">
+                            <h1>İyilik Zinciri</h1>
+                            <p class="intro-tagline">İyilik Paylaştıkça Çoğalır!</p>
+                        </div>
+                        <div class="carousel-item">
+                            <i class="fas fa-hand-holding-heart"></i>
+                            <h2>Günlük İyilik Görevleri</h2>
+                            <p>Her gün yeni bir iyilikle dünyayı değiştir.</p>
+                        </div>
+                        <div class="carousel-item">
+                            <i class="fas fa-share-alt"></i>
+                            <h2>Paylaş ve İlham Ver</h2>
+                            <p>Yaptığın iyilikleri paylaş, zinciri büyüt.</p>
+                        </div>
+                        <div class="carousel-item">
+                            <i class="fas fa-trophy"></i>
+                            <h2>Puanlar ve Başarılar</h2>
+                            <p>İyilik yaptıkça seviye atla, rozetler kazan.</p>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- Kayıt Olma Sayfası -->
-        <section id="signup-page" class="page">
-            <header>
-                <img src="./assets/logo.svg" alt="İyilik Zinciri Logo" class="app-logo">
-                <h1>Hesap Oluştur</h1>
-            </header>
-            <form id="signup-form" class="auth-form">
-                <input type="email" id="signup-email" placeholder="E-posta" required>
-                <input type="password" id="signup-password" placeholder="Şifre (en az 8 karakter)" required>
-                <button type="submit">Kayıt Ol</button>
-                <p class="toggle-form">Zaten hesabın var mı? <a href="#" id="show-login">Giriş Yap</a></p>
-            </form>
-        </section>
+                <!-- Form Bölümü -->
+                <div class="auth-form-section">
+                    <!-- Giriş Sayfası -->
+                    <div id="login-page" class="auth-sub-page active">
+                        <header>
+                            <img src="./assets/logo.svg" alt="İyilik Zinciri Logo" class="app-logo">
+                            <h1>Giriş Yap</h1>
+                            <p>İyiliğe katılmak için giriş yap.</p>
+                        </header>
+                        <form id="login-form" class="auth-form">
+                            <input type="email" id="login-email" placeholder="E-posta" required>
+                            <input type="password" id="login-password" placeholder="Şifre" required>
+                            <button type="submit">Giriş Yap</button>
+                            <p class="toggle-form">Hesabın yok mu? <a href="#" id="show-signup">Kayıt Ol</a></p>
+                        </form>
+                    </div>
 
-        <!-- Doğrulama Kodu Sayfası -->
-        <section id="confirm-signup-page" class="page">
-            <header>
-                <img src="./assets/logo.svg" alt="İyilik Zinciri Logo" class="app-logo">
-                <h1>Hesabını Doğrula</h1>
-                <p>E-postana gönderilen doğrulama kodunu gir.</p>
-            </header>
-            <form id="confirm-signup-form" class="auth-form">
-                <input type="email" id="confirm-email" placeholder="E-posta" required>
-                <input type="text" id="confirmation-code" placeholder="Doğrulama Kodu" required>
-                <button type="submit">Doğrula</button>
-                <p class="toggle-form"><a href="#" id="resend-code">Kodu Yeniden Gönder</a></p>
-            </form>
+                    <!-- Kayıt Olma Sayfası -->
+                    <div id="signup-page" class="auth-sub-page">
+                        <header>
+                            <img src="./assets/logo.svg" alt="İyilik Zinciri Logo" class="app-logo">
+                            <h1>Kayıt Ol</h1>
+                            <p>Hemen bir hesap oluştur.</p>
+                        </header>
+                        <form id="signup-form" class="auth-form">
+                            <input type="email" id="signup-email" placeholder="E-posta" required>
+                            <input type="password" id="signup-password" placeholder="Şifre (en az 8 karakter)" required>
+                            <button type="submit">Kayıt Ol</button>
+                            <p class="toggle-form">Zaten hesabın var mı? <a href="#" id="show-login">Giriş Yap</a></p>
+                        </form>
+                    </div>
+
+                    <!-- Doğrulama Kodu Sayfası -->
+                    <div id="confirm-signup-page" class="auth-sub-page">
+                        <header>
+                            <img src="./assets/logo.svg" alt="İyilik Zinciri Logo" class="app-logo">
+                            <h1>Hesabını Doğrula</h1>
+                            <p>E-postana gönderilen doğrulama kodunu gir.</p>
+                        </header>
+                        <form id="confirm-signup-form" class="auth-form">
+                            <input type="email" id="confirm-email" placeholder="E-posta" required>
+                            <input type="text" id="confirmation-code" placeholder="Doğrulama Kodu" required>
+                            <button type="submit">Doğrula</button>
+                            <p class="toggle-form"><a href="#" id="resend-code">Kodu Yeniden Gönder</a></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- İlham Akışı Sayfası (Reels Tarzı) -->
