@@ -154,6 +154,26 @@ const app = {
     },
 
     navigateToAuthSubPage(subPageName) {
+        const authFormSlider = document.querySelector('.auth-form-slider');
+        if (!authFormSlider) return;
+
+        let translateXValue = 0;
+        switch (subPageName) {
+            case 'login':
+                translateXValue = 0;
+                break;
+            case 'signup':
+                translateXValue = -100;
+                break;
+            case 'confirmSignup':
+                translateXValue = -200;
+                break;
+            default:
+                translateXValue = 0;
+        }
+        authFormSlider.style.transform = `translateX(${translateXValue}%)`;
+
+        // Remove active class from all sub-pages and add to the target one for potential styling (not positioning)
         const authSubPages = document.querySelectorAll('#auth-container .auth-sub-page');
         authSubPages.forEach(page => page.classList.remove('active'));
         document.getElementById(subPageName).classList.add('active');
