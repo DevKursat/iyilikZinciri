@@ -34,6 +34,11 @@ const app = {
         this.pages.signup = document.getElementById('signup-page');
         this.pages.confirmSignup = document.getElementById('confirm-signup-page');
 
+        // Navigasyon butonlarını al
+        this.nav.feedBtn = document.getElementById('nav-feed');
+        this.nav.profileBtn = document.getElementById('nav-profile');
+        this.nav.desktopNav = document.getElementById('desktop-nav'); // Masaüstü navigasyon
+
         // Form geçiş linkleri
         const showLoginLink = document.getElementById('show-login');
         const showSignupLink = document.getElementById('show-signup');
@@ -48,12 +53,12 @@ const app = {
         this.forms.confirmSignup = document.getElementById('confirm-signup-form');
 
         // Olay dinleyicileri
-        this.nav.feedBtn.addEventListener('click', () => this.navigateTo('feed', true));
-        this.nav.profileBtn.addEventListener('click', () => this.navigateTo('profile', true));
-        showLoginLink.addEventListener('click', (e) => { e.preventDefault(); this.navigateToAuthSubPage('login'); });
-        showSignupLink.addEventListener('click', (e) => { e.preventDefault(); this.navigateToAuthSubPage('signup'); });
-        logoutBtn.addEventListener('click', () => this.auth.logout());
-        resendCodeLink.addEventListener('click', async (e) => { 
+        if (this.nav.feedBtn) this.nav.feedBtn.addEventListener('click', () => this.navigateTo('feed', true));
+        if (this.nav.profileBtn) this.nav.profileBtn.addEventListener('click', () => this.navigateTo('profile', true));
+        if (showLoginLink) showLoginLink.addEventListener('click', (e) => { e.preventDefault(); this.navigateToAuthSubPage('login'); });
+        if (showSignupLink) showSignupLink.addEventListener('click', (e) => { e.preventDefault(); this.navigateToAuthSubPage('signup'); });
+        if (logoutBtn) logoutBtn.addEventListener('click', () => this.auth.logout());
+        if (resendCodeLink) resendCodeLink.addEventListener('click', async (e) => { 
             e.preventDefault();
             const email = document.getElementById('confirm-email').value;
             if (email) {
@@ -62,23 +67,23 @@ const app = {
                 alert("Lütfen e-posta adresinizi girin.");
             }
         });
-        startButton.addEventListener('click', () => this.navigateTo('authContainer'));
+        if (startButton) startButton.addEventListener('click', () => this.navigateTo('authContainer'));
 
-        this.forms.login.addEventListener('submit', async (e) => {
+        if (this.forms.login) this.forms.login.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
             await this.auth.login(email, password);
         });
 
-        this.forms.signup.addEventListener('submit', async (e) => {
+        if (this.forms.signup) this.forms.signup.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
             await this.auth.signup(email, password);
         });
 
-        this.forms.confirmSignup.addEventListener('submit', async (e) => {
+        if (this.forms.confirmSignup) this.forms.confirmSignup.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('confirm-email').value;
             const code = document.getElementById('confirmation-code').value;
@@ -91,6 +96,13 @@ const app = {
         // Carousel'leri başlat
         this.startCarousel('intro-carousel');
         this.startCarousel('auth-intro-carousel');
+
+        // Rive animasyonunu yükle (örnek olarak auth-intro-section içinde bir yere eklenebilir)
+        // this.loadRiveAnimation('rive-animation-container', './assets/your_rive_animation.riv');
+
+        // Pencere boyutu değiştiğinde navigasyonu güncelle
+        window.addEventListener('resize', () => this.updateNavigationVisibility());
+        this.updateNavigationVisibility(); // Başlangıçta navigasyon görünürlüğünü ayarla
 
         console.log("Uygulama başarıyla yüklendi ve hazır.");
     },
@@ -117,34 +129,60 @@ const app = {
             }
         }
 
-        // Ana uygulama arayüzünü (navigasyon menüsü) sadece korumalı sayfalarda göster
-        document.getElementById('bottom-nav').style.display = (pageName === 'feed' || pageName === 'profile') ? 'flex' : 'none';
-
-
         // Tüm sayfaları gizle
         for (let pageId in this.pages) {
-            this.pages[pageId].classList.remove('active');
+            if (this.pages[pageId]) {
+                this.pages[pageId].classList.remove('active');
+            }
         }
         // İstenen sayfayı göster
-        this.pages[pageName].classList.add('active');
-
-        // Eğer korumalı bir sayfaya gidiyorsak, navigasyon butonlarını güncelle
-        if(isProtected) {
-            // Tüm navigasyon butonlarının aktifliğini kaldır
-            for (let navId in this.nav) {
-                if(this.nav[navId].classList) this.nav[navId].classList.remove('active');
-            }
-            // İlgili navigasyon butonunu aktif et
-            if(this.nav[pageName + 'Btn']) {
-                this.nav[pageName + 'Btn'].classList.add('active');
-            }
+        if (this.pages[pageName]) {
+            this.pages[pageName].classList.add('active');
         }
+
+        // Navigasyon butonlarını güncelle
+        this.updateNavigationButtons(pageName);
+        this.updateNavigationVisibility();
     },
 
     navigateToAuthSubPage(subPageName) {
         const authSubPages = document.querySelectorAll('#auth-container .auth-sub-page');
         authSubPages.forEach(page => page.classList.remove('active'));
         document.getElementById(subPageName).classList.add('active');
+    },
+
+    updateNavigationVisibility() {
+        const bottomNav = document.getElementById('bottom-nav');
+        const desktopNav = document.getElementById('desktop-nav');
+        const isMobile = window.innerWidth < 768;
+
+        if (bottomNav) {
+            bottomNav.style.display = isMobile ? 'flex' : 'none';
+        }
+        if (desktopNav) {
+            desktopNav.style.display = isMobile ? 'none' : 'flex';
+        }
+
+        // Eğer masaüstü navigasyon varsa, app-container'ın flex-direction'ını ayarla
+        const appContainer = document.getElementById('app-container');
+        if (appContainer) {
+            appContainer.style.flexDirection = isMobile ? 'column' : 'row';
+        }
+    },
+
+    updateNavigationButtons(activePageName) {
+        // Tüm navigasyon butonlarının aktifliğini kaldır
+        const allNavBtns = document.querySelectorAll('#bottom-nav .nav-btn, #desktop-nav .nav-btn');
+        allNavBtns.forEach(btn => btn.classList.remove('active'));
+
+        // İlgili navigasyon butonunu aktif et
+        if (activePageName === 'feed' && (this.nav.feedBtn || (this.nav.desktopNav && this.nav.desktopNav.querySelector('#nav-feed')))) {
+            if (this.nav.feedBtn) this.nav.feedBtn.classList.add('active');
+            if (this.nav.desktopNav) this.nav.desktopNav.querySelector('#nav-feed').classList.add('active');
+        } else if (activePageName === 'profile' && (this.nav.profileBtn || (this.nav.desktopNav && this.nav.desktopNav.querySelector('#nav-profile')))) {
+            if (this.nav.profileBtn) this.nav.profileBtn.classList.add('active');
+            if (this.nav.desktopNav) this.nav.desktopNav.querySelector('#nav-profile').classList.add('active');
+        }
     },
 
     startCarousel(carouselId) {
@@ -190,6 +228,49 @@ const app = {
             currentIndex = (currentIndex + 1) % items.length;
             showItem(currentIndex);
         }, 5000); // Her 5 saniyede bir geçiş
+    },
+
+    // Rive animasyonunu yüklemek için fonksiyon
+    loadRiveAnimation(containerId, url) {
+        const container = document.getElementById(containerId);
+        if (!container) {
+            console.warn(`Rive container with ID ${containerId} not found.`);
+            return;
+        }
+
+        const r = new rive.Rive({
+            src: url,
+            canvas: document.createElement('canvas'), // Yeni bir canvas oluştur
+            autoplay: true,
+            onLoad: () => {
+                // Canvas'ı konteynere ekle
+                container.appendChild(r.canvas);
+                r.resizeDrawingSurfaceToCanvas();
+            },
+            onLoop: (event) => {
+                // Animasyon döngüsü tamamlandığında tetiklenir
+                console.log('Rive animation looped:', event.data);
+            },
+            onPlay: (event) => {
+                console.log('Rive animation started playing:', event.data);
+            },
+            onPause: (event) => {
+                console.log('Rive animation paused:', event.data);
+            },
+            onStop: (event) => {
+                console.log('Rive animation stopped:', event.data);
+            },
+            onStateChange: (event) => {
+                console.log('Rive state changed:', event.data);
+            }
+        });
+
+        // Rive animasyonunun boyutunu responsive hale getir
+        window.addEventListener('resize', () => {
+            if (r.canvas) {
+                r.resizeDrawingSurfaceToCanvas();
+            }
+        });
     },
 
     auth: {
