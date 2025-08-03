@@ -371,4 +371,4 @@ const app = {
     }
 };
 
-window.addEventListener('load', () => app.init());
+app.init();
