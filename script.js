@@ -10,7 +10,7 @@ Amplify.configure({
         userPoolId: 'eu-north-1_brdMkzj67',
         userPoolWebClientId: '11ri73f3j2ma53auguuaaas09l',
         oauth: {
-            domain: 'YOUR_COGNITO_DOMAIN', // Lütfen burayı kendi Cognito alan adınızla değiştirin
+            domain: '[SENIN-COGNITO-ALAN-ADIN]', // Lütfen burayı kendi Cognito alan adınızla değiştirin
             scope: ['phone', 'email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
             redirectSignIn: window.location.origin,
             redirectSignOut: window.location.origin,
