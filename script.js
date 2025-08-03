@@ -345,4 +345,12 @@ const app = {
     }
 };
 
-window.addEventListener('load', () => app.init());
+function waitForAmplify(callback) {
+    if (typeof Amplify !== 'undefined') {
+        callback();
+    } else {
+        setTimeout(() => waitForAmplify(callback), 50); // Check every 50ms
+    }
+}
+
+waitForAmplify(() => app.init());
