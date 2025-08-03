@@ -14,7 +14,7 @@ const app = {
     },
 
     init() {
-        console.log("İyilik Zinciri başlatılıyor...");
+        console.log("İyilik Zinciri başlatılıyor... (app.init() çağrıldı)");
 
         // Amplify'ı yapılandır
         Amplify.configure({
@@ -105,14 +105,20 @@ const app = {
         this.updateNavigationVisibility(); // Başlangıçta navigasyon görünürlüğünü ayarla
 
         console.log("Uygulama başarıyla yüklendi ve hazır.");
+
+        // Hata ayıklama için başlangıçta doğrudan tanıtım sayfasına yönlendir
+        this.navigateTo('intro');
     },
 
     async checkAuthStatusAndNavigate() {
+        console.log("checkAuthStatusAndNavigate çağrıldı.");
         try {
             await Amplify.Auth.currentAuthenticatedUser();
+            console.log("Kullanıcı oturum açmış. Feed sayfasına yönlendiriliyor.");
             // Kullanıcı oturum açmışsa feed sayfasına git
             this.navigateTo('feed', true);
         } catch (error) {
+            console.log("Kullanıcı oturum açmamış. Tanıtım ekranına yönlendiriliyor.");
             // Kullanıcı oturum açmamışsa tanıtım ekranına git
             this.navigateTo('intro');
         }
