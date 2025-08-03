@@ -30,7 +30,7 @@ body {
     max-width: 600px; /* Mobil görünüm için */
     margin: 0 auto;
     position: relative;
-    height: calc(100vh - var(--nav-height));
+    height: 100vh; /* Tam ekran yüksekliği */
     overflow: hidden; /* Sayfa geçişleri için */
 }
 
@@ -71,9 +71,84 @@ header {
     margin-bottom: 1rem;
 }
 
+.app-logo-intro {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 1.5rem;
+}
+
 h1, h2 {
     font-family: 'Poppins', sans-serif;
     color: var(--primary-color);
+}
+
+/* Tanıtım Ekranı Stilleri */
+#intro-page {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.intro-content {
+    max-width: 400px;
+    background-color: var(--card-background);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px var(--shadow-light);
+}
+
+.intro-tagline {
+    font-size: 1.2rem;
+    color: var(--light-text-color);
+    margin-bottom: 2rem;
+}
+
+.intro-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.feature-item {
+    background-color: var(--background-color);
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 4px var(--shadow-light);
+}
+
+.feature-item i {
+    font-size: 2rem;
+    color: var(--secondary-color);
+}
+
+.feature-item p {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.intro-button {
+    padding: 1rem 2rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.intro-button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
 }
 
 /* Kimlik Doğrulama Formları */
@@ -313,6 +388,7 @@ h1, h2 {
     align-items: center;
     box-shadow: 0 -2px 4px var(--shadow-light);
     z-index: 100;
+    display: none; /* Varsayılan olarak gizli */
 }
 
 .nav-btn {

@@ -26,6 +26,7 @@ const app = {
             }
         });
 
+        this.pages.intro = document.getElementById('intro-page');
         this.pages.feed = document.getElementById('feed-page');
         this.pages.profile = document.getElementById('profile-page');
         this.pages.login = document.getElementById('login-page');
@@ -37,6 +38,7 @@ const app = {
         const showSignupLink = document.getElementById('show-signup');
         const logoutBtn = document.getElementById('logout-btn');
         const resendCodeLink = document.getElementById('resend-code');
+        const startButton = document.getElementById('start-button');
 
         // Formları al
         this.forms = {};
@@ -59,6 +61,7 @@ const app = {
                 alert("Lütfen e-posta adresinizi girin.");
             }
         });
+        startButton.addEventListener('click', () => this.navigateTo('login'));
 
         this.forms.login.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -93,8 +96,8 @@ const app = {
             // Kullanıcı oturum açmışsa feed sayfasına git
             this.navigateTo('feed', true);
         } catch (error) {
-            // Kullanıcı oturum açmamışsa giriş sayfasına git
-            this.navigateTo('login');
+            // Kullanıcı oturum açmamışsa tanıtım ekranına git
+            this.navigateTo('intro');
         }
     },
 
