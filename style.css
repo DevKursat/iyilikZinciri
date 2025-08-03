@@ -304,6 +304,74 @@ h1, h2 {
     color: #1976D2; /* Secondary color slightly darker */
 }
 
+/* Sosyal Medya Giriş Butonları */
+.social-login-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: var(--light-text-color);
+    margin: 1.5rem 0;
+}
+
+.social-login-divider::before,
+.social-login-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.social-login-divider:not(:empty)::before {
+    margin-right: .25em;
+}
+
+.social-login-divider:not(:empty)::after {
+    margin-left: .25em;
+}
+
+.social-login-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.social-login-btn {
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1px solid var(--border-color);
+}
+
+.social-login-btn.google {
+    background-color: #fff;
+    color: #4285F4;
+}
+
+.social-login-btn.google:hover {
+    background-color: #f1f1f1;
+    box-shadow: 0 2px 4px var(--shadow-light);
+}
+
+.social-login-btn.apple {
+    background-color: #000;
+    color: #fff;
+}
+
+.social-login-btn.apple:hover {
+    background-color: #333;
+    box-shadow: 0 2px 4px var(--shadow-light);
+}
+
+.social-login-btn i {
+    font-size: 1.2rem;
+}
+
 /* Reels Tarzı Akış */
 #feed-page header {
     background-color: var(--card-background);

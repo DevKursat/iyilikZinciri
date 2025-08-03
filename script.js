@@ -345,6 +345,15 @@ const app = {
                 console.error("Çıkış hatası:", error);
                 alert(error.message);
             }
+        },
+
+        async socialLogin(provider) {
+            try {
+                await Amplify.Auth.federatedSignIn({ provider });
+            } catch (error) {
+                console.error(`${provider} ile giriş hatası:`, error);
+                alert(error.message);
+            }
         }
     },
 
