@@ -1,19 +1,35 @@
 // İyilik Zinciri Uygulaması Ana JavaScript Dosyası
 
+// AWS Amplify kütüphanesini dahil et (index.html'de CDN'den yüklenecek)
+// import { Amplify, Auth } from 'aws-amplify'; // Bu satır CDN kullanımı için gerekli değil
+
 const app = {
     pages: {},
     nav: {},
+    config: {
+        cognito: {
+            UserPoolId: 'eu-north-1_brdMkzj67', // Buraya senin UserPoolId'n gelecek
+            ClientId: '11ri73f3j2ma53auguuaaas09l' // Buraya senin UserPoolClientId'n gelecek
+        }
+    },
 
     init() {
         console.log("İyilik Zinciri başlatılıyor...");
+
+        // Amplify'ı yapılandır
+        Amplify.configure({
+            Auth: {
+                mandatorySignIn: true,
+                region: this.config.cognito.UserPoolId.split('_')[0], // Bölgeyi UserPoolId'den al
+                userPoolId: this.config.cognito.UserPoolId,
+                userPoolWebClientId: this.config.cognito.ClientId
+            }
+        });
 
         this.pages.feed = document.getElementById('feed-page');
         this.pages.profile = document.getElementById('profile-page');
         this.pages.login = document.getElementById('login-page');
         this.pages.signup = document.getElementById('signup-page');
-
-        this.nav.feedBtn = document.getElementById('nav-feed');
-        this.nav.profileBtn = document.getElementById('nav-profile');
 
         // Form geçiş linkleri
         const showLoginLink = document.getElementById('show-login');
@@ -32,36 +48,51 @@ const app = {
         showSignupLink.addEventListener('click', (e) => { e.preventDefault(); this.navigateTo('signup'); });
         logoutBtn.addEventListener('click', () => this.auth.logout());
 
-        this.forms.login.addEventListener('submit', (e) => {
+        this.forms.login.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
-            this.auth.login(email, password);
+            await this.auth.login(email, password);
         });
 
-        this.forms.signup.addEventListener('submit', (e) => {
+        this.forms.signup.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
-            this.auth.signup(email, password);
+            await this.auth.signup(email, password);
         });
 
-        // Başlangıçta giriş sayfasını göster
-        this.navigateTo('login');
+        // Uygulama yüklendiğinde oturum durumunu kontrol et
+        this.checkAuthStatusAndNavigate();
 
         console.log("Uygulama başarıyla yüklendi ve hazır.");
     },
 
-    navigateTo(pageName, isProtected = false) {
-        // Eğer sayfa korumalıysa ve kullanıcı giriş yapmamışsa, giriş sayfasına yönlendir.
-        // TODO: Gerçek kullanıcı durumu kontrolü eklenecek.
-        if (isProtected && !this.isLoggedIn()) {
+    async checkAuthStatusAndNavigate() {
+        try {
+            await Amplify.Auth.currentAuthenticatedUser();
+            // Kullanıcı oturum açmışsa feed sayfasına git
+            this.navigateTo('feed', true);
+        } catch (error) {
+            // Kullanıcı oturum açmamışsa giriş sayfasına git
             this.navigateTo('login');
-            return;
+        }
+    },
+
+    async navigateTo(pageName, isProtected = false) {
+        // Eğer sayfa korumalıysa ve kullanıcı giriş yapmamışsa, giriş sayfasına yönlendir.
+        if (isProtected) {
+            try {
+                await Amplify.Auth.currentAuthenticatedUser();
+            } catch (error) {
+                this.navigateTo('login');
+                return;
+            }
         }
 
         // Ana uygulama arayüzünü (navigasyon menüsü) sadece korumalı sayfalarda göster
-        document.getElementById('bottom-nav').style.display = isProtected ? 'flex' : 'none';
+        document.getElementById('bottom-nav').style.display = (pageName === 'feed' || pageName === 'profile') ? 'flex' : 'none';
+
 
         // Tüm sayfaları gizle
         for (let pageId in this.pages) {
@@ -83,40 +114,40 @@ const app = {
         }
     },
 
-    isLoggedIn() {
-        // TODO: Burası AWS Cognito ile entegre edilecek gerçek bir kontrol olacak.
-        return sessionStorage.getItem('isLoggedIn') === 'true'; 
-    },
-
     auth: {
-        login(email, password) {
-            console.log(`Giriş denemesi: ${email}`);
-            // TODO: AWS Cognito ile gerçek giriş işlemi yapılacak.
-            if (email && password) { // Basit kontrol
-                console.log("Giriş başarılı (simülasyon).");
-                sessionStorage.setItem('isLoggedIn', 'true');
+        async login(email, password) {
+            try {
+                await Amplify.Auth.signIn(email, password);
+                console.log("Giriş başarılı.");
                 app.navigateTo('feed', true);
-            } else {
-                alert("Lütfen e-posta ve şifreyi girin.");
+            } catch (error) {
+                console.error("Giriş hatası:", error);
+                alert(error.message);
             }
         },
 
-        signup(email, password) {
-            console.log(`Kayıt denemesi: ${email}`);
-            // TODO: AWS Cognito ile gerçek kayıt işlemi yapılacak.
-            if (email && password) { // Basit kontrol
-                console.log("Kayıt başarılı (simülasyon).");
-                alert("Kayıt başarılı! Lütfen şimdi giriş yapın.");
+        async signup(email, password) {
+            try {
+                await Amplify.Auth.signUp({ username: email, password, attributes: { email } });
+                console.log("Kayıt başarılı.");
+                alert("Kayıt başarılı! Lütfen şimdi giriş yapın ve e-postanıza gelen doğrulama kodunu girerek hesabınızı onaylayın.");
+                // TODO: Doğrulama kodu ekranına yönlendir
+                app.navigateTo('login'); // Şimdilik giriş ekranına yönlendir
+            } catch (error) {
+                console.error("Kayıt hatası:", error);
+                alert(error.message);
+            }
+        },
+
+        async logout() {
+            try {
+                await Amplify.Auth.signOut();
+                console.log("Çıkış başarılı.");
                 app.navigateTo('login');
-            } else {
-                alert("Lütfen e-posta ve şifreyi girin.");
+            } catch (error) {
+                console.error("Çıkış hatası:", error);
+                alert(error.message);
             }
-        },
-
-        logout() {
-            console.log("Çıkış yapılıyor...");
-            sessionStorage.removeItem('isLoggedIn');
-            app.navigateTo('login');
         }
     },
 
