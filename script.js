@@ -17,22 +17,14 @@ const app = {
         console.log("İyilik Zinciri başlatılıyor...");
 
         // Amplify'ı yapılandır
-        try {
-            Amplify.configure({
-                Auth: {
-                    mandatorySignIn: true,
-                    region: this.config.cognito.UserPoolId.split('_')[0], // Bölgeyi UserPoolId'den al
-                    userPoolId: this.config.cognito.UserPoolId,
-                    userPoolWebClientId: this.config.cognito.ClientId
-                }
-            });
-        } catch (error) {
-            console.error("Amplify yapılandırma hatası:", error);
-            console.warn("Amplify kütüphanesi yüklenemedi veya tanımlı değil. Uygulama Amplify bağımlı özellikler olmadan başlatılıyor.");
-            // Amplify yüklenemezse, kullanıcıyı tanıtım sayfasına yönlendir
-            this.navigateTo('intro');
-            return; // Amplify olmadan devam etme
-        }
+        Amplify.configure({
+            Auth: {
+                mandatorySignIn: true,
+                region: this.config.cognito.UserPoolId.split('_')[0], // Bölgeyi UserPoolId'den al
+                userPoolId: this.config.cognito.UserPoolId,
+                userPoolWebClientId: this.config.cognito.ClientId
+            }
+        });
 
         this.pages.intro = document.getElementById('intro-page');
         this.pages.authContainer = document.getElementById('auth-container');
@@ -66,7 +58,7 @@ const app = {
         if (showLoginLink) showLoginLink.addEventListener('click', (e) => { e.preventDefault(); this.navigateToAuthSubPage('login'); });
         if (showSignupLink) showSignupLink.addEventListener('click', (e) => { e.preventDefault(); this.navigateToAuthSubPage('signup'); });
         if (logoutBtn) logoutBtn.addEventListener('click', () => this.auth.logout());
-        if (resendCodeLink) resendCodeLink.addEventListener('click', async (e) => { 
+        if (resendCodeLink) resendCodeLink.addEventListener('click', async (e) => {
             e.preventDefault();
             const email = document.getElementById('confirm-email').value;
             if (email) {
@@ -373,4 +365,14 @@ const app = {
     }
 };
 
-window.addEventListener('load', () => app.init());
+// Amplify kütüphanesinin yüklenmesini bekleyen fonksiyon
+function checkAmplifyReady() {
+    if (typeof Amplify !== 'undefined') {
+        app.init();
+    } else {
+        setTimeout(checkAmplifyReady, 100); // 100ms sonra tekrar kontrol et
+    }
+}
+
+// Sayfa yüklendiğinde Amplify hazır olana kadar bekle
+window.addEventListener('load', checkAmplifyReady);
