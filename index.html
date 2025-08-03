@@ -3,11 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
+    <title>İyilik Zinciri</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts - Roboto ve Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Font Awesome ikonları için -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
-    <h1>Hello World!</h1>
+    <div id="app-container">
+        <header class="app-header">
+            <img src="./assets/logo.svg" alt="İyilik Zinciri Logo" class="app-logo">
+            <h1 class="app-title">İyilik Zinciri</h1>
+        </header>
+
+        <main id="app-main">
+            <!-- Tanıtım Ekranı (Mobil için ilk, Masaüstü için sol/sağda) -->
+            <section id="intro-page" class="page active">
+                <div class="intro-container">
+                    <div class="intro-carousel">
+                        <div class="carousel-item">
+                            <div class="lottie-animation-container" data-animation-url="https://assets10.lottiefiles.com/packages/lf20_yC2440.json"></div>
+                            <p class="intro-tagline">İyilik Paylaştıkça Çoğalır!</p>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="lottie-animation-container" data-animation-url="https://assets10.lottiefiles.com/packages/lf20_v1y0w0.json"></div>
+                            <h2>Günlük İyilik Görevleri</h2>
+                            <p>Her gün yeni bir iyilikle dünyayı değiştir.</p>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="lottie-animation-container" data-animation-url="https://assets10.lottiefiles.com/packages/lf20_yC2440.json"></div>
+                            <h2>Paylaş ve İlham Ver</h2>
+                            <p>Yaptığın iyilikleri paylaş, zinciri büyüt.</p>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="lottie-animation-container" data-animation-url="https://assets10.lottiefiles.com/packages/lf20_yC2440.json"></div>
+                            <h2>Puanlar ve Başarılar</h2>
+                            <p>İyilik yaptıkça seviye atla, rozetler kazan.</p>
+                        </div>
+                    </div>
+                    <button id="start-button" class="intro-button">Hemen Başla!</button>
+                </div>
+            </section>
+
+            <!-- Kimlik Doğrulama Ana Konteyneri -->
+            <section id="auth-container" class="page">
+                <div class="auth-split-container">
+                    <!-- Tanıtım/Animasyon Bölümü (Masaüstü için) -->
+                    <div class="auth-intro-section">
+                        <div class="auth-intro-carousel">
+                            <div class="carousel-item">
+                                <div class="lottie-animation-container" data-animation-url="https://assets10.lottiefiles.com/packages/lf20_yC2440.json"></div>
+                                <p class="intro-tagline">İyilik Paylaştıkça Çoğalır!</p>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="lottie-animation-container" data-animation-url="https://assets10.lottiefiles.com/packages/lf20_v1y0w0.json"></div>
+                                <h2>Günlük İyilik Görevleri</h2>
+                                <p>Her gün yeni bir iyilikle dünyayı değiştir.</p>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="lottie-animation-container" data-animation-url="https://assets10.lottiefiles.com/packages/lf20_yC2440.json"></div>
+                                <h2>Paylaş ve İlham Ver</h2>
+                                <p>Yaptığın iyilikleri paylaş, zinciri büyüt.</p>
+                            </div>
+                            <div class="carousel-animation-container" data-animation-url="https://assets10.lottiefiles.com/packages/lf20_yC2440.json"></div>
+                            <h2>Puanlar ve Başarılar</h2>
+                            <p>İyilik yaptıkça seviye atla, rozetler kazan.</p>
+                        </div>
+                    </div>
+
+                    <!-- Form Bölümü -->
+                    <div class="auth-form-section">
+                        <!-- Giriş Sayfası -->
+                        <div id="login-page" class="auth-sub-page active">
+                            <header>
+                                <h1>Giriş Yap</h1>
+                                <p>İyiliğe katılmak için giriş yap.</p>
+                            </header>
+                            <form id="login-form" class="auth-form">
+                                <input type="email" id="login-email" placeholder="E-posta" required>
+                                <input type="password" id="login-password" placeholder="Şifre" required>
+                                <button type="submit">Giriş Yap</button>
+                                <p class="toggle-form">Hesabın yok mu? <a href="#" id="show-signup">Kayıt Ol</a></p>
+                            </form>
+                        </div>
+
+                        <!-- Kayıt Olma Sayfası -->
+                        <div id="signup-page" class="auth-sub-page">
+                            <header>
+                                <h1>Kayıt Ol</h1>
+                                <p>Hemen bir hesap oluştur.</p>
+                            </header>
+                            <form id="signup-form" class="auth-form">
+                                <input type="email" id="signup-email" placeholder="E-posta" required>
+                                <input type="password" id="signup-password" placeholder="Şifre (en az 8 karakter)" required>
+                                <button type="submit">Kayıt Ol</button>
+                                <p class="toggle-form">Zaten hesabın var mı? <a href="#" id="show-login">Giriş Yap</a></p>
+                            </form>
+                        </div>
+
+                        <!-- Doğrulama Kodu Sayfası -->
+                        <div id="confirm-signup-page" class="auth-sub-page">
+                            <header>
+                                <h1>Hesabını Doğrula</h1>
+                                <p>E-postana gönderilen doğrulama kodunu gir.</p>
+                            </header>
+                            <form id="confirm-signup-form" class="auth-form">
+                                <input type="email" id="confirm-email" placeholder="E-posta" required>
+                                <input type="text" id="confirmation-code" placeholder="Doğrulama Kodu" required>
+                                <button type="submit">Doğrula</button>
+                                <p class="toggle-form"><a href="#" id="resend-code">Kodu Yeniden Gönder</a></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- İlham Akışı Sayfası (Reels Tarzı) -->
+            <section id="feed-page" class="page">
+                <header>
+                    <h1>İlham Akışı</h1>
+                </header>
+                <div class="reels-container">
+                    <!-- Gönderiler buraya dinamik olarak eklenecek -->
+                    <div class="reel">
+                        <div class="reel-content">
+                            <p>Yükleniyor...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profil Sayfası -->
+            <section id="profile-page" class="page">
+                <header class="profile-header">
+                    <img src="./assets/logo.svg" alt="Profil Fotoğrafı" class="profile-pic">
+                    <h1 id="profile-username">Kullanıcı Adı</h1>
+                    <div class="profile-stats">
+                        <div class="stat">
+                            <span class="stat-value" id="profile-ip">0</span>
+                            <span class="stat-label">İyilik Puanı</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="profile-streak">🔥 0</span>
+                            <span class="stat-label">Alev</span>
+                        </div>
+                    </div>
+                    <button id="logout-btn" class="logout-button">Çıkış Yap</button>
+                </header>
+                <div class="content">
+                    <div class="task-container">
+                        <h2>Bugünkü Görevin</h2>
+                        <div id="daily-task" class="task-card">
+                            <p>Yükleniyor...</p>
+                            <button class="task-button">Görevi Tamamla</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <h2>İyilik Günlüğüm</h2>
+                    <div id="iyilik-gunlugu" class="gallery">
+                        <!-- Kullanıcının tamamladığı görevler (görseller) buraya gelecek -->
+                        <p>Henüz iyilik yapmadın.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <nav id="bottom-nav">
+            <button id="nav-feed" class="nav-btn active">
+                <i class="fas fa-stream"></i>
+                <span>Akış</span>
+            </button>
+            <button id="nav-profile" class="nav-btn">
+                <i class="fas fa-user"></i>
+                <span>Profil</span>
+            </button>
+        </nav>
+    </div>
+
+    <script src="https://unpkg.com/aws-amplify@6.0.17/dist/aws-amplify.min.js"></script> <!-- Güncel ve güvenilir Amplify CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script> <!-- Lottie Player CDN -->
+    <script src="https://unpkg.com/@rive-app/webgl@2.11.1/rive.min.js"></script> <!-- Rive WebGL Runtime CDN -->
     <script src="script.js"></script>
 </body>
 </html>
