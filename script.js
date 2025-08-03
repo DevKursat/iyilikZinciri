@@ -209,7 +209,7 @@ const app = {
                 await Amplify.Auth.signUp({ username: email, password, attributes: { email } });
                 console.log("Kayıt başarılı.");
                 alert("Kayıt başarılı! E-postanıza gelen doğrulama kodunu girerek hesabınızı onaylayın.");
-                app.navigateToAuthSubPage('confirm-signup-page'); // Doğrulama kodu ekranına yönlendir
+                app.navigateToAuthSubPage('confirmSignup'); // Doğrulama kodu ekranına yönlendir
                 document.getElementById('confirm-email').value = email; // E-postayı otomatik doldur
             } catch (error) {
                 console.error("Kayıt hatası:", error);
