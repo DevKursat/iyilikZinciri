@@ -8,8 +8,8 @@ const app = {
     nav: {},
     config: {
         cognito: {
-            UserPoolId: 'eu-north-1_brdMkzj67',
-            ClientId: '11ri73f3j2ma53auguuaaas09l'
+            UserPoolId: 'eu-north-1_brdMkzj67', // Buraya senin UserPoolId'n gelecek
+            ClientId: '11ri73f3j2ma53auguuaaas09l' // Buraya senin UserPoolClientId'n gelecek
         }
     },
 
@@ -30,16 +30,19 @@ const app = {
         this.pages.profile = document.getElementById('profile-page');
         this.pages.login = document.getElementById('login-page');
         this.pages.signup = document.getElementById('signup-page');
+        this.pages.confirmSignup = document.getElementById('confirm-signup-page');
 
         // Form geçiş linkleri
         const showLoginLink = document.getElementById('show-login');
         const showSignupLink = document.getElementById('show-signup');
         const logoutBtn = document.getElementById('logout-btn');
+        const resendCodeLink = document.getElementById('resend-code');
 
         // Formları al
         this.forms = {};
         this.forms.login = document.getElementById('login-form');
         this.forms.signup = document.getElementById('signup-form');
+        this.forms.confirmSignup = document.getElementById('confirm-signup-form');
 
         // Olay dinleyicileri
         this.nav.feedBtn.addEventListener('click', () => this.navigateTo('feed', true));
@@ -47,6 +50,15 @@ const app = {
         showLoginLink.addEventListener('click', (e) => { e.preventDefault(); this.navigateTo('login'); });
         showSignupLink.addEventListener('click', (e) => { e.preventDefault(); this.navigateTo('signup'); });
         logoutBtn.addEventListener('click', () => this.auth.logout());
+        resendCodeLink.addEventListener('click', async (e) => { 
+            e.preventDefault();
+            const email = document.getElementById('confirm-email').value;
+            if (email) {
+                await this.auth.resendConfirmationCode(email);
+            } else {
+                alert("Lütfen e-posta adresinizi girin.");
+            }
+        });
 
         this.forms.login.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -60,6 +72,13 @@ const app = {
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
             await this.auth.signup(email, password);
+        });
+
+        this.forms.confirmSignup.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('confirm-email').value;
+            const code = document.getElementById('confirmation-code').value;
+            await this.auth.confirmSignUp(email, code);
         });
 
         // Uygulama yüklendiğinde oturum durumunu kontrol et
@@ -130,11 +149,34 @@ const app = {
             try {
                 await Amplify.Auth.signUp({ username: email, password, attributes: { email } });
                 console.log("Kayıt başarılı.");
-                alert("Kayıt başarılı! Lütfen şimdi giriş yapın ve e-postanıza gelen doğrulama kodunu girerek hesabınızı onaylayın.");
-                // TODO: Doğrulama kodu ekranına yönlendir
-                app.navigateTo('login'); // Şimdilik giriş ekranına yönlendir
+                alert("Kayıt başarılı! E-postanıza gelen doğrulama kodunu girerek hesabınızı onaylayın.");
+                app.navigateTo('confirmSignup'); // Doğrulama kodu ekranına yönlendir
+                document.getElementById('confirm-email').value = email; // E-postayı otomatik doldur
             } catch (error) {
                 console.error("Kayıt hatası:", error);
+                alert(error.message);
+            }
+        },
+
+        async confirmSignUp(email, code) {
+            try {
+                await Amplify.Auth.confirmSignUp(email, code);
+                console.log("Hesap doğrulandı.");
+                alert("Hesabınız başarıyla doğrulandı! Şimdi giriş yapabilirsiniz.");
+                app.navigateTo('login');
+            } catch (error) {
+                console.error("Doğrulama hatası:", error);
+                alert(error.message);
+            }
+        },
+
+        async resendConfirmationCode(email) {
+            try {
+                await Amplify.Auth.resendSignUpCode(email);
+                console.log("Doğrulama kodu yeniden gönderildi.");
+                alert("Doğrulama kodu e-postanıza yeniden gönderildi.");
+            } catch (error) {
+                console.error("Kodu yeniden gönderme hatası:", error);
                 alert(error.message);
             }
         },
