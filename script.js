@@ -365,14 +365,4 @@ const app = {
     }
 };
 
-// Amplify kütüphanesinin yüklenmesini bekleyen fonksiyon
-function checkAmplifyReady() {
-    if (typeof Amplify !== 'undefined') {
-        app.init();
-    } else {
-        setTimeout(checkAmplifyReady, 100); // 100ms sonra tekrar kontrol et
-    }
-}
-
-// Sayfa yüklendiğinde Amplify hazır olana kadar bekle
-window.addEventListener('load', checkAmplifyReady);
+window.addEventListener('load', () => app.init());
