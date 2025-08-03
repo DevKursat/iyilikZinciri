@@ -263,7 +263,22 @@ body {
     }
     .sign-up {
         /* Mobil'de geçiş için farklı bir mantık gerekir, şimdilik gizli */
-        display: none; 
+        display: block; /* Mobil'de görünür yap */
+        position: relative; /* Konumlandırmayı düzelt */
+        left: 0; /* Konumlandırmayı düzelt */
+        opacity: 1; /* Görünür yap */
+        z-index: 1; /* Katman sırasını düzelt */
+        transform: none; /* Dönüşümü sıfırla */
+    }
+    .sign-in {
+        width: 100%;
+    }
+    .auth-container-animated.active .sign-in {
+        transform: translateX(0%); /* Mobil'de kaydırmayı sıfırla */
+    }
+    .auth-container-animated.active .sign-up {
+        transform: translateX(0%); /* Mobil'de kaydırmayı sıfırla */
+        animation: none; /* Animasyonu kaldır */
     }
     /* Mobil için toggle butonları formların içine eklenebilir, bu örnekte basit tutulmuştur. */
 }
