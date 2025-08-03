@@ -120,13 +120,12 @@ const app = {
         // Ana uygulama arayüzünü (navigasyon menüsü) sadece korumalı sayfalarda göster
         document.getElementById('bottom-nav').style.display = (pageName === 'feed' || pageName === 'profile') ? 'flex' : 'none';
 
-        // Tüm ana sayfaları gizle
+
+        // Tüm sayfaları gizle
         for (let pageId in this.pages) {
-            if (this.pages[pageId].classList && this.pages[pageId].classList.contains('page')) {
-                this.pages[pageId].classList.remove('active');
-            }
+            this.pages[pageId].classList.remove('active');
         }
-        // İstenen ana sayfayı göster
+        // İstenen sayfayı göster
         this.pages[pageName].classList.add('active');
 
         // Eğer korumalı bir sayfaya gidiyorsak, navigasyon butonlarını güncelle
@@ -154,14 +153,35 @@ const app = {
 
         const items = carousel.querySelectorAll('.carousel-item');
         let currentIndex = 0;
+        let lottieInstances = [];
+
+        // Lottie animasyonlarını yükle ve başlat
+        items.forEach((item, index) => {
+            const lottieContainer = item.querySelector('.lottie-animation-container');
+            if (lottieContainer) {
+                const animationUrl = lottieContainer.dataset.animationUrl;
+                const anim = lottie.loadAnimation({
+                    container: lottieContainer,
+                    renderer: 'svg',
+                    loop: true,
+                    autoplay: false, // Başlangıçta oynatma
+                    path: animationUrl
+                });
+                lottieInstances.push(anim);
+            }
+        });
 
         const showItem = (index) => {
             items.forEach((item, i) => {
                 item.classList.remove('active');
-                if (i === index) {
-                    item.classList.add('active');
+                if (lottieInstances[i]) {
+                    lottieInstances[i].stop(); // Önceki animasyonu durdur
                 }
             });
+            items[index].classList.add('active');
+            if (lottieInstances[index]) {
+                lottieInstances[index].play(); // Yeni animasyonu oynat
+            }
         };
 
         showItem(currentIndex);
