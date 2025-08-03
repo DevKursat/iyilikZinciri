@@ -345,4 +345,4 @@ const app = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', () => app.init());
+window.addEventListener('load', () => app.init());
