@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İyilik Zinciri</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome ikonları için -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <main id="app">
+        <!-- Giriş Sayfası -->
+        <section id="login-page" class="page active">
+            <header>
+                <h1>İyilik Zinciri</h1>
+                <p>İyiliğe giriş yap.</p>
+            </header>
+            <form id="login-form" class="auth-form">
+                <input type="email" id="login-email" placeholder="E-posta" required>
+                <input type="password" id="login-password" placeholder="Şifre" required>
+                <button type="submit">Giriş Yap</button>
+                <p class="toggle-form">Hesabın yok mu? <a href="#" id="show-signup">Kayıt Ol</a></p>
+            </form>
+        </section>
+
+        <!-- Kayıt Olma Sayfası -->
+        <section id="signup-page" class="page">
+            <header>
+                <h1>Hesap Oluştur</h1>
+            </header>
+            <form id="signup-form" class="auth-form">
+                <input type="email" id="signup-email" placeholder="E-posta" required>
+                <input type="password" id="signup-password" placeholder="Şifre (en az 8 karakter)" required>
+                <button type="submit">Kayıt Ol</button>
+                <p class="toggle-form">Zaten hesabın var mı? <a href="#" id="show-login">Giriş Yap</a></p>
+            </form>
+        </section>
+
+        <!-- İlham Akışı Sayfası (Reels Tarzı) -->
+        <section id="feed-page" class="page">
+            <div class="reels-container">
+                <!-- Gönderiler buraya dinamik olarak eklenecek -->
+            </div>
+        </section>
+
+        <!-- Profil Sayfası -->
+        <section id="profile-page" class="page">
+            <header class="profile-header">
+                <img src="https://via.placeholder.com/100" alt="Profil Fotoğrafı" class="profile-pic">
+                <h1 id="profile-username">Kullanıcı Adı</h1>
+                <div class="profile-stats">
+                    <div class="stat">
+                        <span class="stat-value" id="profile-ip">1,250</span>
+                        <span class="stat-label">İyilik Puanı</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="profile-streak">🔥 12</span>
+                        <span class="stat-label">Alev</span>
+                    </div>
+                </div>
+                <button id="logout-btn" class="logout-button">Çıkış Yap</button>
+            </header>
+            <div class="content">
+                <div class="task-container">
+                    <h2>Bugünkü Görevin</h2>
+                    <div id="daily-task" class="task-card">
+                        <p>Bir sokak hayvanını besle ve fotoğrafını paylaş.</p>
+                        <button class="task-button">Görevi Tamamla</button>
+                    </div>
+                </div>
+                <hr>
+                <h2>İyilik Günlüğüm</h2>
+                <div id="iyilik-gunlugu" class="gallery">
+                    <!-- Kullanıcının tamamladığı görevler (görseller) buraya gelecek -->
+                    <img src="https://via.placeholder.com/150/008000/FFFFFF?text=İyilik" alt="Tamamlanmış Görev">
+                    <img src="https://via.placeholder.com/150/0000FF/FFFFFF?text=İyilik" alt="Tamamlanmış Görev">
+                    <img src="https://via.placeholder.com/150/FF0000/FFFFFF?text=İyilik" alt="Tamamlanmış Görev">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <nav id="bottom-nav">
+        <button id="nav-feed" class="nav-btn active">
+            <i class="fas fa-stream"></i>
+            <span>Akış</span>
+        </button>
+        <button id="nav-profile" class="nav-btn">
+            <i class="fas fa-user"></i>
+            <span>Profil</span>
+        </button>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+</html>

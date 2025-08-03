@@ -1,0 +1,56 @@
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: İyilik Zinciri Projesi için temel AWS altyapısı (Cognito, S3, DynamoDB)
+
+Resources:
+  # 1. Kullanıcı Yönetimi için Cognito
+  CognitoUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: iyilik-zinciri-user-pool
+      Schema:
+        - Name: email
+          AttributeDataType: String
+          Required: true
+          Mutable: true
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: false
+          RequireUppercase: true
+      AutoVerifiedAttributes:
+        - email
+
+  CognitoUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: iyilik-zinciri-web-client
+      UserPoolId: !Ref CognitoUserPool
+      GenerateSecret: false # Web tabanlı client için secret gerekmez
+      SupportedIdentityProviders:
+        - COGNITO
+      AllowedOAuthFlows:
+        - implicit
+        - code
+      AllowedOAuthScopes:
+        - phone
+        - email
+        - openid
+        - profile
+      AllowedOAuthFlowsUserPoolClient: true
+      CallbackURLs:
+        - http://localhost:3000 # Geliştirme için
+        - https://<PROD_URL> # Üretim ortamı için (daha sonra güncellenecek)
+      LogoutURLs:
+        - http://localhost:3000
+        - https://<PROD_URL>
+
+Outputs:
+  UserPoolId:
+    Description: Cognito Kullanıcı Havuzu ID'si
+    Value: !Ref CognitoUserPool
+  UserPoolClientId:
+    Description: Cognito Uygulama İstemci ID'si
+    Value: !Ref CognitoUserPoolClient
