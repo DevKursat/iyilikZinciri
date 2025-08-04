@@ -289,52 +289,35 @@ body {
         display: none; /* Hide the toggle container on mobile */
     }
     .form-container {
-        position: absolute; /* Use absolute positioning for mobile forms */
-        top: 0;
-        left: 0;
+        position: static; /* Change to static for mobile flow */
         width: 100%;
-        height: 100%;
+        height: auto; /* Adjust height for content */
         padding: 20px;
         box-shadow: none;
-        transition: opacity 0.3s ease-in-out;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        opacity: 1 !important; /* Ensure forms are always visible */
+        transform: none !important; /* Reset transforms */
+        animation: none !important; /* Reset animations */
     }
-    .sign-in {
-        opacity: 1;
-        z-index: 2;
-    }
-    .sign-up {
-        opacity: 0;
+
+    .sign-in, .sign-up {
+        width: 100%;
         z-index: 1;
     }
-    /* Control visibility with active class on mobile */
+
     .auth-container-animated.active .sign-in {
-        opacity: 0;
-        pointer-events: none;
+        display: none;
     }
-    .auth-container-animated.active .sign-up {
-        opacity: 1;
-        pointer-events: auto;
-        z-index: 3; /* Ensure sign-up is above sign-in when active */
-    }
-    /* Default state: show sign-in, hide sign-up */
-    .auth-container-animated:not(.active) .sign-in {
-        opacity: 1;
-        pointer-events: auto;
-    }
+
     .auth-container-animated:not(.active) .sign-up {
-        opacity: 0;
-        pointer-events: none;
+        display: none;
     }
-    /* Adjust form padding for mobile */
+
     .auth-container-animated form {
-        padding: 20px 20px; /* Reduced padding for mobile */
+        padding: 20px 20px;
     }
     .mobile-toggle-form {
         margin-top: 15px;
+        display: block;
     }
 }
 
@@ -364,4 +347,14 @@ body {
 
 .color-overlay.signup-color {
     background-color: var(--secondary-color);
+}
+
+.mobile-toggle-form {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-toggle-form {
+        display: block;
+    }
 }
