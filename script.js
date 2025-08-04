@@ -71,19 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Sosyal medya giriş fonksiyonu
-    const socialLogin = async (provider) => {
-        try {
-            await Amplify.Auth.federatedSignIn({ provider });
-        } catch (error) {
-            console.error(`${provider} ile giriş hatası:`, error);
-        }
-    };
-
-    // Sosyal medya butonları
-    document.getElementById('google-login-btn')?.addEventListener('click', (e) => { e.preventDefault(); socialLogin('Google'); });
-    document.getElementById('apple-login-btn')?.addEventListener('click', (e) => { e.preventDefault(); socialLogin('Apple'); });
-    document.getElementById('google-signup-btn')?.addEventListener('click', (e) => { e.preventDefault(); socialLogin('Google'); });
-    document.getElementById('apple-signup-btn')?.addEventListener('click', (e) => { e.preventDefault(); socialLogin('Apple'); });
+    });
 
 });
