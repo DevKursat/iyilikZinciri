@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "aws-amplify": "^1.3.3"
+  },
+  "name": "iyilik-zinciri",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "npx parcel index.html",
+    "build": "npx parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DevKursat/Good-Loop_iyilik-zinciri_.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DevKursat/Good-Loop_iyilik-zinciri_/issues"
+  },
+  "homepage": "https://github.com/DevKursat/Good-Loop_iyilik-zinciri_#readme",
+  "description": "",
+  "devDependencies": {
+    "buffer": "^6.0.3",
+    "events": "^3.3.0",
+    "process": "^0.11.10",
+    "punycode": "^2.3.1",
+    "querystring-es3": "^0.2.1",
+    "util": "^0.12.5"
+  }
+}
