@@ -26,14 +26,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const showLoginMobileBtn = document.getElementById('show-login-mobile');
     const showSignupMobileBtn = document.getElementById('show-signup-mobile');
     const forgotPasswordMobileBtn = document.getElementById('forgot-password-mobile');
+    const colorOverlay = document.getElementById('color-overlay');
+
+    const triggerColorOverlay = (type) => {
+        if (colorOverlay) {
+            colorOverlay.classList.remove('login-color', 'signup-color');
+            colorOverlay.classList.add(type === 'login' ? 'login-color' : 'signup-color');
+            colorOverlay.classList.add('active');
+            setTimeout(() => {
+                colorOverlay.classList.remove('active');
+            }, 700); // Match CSS transition duration
+        }
+    };
 
     if (container && showLoginBtn && showSignupBtn) {
         showSignupBtn.addEventListener('click', () => {
-            container.classList.add('active');
+            triggerColorOverlay('signup');
+            setTimeout(() => {
+                container.classList.add('active');
+            }, 300); // Delay to allow overlay to start spreading
         });
 
         showLoginBtn.addEventListener('click', () => {
-            container.classList.remove('active');
+            triggerColorOverlay('login');
+            setTimeout(() => {
+                container.classList.remove('active');
+            }, 300); // Delay to allow overlay to start spreading
         });
     }
 
@@ -41,14 +59,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (showLoginMobileBtn) {
         showLoginMobileBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            container.classList.remove('active');
+            triggerColorOverlay('login');
+            setTimeout(() => {
+                container.classList.remove('active');
+            }, 300); // Delay to allow overlay to start spreading
         });
     }
 
     if (showSignupMobileBtn) {
         showSignupMobileBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            container.classList.add('active');
+            triggerColorOverlay('signup');
+            setTimeout(() => {
+                container.classList.add('active');
+            }, 300); // Delay to allow overlay to start spreading
         });
     }
 
