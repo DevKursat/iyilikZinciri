@@ -311,17 +311,25 @@ body {
     }
     /* Control visibility with active class on mobile */
     .auth-container-animated.active .sign-in {
-        display: none; /* Hide sign-in when active (showing sign-up) */
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
     }
     .auth-container-animated.active .sign-up {
-        display: flex; /* Show sign-up when active */
+        opacity: 1;
+        pointer-events: auto;
+        position: relative;
     }
     /* Default state: show sign-in, hide sign-up */
     .auth-container-animated:not(.active) .sign-in {
-        display: flex;
+        opacity: 1;
+        pointer-events: auto;
+        position: relative;
     }
     .auth-container-animated:not(.active) .sign-up {
-        display: none;
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
     }
     /* Adjust form padding for mobile */
     .auth-container-animated form {
