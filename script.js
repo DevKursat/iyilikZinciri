@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Form gönderme işlemleri (Amplify bağımlılığı olmadan)
+    // Form gönderme işlemleri (Firebase ile)
     const loginForm = document.getElementById('login-form');
     const signupForm = document.getElementById('signup-form');
 
@@ -77,9 +77,15 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
-            alert(`Giriş denemesi:\nE-posta: ${email}\nŞifre: ${password}\n(Amplify bağlantısı yok, bu sadece bir simülasyon.)`);
-            // Başarılı giriş sonrası yönlendirme veya işlem
-            // window.location.href = '/dashboard'; 
+            try {
+                await window.firebaseSignInWithEmailAndPassword(window.firebaseAuth, email, password);
+                alert('Giriş başarılı!');
+                // Başarılı giriş sonrası yönlendirme veya işlem
+                // window.location.href = '/dashboard'; 
+            } catch (error) {
+                console.error('Giriş hatası:', error);
+                alert(error.message);
+            }
         });
     }
 
@@ -88,9 +94,15 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
-            alert(`Kayıt denemesi:\nE-posta: ${email}\nŞifre: ${password}\n(Amplify bağlantısı yok, bu sadece bir simülasyon.)`);
-            // Otomatik olarak giriş yapma ekranına geçiş
-            container.classList.remove('active');
+            try {
+                await window.firebaseCreateUserWithEmailAndPassword(window.firebaseAuth, email, password);
+                alert('Kayıt başarılı! Lütfen e-postanıza gönderilen doğrulama linkine tıklayın.');
+                // Otomatik olarak giriş yapma ekranına geçiş
+                container.classList.remove('active');
+            } catch (error) {
+                console.error('Kayıt hatası:', error);
+                alert(error.message);
+            }
         });
     }
 

@@ -68,6 +68,28 @@
         </div>
     </div>
 
-            <script src="script.js"></script>
+            <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC_-oL_V28lCU8HJbEKpPvo-Fvu2xEkvv4",
+            authDomain: "iyilik-zinciri-kursat.firebaseapp.com",
+            projectId: "iyilik-zinciri-kursat",
+            storageBucket: "iyilik-zinciri-kursat.firebasestorage.app",
+            messagingSenderId: "665799833367",
+            appId: "1:665799833367:web:6fd44eedab42a343ee2952",
+            measurementId: "G-62WJ6PFN3N"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Firebase Auth fonksiyonlarını global olarak erişilebilir yap
+        window.firebaseAuth = auth;
+        window.firebaseSignInWithEmailAndPassword = signInWithEmailAndPassword;
+        window.firebaseCreateUserWithEmailAndPassword = createUserWithEmailAndPassword;
+    </script>
+    <script src="script.js"></script>
 </body>
 </html>
