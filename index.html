@@ -17,7 +17,6 @@
     </div>
     <div id="auth-page-container">
         <div class="auth-container-animated" id="auth-container-animated">
-            <!-- Kayıt Ol Formu -->
             <div class="form-container sign-up">
                 <form id="signup-form">
                     <h1>Hesap Oluştur</h1>
@@ -37,7 +36,11 @@
             <div class="form-container sign-in">
                 <form id="login-form">
                     <h1>Giriş Yap</h1>
-                    <span>e-postanızı kullanarak giriş yapın</span>
+                    <div class="social-icons">
+                        <a href="#" class="icon" id="google-login-btn"><i class="fab fa-google"></i></a>
+                        <a href="#" class="icon" id="apple-login-btn"><i class="fab fa-apple"></i></a>
+                    </div>
+                    <span>veya e-postanızı kullanarak giriş yapın</span>
                     <input type="email" id="login-email" placeholder="E-posta" required>
                     <input type="password" id="login-password" placeholder="Şifre" required>
                     <a href="#" id="forgot-password-mobile">Şifreni mi unuttun?</a>
