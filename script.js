@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('auth-container-animated');
     const showLoginBtn = document.getElementById('show-login');
     const showSignupBtn = document.getElementById('show-signup');
+    const showLoginMobileBtn = document.getElementById('show-login-mobile');
+    const showSignupMobileBtn = document.getElementById('show-signup-mobile');
+    const forgotPasswordMobileBtn = document.getElementById('forgot-password-mobile');
 
     if (container && showLoginBtn && showSignupBtn) {
         showSignupBtn.addEventListener('click', () => {
@@ -31,6 +34,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         showLoginBtn.addEventListener('click', () => {
             container.classList.remove('active');
+        });
+    }
+
+    // Mobil butonlar için olay dinleyicileri
+    if (showLoginMobileBtn) {
+        showLoginMobileBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            container.classList.remove('active');
+        });
+    }
+
+    if (showSignupMobileBtn) {
+        showSignupMobileBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            container.classList.add('active');
+        });
+    }
+
+    if (forgotPasswordMobileBtn) {
+        forgotPasswordMobileBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Şifre sıfırlama özelliği henüz aktif değil. Lütfen yöneticinizle iletişime geçin.');
         });
     }
 
