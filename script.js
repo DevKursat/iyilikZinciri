@@ -1,24 +1,23 @@
-// Amplify'ı yapılandır
-try {
-    Amplify.configure({
-        Auth: {
-            region: 'eu-north-1',
-            userPoolId: 'eu-north-1_brdMkzj67',
-            userPoolWebClientId: '11ri73f3j2ma53auguuaaas09l',
-            oauth: {
-                domain: 'iyilik-zinciri-kursat.auth.eu-north-1.amazoncognito.com',
-                scope: ['phone', 'email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
-                redirectSignIn: window.location.origin,
-                redirectSignOut: window.location.origin,
-                responseType: 'code'
+window.onload = () => {
+    // Amplify'ı yapılandır
+    try {
+        Amplify.configure({
+            Auth: {
+                region: 'eu-north-1',
+                userPoolId: 'eu-north-1_brdMkzj67',
+                userPoolWebClientId: '11ri73f3j2ma53auguuaaas09l',
+                oauth: {
+                    domain: 'iyilik-zinciri-kursat.auth.eu-north-1.amazoncognito.com',
+                    scope: ['phone', 'email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
+                    redirectSignIn: window.location.origin,
+                    redirectSignOut: window.location.origin,
+                    responseType: 'code'
+                }
             }
-        }
-    });
-} catch (e) {
-    console.error("Amplify yapılandırma hatası:", e);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
+        });
+    } catch (e) {
+        console.error("Amplify yapılandırma hatası:", e);
+    }
 
     const container = document.getElementById('auth-container-animated');
     const showLoginBtn = document.getElementById('show-login');
@@ -27,6 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const showSignupMobileBtn = document.getElementById('show-signup-mobile');
     const forgotPasswordMobileBtn = document.getElementById('forgot-password-mobile');
     const colorOverlay = document.getElementById('color-overlay');
+
+    // Sayfanın başlangıçta Kayıt Ol formuyla açılması için
+    if (container) {
+        container.classList.add('active');
+    }
 
     const triggerColorOverlay = (type) => {
         if (colorOverlay) {
@@ -120,4 +124,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-});
+};
