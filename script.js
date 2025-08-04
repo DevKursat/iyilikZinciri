@@ -29,14 +29,14 @@ const awsmobile = {
 };
 
 
-// Amplify'ı yapılandır
-try {
-    Amplify.configure(awsmobile);
-} catch (e) {
-    console.error("Amplify yapılandırma hatası:", e);
-}
-
 document.addEventListener('DOMContentLoaded', () => {
+
+    // Amplify'ı yapılandır
+    try {
+        Amplify.configure(awsmobile);
+    } catch (e) {
+        console.error("Amplify yapılandırma hatası:", e);
+    }
 
     const container = document.getElementById('auth-container-animated');
     const showLoginBtn = document.getElementById('show-login');
