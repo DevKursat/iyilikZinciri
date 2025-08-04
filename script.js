@@ -30,8 +30,6 @@ const awsmobile = {
     ]
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Amplify'ı yapılandır
     Amplify.configure(awsmobile);
 
     const container = document.getElementById('auth-container-animated');
@@ -107,4 +105,3 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-});
