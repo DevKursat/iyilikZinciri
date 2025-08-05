@@ -41,27 +41,33 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
     const signInForm = document.querySelector('.form-container.sign-in');
     const signUpForm = document.querySelector('.form-container.sign-up');
 
-    const toggleForm = (isRegister) => {
-        // Desktop animation
-        container.classList.toggle('active', isRegister);
-        
-        // Mobile form switching
+    const setupFormsForDevice = () => {
         if (window.innerWidth <= 768) {
-            signInForm.style.display = isRegister ? 'none' : 'flex';
-            signUpForm.style.display = isRegister ? 'flex' : 'none';
+            // Mobile: JS controls display
+            const isRegisterActive = container.classList.contains('active');
+            signInForm.style.display = isRegisterActive ? 'none' : 'flex';
+            signUpForm.style.display = isRegisterActive ? 'flex' : 'none';
+        } else {
+            // Desktop: CSS controls display, remove inline styles
+            signInForm.style.display = '';
+            signUpForm.style.display = '';
         }
     };
 
+    const toggleForm = (isRegister) => {
+        container.classList.toggle('active', isRegister);
+        setupFormsForDevice(); // Update display based on new state
+    };
+
+    // Setup listeners
     if (registerBtn) registerBtn.addEventListener('click', () => toggleForm(true));
     if (loginBtn) loginBtn.addEventListener('click', () => toggleForm(false));
-    if (showLoginMobileBtn) showLoginMobileBtn.addEventListener('click', (e) => { e.preventDefault(); toggleForm(false); });
-    if (showSignupMobileBtn) showSignupMobileBtn.addEventListener('click', (e) => { e.preventDefault(); toggleForm(true); });
+    if (showLoginMobileBtn) showLoginMobileBtn.addEventListener('click', (e) => { e.preventDefault(); toggleForm(true); });
+    if (showSignupMobileBtn) showSignupMobileBtn.addEventListener('click', (e) => { e.preventDefault(); toggleForm(false); });
 
-    // Initial state for mobile
-    if (window.innerWidth <= 768) {
-        signInForm.style.display = 'flex';
-        signUpForm.style.display = 'none';
-    }
+    // Setup on initial load and on resize
+    window.addEventListener('resize', setupFormsForDevice);
+    setupFormsForDevice(); // Initial setup
 
     // --- Signup Logic ---
     const signupPasswordInput = document.getElementById('signup-password');

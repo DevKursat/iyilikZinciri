@@ -506,11 +506,11 @@ body {
         display: none;
     }
     .form-container {
-        position: relative; /* More stable for mobile layout */
+        position: relative;
         width: 100%;
         height: auto;
-        padding: 40px 20px; /* Added more vertical padding */
-        /* All visibility/opacity is now handled by JS */
+        padding: 40px 20px;
+        /* JS now handles display property on mobile */
     }
     .mobile-toggle-form {
         margin-top: 20px;
