@@ -1,6 +1,6 @@
 import 'buffer';
 import 'process';
-import { Auth } from '@aws-amplify/auth';
+import Auth from '@aws-amplify/auth';
 import amplifyconfig from './src/amplifyconfiguration.json';
 
 /* eslint-disable */
