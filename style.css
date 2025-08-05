@@ -259,18 +259,14 @@ body {
     transform: translateX(200%);
 }
 
+/* Password Strength Meter - GUARANTEED CENTERING */
 .password-strength-meter {
     width: 100%;
     height: 40px;
     background-color: #e0e0e0;
     border-radius: 8px;
     margin: 8px 0;
-    overflow: hidden;
-    position: relative;
-    /* Use flexbox for perfect centering of the child text */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative; /* Establishes a positioning context for children */
 }
 
 .strength-bar {
@@ -279,23 +275,31 @@ body {
     background-color: var(--invalid-color);
     border-radius: 4px;
     transition: width 0.4s ease-in-out, background-color 0.4s ease-in-out;
-    /* Position behind the text */
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 1; /* Sits behind text and button */
 }
 
 #strength-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2; /* Sits on top of the bar */
+    
+    /* Flexbox for perfect centering */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     color: var(--text-color);
     font-size: 12px;
     font-weight: 600;
     white-space: nowrap;
     opacity: 1;
     transition: opacity 0.3s ease-in-out;
-    /* Let flexbox handle positioning */
-    position: relative;
-    z-index: 2;
 }
 
 .strength-button {
@@ -304,18 +308,21 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: 3; /* Sits on top of everything */
+
+    /* Flexbox for perfect centering */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     margin: 0;
     padding: 0;
     border: none;
     border-radius: 8px;
     opacity: 0;
     pointer-events: none;
-    z-index: 3;
     transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     transform: scale(0.95);
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .password-strength-meter.transformed {
