@@ -110,6 +110,13 @@ body {
     box-shadow: 0 3px 8px var(--shadow-light);
 }
 
+.auth-container-animated button:disabled {
+    background-color: #a5d6a7; /* Lighter shade of primary color */
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
 .auth-container-animated form {
     background-color: var(--card-background);
     display: flex;

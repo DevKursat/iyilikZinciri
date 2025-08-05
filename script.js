@@ -106,10 +106,25 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
     }
 
     const loginForm = document.getElementById('login-form');
+    const loginEmailInput = document.getElementById('login-email');
+    const loginPasswordInput = document.getElementById('login-password');
+    const loginButton = document.getElementById('login-button');
+
+    function validateLoginInputs() {
+        const email = loginEmailInput.value;
+        const password = loginPasswordInput.value;
+        loginButton.disabled = !(email.length > 0 && password.length > 0);
+    }
+
+    if(loginEmailInput && loginPasswordInput) {
+        loginEmailInput.addEventListener('input', validateLoginInputs);
+        loginPasswordInput.addEventListener('input', validateLoginInputs);
+    }
+
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
+        const email = loginEmailInput.value;
+        const password = loginPasswordInput.value;
         try {
             await signIn({ username: email, password });
             window.location.href = `${getBasePath()}home.html`;
