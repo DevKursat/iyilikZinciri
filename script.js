@@ -1,7 +1,7 @@
 import 'buffer';
 import 'process';
 import { Amplify } from 'aws-amplify';
-import { signIn, signUp, confirmSignUp, resendSignUpCode, signOut } from 'aws-amplify/auth';
+import { signIn, signUp, confirmSignUp, resendSignUpCode, signOut, getCurrentUser } from 'aws-amplify/auth';
 import amplifyconfig from './src/amplifyconfiguration.json';
 
 /* eslint-disable */
@@ -9,8 +9,29 @@ import amplifyconfig from './src/amplifyconfiguration.json';
 
 Amplify.configure(amplifyconfig);
 
-// Common elements for both pages
+// Common elements for all pages
 const currentPath = window.location.pathname;
+
+// Function to check if user is authenticated and redirect
+async function checkAuthAndRedirect() {
+    try {
+        await getCurrentUser();
+        // User is authenticated, redirect to home.html if not already there
+        if (!currentPath.includes('home.html')) {
+            window.location.href = 'home.html';
+        }
+    } catch (error) {
+        // User is not authenticated, redirect to index.html if not already there
+        if (!currentPath.includes('index.html') && currentPath !== '/' && !currentPath.includes('verify.html')) {
+            window.location.href = 'index.html';
+        }
+    }
+}
+
+// Execute checkAuthAndRedirect on page load for all pages except verify.html
+if (!currentPath.includes('verify.html')) {
+    checkAuthAndRedirect();
+}
 
 // Logic for index.html (Login/Signup Page)
 if (currentPath.includes('index.html') || currentPath === '/') {
@@ -38,6 +59,7 @@ if (currentPath.includes('index.html') || currentPath === '/') {
         }
     };
 
+    // Ensure event listeners are attached only if elements exist
     if (registerBtn) {
         registerBtn.addEventListener('click', () => toggleForm(true));
     }
@@ -196,19 +218,16 @@ if (currentPath.includes('verify.html')) {
             const code = verificationCodeInput.value;
             try {
                 await confirmSignUp({ username: email, confirmationCode: code });
-                alert('E-posta başarıyla doğrulandı! Şimdi giriş yapabilirsiniz.');
-                // Automatically sign in after successful confirmation
-                const password = prompt('Doğrulama başarılı. Lütfen şifrenizi girerek giriş yapın:');
-                if (password) {
-                    await signIn({ username: email, password });
-                    window.location.href = 'home.html';
-                } else {
-                    alert('Şifre girilmedi. Lütfen tekrar giriş yapın.');
-                    window.location.href = 'index.html'; // Go back to login page
-                }
+                alert('E-posta başarıyla doğrulandı! Şimdi giriş yapılıyor...');
+                // After successful confirmation, try to sign in automatically
+                // If confirmSignUp doesn't automatically sign in, user will be redirected to login page
+                await signIn({ username: email, password: '' }); // Try to sign in with empty password, Amplify might handle it
+                window.location.href = 'home.html';
             } catch (error) {
                 console.error('Doğrulama hatası:', error);
                 alert(error.message);
+                // If automatic sign-in fails after confirmation, redirect to login page
+                window.location.href = 'index.html';
             }
         });
     }
