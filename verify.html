@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İyilik Zinciri - E-posta Doğrulama</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="auth-container-animated">
+        <div class="form-container sign-in">
+            <form id="verify-form">
+                <h1>E-posta Doğrulama</h1>
+                <p>Kaydınızı tamamlamak için e-postanıza gönderilen doğrulama kodunu girin.</p>
+                <input type="email" id="verify-email" placeholder="E-posta" required>
+                <input type="text" id="verification-code" placeholder="Doğrulama Kodu" required>
+                <button type="submit">Doğrula</button>
+                <button type="button" id="resend-code-button">Kodu Tekrar Gönder</button>
+            </form>
+        </div>
+    </div>
+    <script type="module" src="script.js"></script>
+</body>
+</html>

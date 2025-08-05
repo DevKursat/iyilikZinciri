@@ -27,6 +27,16 @@
                     <span>veya e-postanızı kullanarak kayıt olun</span>
                     <input type="email" id="signup-email" placeholder="E-posta" required>
                     <input type="password" id="signup-password" placeholder="Şifre" required>
+                    <div class="password-strength-indicators">
+                        <p>Şifreniz şunları içermelidir:</p>
+                        <ul>
+                            <li id="length-check">En az 8 karakter</li>
+                            <li id="uppercase-check">Büyük harf (A-Z)</li>
+                            <li id="lowercase-check">Küçük harf (a-z)</li>
+                            <li id="number-check">Sayı (0-9)</li>
+                            <li id="special-check">Özel karakter (!@#$%^&*)</li>
+                        </ul>
+                    </div>
                     <button type="submit">Kayıt Ol</button>
                     <p class="mobile-toggle-form">Zaten hesabın var mı? <a href="#" id="show-login-mobile">Giriş Yap</a></p>
                 </form>
