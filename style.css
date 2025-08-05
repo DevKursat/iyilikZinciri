@@ -506,6 +506,9 @@ body {
         box-shadow: none;
         display: block;
     }
+    .toggle-container {
+        display: none; /* Explicitly hide the toggle container on mobile */
+    }
     .form-container {
         position: relative;
         width: 100%;
