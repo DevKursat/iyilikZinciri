@@ -54,11 +54,9 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
     const strengthBar = document.getElementById('strength-bar');
     const strengthText = document.getElementById('strength-text');
     const signupForm = document.getElementById('signup-form');
-    const signupButton = document.getElementById('signup-button');
 
     if (signupPasswordInput) {
-        signupButton.classList.remove('hidden');
-        signupButton.disabled = true;
+        strengthText.textContent = "Kayıt Ol";
 
         signupPasswordInput.addEventListener('input', () => {
             const password = signupPasswordInput.value;
@@ -71,10 +69,10 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             ];
 
             if (password.length === 0) {
-                strengthText.textContent = "";
+                strengthText.textContent = "Kayıt Ol";
+                strengthMeterContainer.classList.remove('transformed');
                 strengthBar.style.width = '0%';
-                strengthBar.className = 'strength-bar';
-                signupButton.disabled = true;
+                strengthBar.className = 'strength-bar'; // Reset color
                 return;
             }
 
@@ -89,11 +87,11 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             strengthBar.style.width = `${strengthPercentage}%`;
 
             if (strength === requirements.length) {
-                strengthText.textContent = "Şifre güçlü";
-                signupButton.disabled = false;
+                strengthText.textContent = "Kayıt Ol";
+                strengthMeterContainer.classList.add('transformed');
             } else {
-                strengthText.textContent = `${firstUnmetRequirement}`;
-                signupButton.disabled = true;
+                strengthText.textContent = `${strength}/${requirements.length}: ${firstUnmetRequirement || ''}`;
+                strengthMeterContainer.classList.remove('transformed');
             }
 
             strengthBar.className = 'strength-bar';
@@ -101,25 +99,36 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             else if (strengthPercentage >= 60) strengthBar.classList.add('medium');
             else strengthBar.classList.add('weak');
         });
+
+        strengthMeterContainer.addEventListener('click', () => {
+            if (strengthMeterContainer.classList.contains('transformed')) {
+                signupForm.requestSubmit();
+            }
+        });
     }
 
     // --- Login Logic ---
     const loginEmailInput = document.getElementById('login-email');
     const loginPasswordInput = document.getElementById('login-password');
-    const loginButton = document.getElementById('login-button');
+    const loginButtonContainer = document.getElementById('login-button-container');
     const loginForm = document.getElementById('login-form');
 
     function validateLoginInputs() {
         const email = loginEmailInput.value;
         const password = loginPasswordInput.value;
-        loginButton.disabled = !(email.length > 0 && password.length > 0);
+        loginButtonContainer.classList.toggle('transformed', email.length > 0 && password.length > 0);
     }
 
     if (loginEmailInput && loginPasswordInput) {
-        loginButton.disabled = true;
         loginEmailInput.addEventListener('input', validateLoginInputs);
         loginPasswordInput.addEventListener('input', validateLoginInputs);
     }
+
+    loginButtonContainer.addEventListener('click', () => {
+        if (loginButtonContainer.classList.contains('transformed')) {
+            loginForm.requestSubmit();
+        }
+    });
 
     // --- Form Submissions ---
     loginForm.addEventListener('submit', async (e) => {

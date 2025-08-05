@@ -368,14 +368,16 @@ body {
 }
 
 /* --- DYNAMIC BUTTONS (LOGIN & SIGNUP) --- */
-.password-strength-meter {
+.password-strength-meter, #login-button-container {
     width: 100%;
-    height: 20px; /* Reduced height */
-    background-color: #eee;
+    height: 40px;
+    background-color: #e0e0e0; /* Default disabled background */
     border-radius: 8px;
-    margin: 8px 0 15px 0; /* Adjusted margin */
+    margin: 15px 0;
     position: relative;
     overflow: hidden;
+    cursor: not-allowed;
+    transition: background-color 0.4s ease-in-out;
 }
 
 .password-strength-meter .strength-bar {
@@ -390,9 +392,9 @@ body {
     z-index: 1;
 }
 
-#strength-text {
+#strength-text, #login-text {
     position: absolute;
-    top: -2px; /* Adjusted for vertical centering */
+    top: 0;
     left: 0;
     width: 100%;
     height: 100%;
@@ -400,16 +402,31 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--light-text-color);
-    font-size: 11px; /* Reduced font size */
+    color: var(--text-color);
+    font-size: 13px;
     font-weight: 600;
     white-space: nowrap;
+    transition: color 0.4s ease-in-out;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
+/* Signup Bar Specifics */
 .strength-bar.weak { background-color: #ff4d4d; }
 .strength-bar.medium { background-color: #ffc107; }
 .strength-bar.strong { background-color: var(--valid-color); }
 
+/* Transformed state for BOTH buttons */
+#login-button-container.transformed,
+.password-strength-meter.transformed {
+    background-color: var(--primary-color);
+    cursor: pointer;
+}
+
+#login-button-container.transformed #login-text,
+.password-strength-meter.transformed #strength-text {
+    color: var(--white-color);
+}
 
 /* --- STANDALONE FORM STYLING (VERIFY, FORGOT PASSWORD) --- */
 .auth-container-standalone {
@@ -440,8 +457,7 @@ body {
 .auth-container-standalone .back-to-login { margin-top: 1.5rem; font-size: 14px; }
 
 /* --- UNIFIED BUTTON STYLES --- */
-.auth-container-standalone button,
-.auth-container-animated button {
+.auth-container-standalone button {
     width: 100%;
     background-color: var(--primary-color);
     color: var(--white-color);
@@ -457,15 +473,6 @@ body {
     transition: all 0.2s ease-in-out;
     height: 40px;
     box-sizing: border-box;
-}
-
-.auth-container-animated button {
-    margin-top: 15px; /* Consistent margin for both buttons */
-}
-
-.auth-container-animated button:disabled {
-    background-color: #e0e0e0;
-    cursor: not-allowed;
 }
 
 .auth-container-standalone input {
