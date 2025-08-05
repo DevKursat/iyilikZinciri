@@ -259,14 +259,14 @@ body {
     transform: translateX(200%);
 }
 
-/* Password Strength Meter - GUARANTEED CENTERING */
+/* Password Strength Meter - FINAL & GUARANTEED CENTERING */
 .password-strength-meter {
     width: 100%;
     height: 40px;
     background-color: #e0e0e0;
     border-radius: 8px;
     margin: 8px 0;
-    position: relative; /* Establishes a positioning context for children */
+    position: relative;
 }
 
 .strength-bar {
@@ -278,7 +278,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1; /* Sits behind text and button */
+    z-index: 1;
 }
 
 #strength-text {
@@ -287,67 +287,30 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 2; /* Sits on top of the bar */
-    
-    /* Flexbox for perfect centering */
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
-
     color: var(--text-color);
     font-size: 12px;
     font-weight: 600;
     white-space: nowrap;
-    opacity: 1;
-    transition: opacity 0.3s ease-in-out;
-}
-
-.strength-button {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 3; /* Sits on top of everything */
-
-    /* Flexbox for perfect centering */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin: 0;
-    padding: 0;
-    border: none;
-    border-radius: 8px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
-    transform: scale(0.95);
+    transition: color 0.4s ease-in-out;
 }
 
 .password-strength-meter.transformed {
     cursor: pointer;
 }
 
-.password-strength-meter.transformed .strength-bar {
-    width: 100% !important;
-    background-color: var(--primary-color);
-}
-
 .password-strength-meter.transformed #strength-text {
-    opacity: 0;
+    color: var(--white-color);
 }
 
-.password-strength-meter.transformed .strength-button {
-    opacity: 1;
-    pointer-events: auto;
-    transform: scale(1);
-}
-
-.strength-bar.weak { background-color: var(--invalid-color); }
-.strength-bar.medium { background-color: orange; }
+.strength-bar.weak { background-color: #ff4d4d; }
+.strength-bar.medium { background-color: #ffc107; }
 .strength-bar.strong { background-color: var(--valid-color); }
 
+/* Standalone Form Styling (Verify, Forgot Password) */
 .form-container-standalone {
     display: flex;
     flex-direction: column;
@@ -369,6 +332,7 @@ body {
 
 .mobile-toggle-form { display: none; }
 
+/* --- MOBILE STYLES --- */
 @media (max-width: 768px) {
     #auth-page-container {
         padding: 0;
@@ -386,7 +350,7 @@ body {
     .form-container {
         position: absolute;
         width: 100%;
-        height: 100vh;
+        height: 100%;
         padding: 20px;
         opacity: 1;
         transform: none;

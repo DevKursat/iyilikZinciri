@@ -1,7 +1,13 @@
+import 'buffer';
+import 'process';
+import { Amplify } from 'aws-amplify';
+import { signIn, signUp, signOut, getCurrentUser } from 'aws-amplify/auth';
+import amplifyconfig from './src/amplifyconfiguration.json';
+
+Amplify.configure(amplifyconfig);
+
 // Function to get the correct base path for redirects
 function getBasePath() {
-    // For local development, path is relative to root.
-    // For GitHub Pages, it's /Good-Loop_iyilik-zinciri_/
     return window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1')
         ? '/'
         : '/Good-Loop_iyilik-zinciri_/';
@@ -11,25 +17,21 @@ function getBasePath() {
 async function checkAuthAndRedirect() {
     try {
         await getCurrentUser();
-        // User is authenticated, redirect to home.html if not already there
         if (!window.location.pathname.includes('home.html')) {
             window.location.href = `${getBasePath()}home.html`;
         }
     } catch (error) {
-        // User is not authenticated.
-        const isLoginPage = window.location.pathname === getBasePath() || window.location.pathname === `${getBasePath()}index.html`;
-        if (!isLoginPage && !window.location.pathname.includes('verify.html')) {
+        const allowedPaths = ['index.html', 'verify.html', 'forgot-password.html'];
+        const currentFile = window.location.pathname.split('/').pop();
+        if (!allowedPaths.includes(currentFile) && window.location.pathname !== getBasePath()) {
             window.location.href = `${getBasePath()}index.html`;
         }
     }
 }
 
-// Execute checkAuthAndRedirect on page load for all pages except verify.html
-if (!window.location.pathname.includes('verify.html')) {
-    checkAuthAndRedirect();
-}
+checkAuthAndRedirect();
 
-// Logic for index.html (Login/Signup Page)
+// --- Logic for index.html (Login/Signup Page) ---
 if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html')) {
     const container = document.getElementById('auth-container-animated');
     const registerBtn = document.getElementById('register');
@@ -41,15 +43,10 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
     const strengthMeterContainer = document.getElementById('strength-meter-container');
     const strengthBar = document.getElementById('strength-bar');
     const strengthText = document.getElementById('strength-text');
+    const signupForm = document.getElementById('signup-form');
 
     const toggleForm = (isRegister) => {
-        if (container) {
-            if (isRegister) {
-                container.classList.add('active');
-            } else {
-                container.classList.remove('active');
-            }
-        }
+        container.classList.toggle('active', isRegister);
     };
 
     if (registerBtn) registerBtn.addEventListener('click', () => toggleForm(true));
@@ -57,9 +54,7 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
     if (showLoginMobileBtn) showLoginMobileBtn.addEventListener('click', (e) => { e.preventDefault(); toggleForm(false); });
     if (showSignupMobileBtn) showSignupMobileBtn.addEventListener('click', (e) => { e.preventDefault(); toggleForm(true); });
 
-    // Password Strength Logic
     if (signupPasswordInput) {
-        // Initial state
         strengthText.textContent = "Kayıt Ol";
 
         signupPasswordInput.addEventListener('input', () => {
@@ -75,25 +70,20 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             if (password.length === 0) {
                 strengthText.textContent = "Kayıt Ol";
                 strengthMeterContainer.classList.remove('transformed');
-                strengthBar.style.width = `0%`;
+                strengthBar.style.width = '0%';
                 return;
             }
 
             let strength = 0;
             let firstUnmetRequirement = null;
-
             requirements.forEach(req => {
-                if (req.regex.test(password)) {
-                    strength++;
-                } else if (!firstUnmetRequirement) {
-                    firstUnmetRequirement = req.message;
-                }
+                if (req.regex.test(password)) strength++;
+                else if (!firstUnmetRequirement) firstUnmetRequirement = req.message;
             });
 
             const strengthPercentage = (strength / requirements.length) * 100;
             strengthBar.style.width = `${strengthPercentage}%`;
 
-            // Update text and colors
             if (strength === requirements.length) {
                 strengthText.textContent = "Kayıt Ol";
                 strengthMeterContainer.classList.add('transformed');
@@ -102,129 +92,88 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
                 strengthMeterContainer.classList.remove('transformed');
             }
 
-            strengthBar.classList.remove('weak', 'medium', 'strong');
-            if (strengthPercentage < 40) strengthBar.classList.add('weak');
-            else if (strengthPercentage < 80) strengthBar.classList.add('medium');
-            else strengthBar.classList.add('strong');
+            strengthBar.className = 'strength-bar'; // Reset classes
+            if (strengthPercentage === 100) strengthBar.classList.add('strong');
+            else if (strengthPercentage >= 60) strengthBar.classList.add('medium');
+            else strengthBar.classList.add('weak');
         });
-    }
 
-    // Form submission logic (Amplify)
-    const loginForm = document.getElementById('login-form');
-    const signupForm = document.getElementById('signup-form');
-
-    if (loginForm) {
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            try {
-                await signIn({ username: email, password });
-                alert('Giriş başarılı!');
-                window.location.href = `${getBasePath()}home.html`;
-            } catch (error) {
-                console.error('Giriş hatası:', error);
-                if (error.name === 'UserNotConfirmedException') {
-                    alert('Hesabınız doğrulanmamış. Lütfen e-postanızı doğrulayın.');
-                    window.location.href = `${getBasePath()}verify.html?email=${encodeURIComponent(email)}`;
-                } else {
-                    alert(error.message);
-                }
+        strengthMeterContainer.addEventListener('click', () => {
+            if (strengthMeterContainer.classList.contains('transformed')) {
+                signupForm.requestSubmit();
             }
         });
     }
 
-    if (signupForm) {
-        signupForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('signup-email').value;
-            const password = document.getElementById('signup-password').value;
-            try {
-                await signUp({ username: email, password, attributes: { email } });
-                // Redirect to verification page with email after successful signup
+    const loginForm = document.getElementById('login-form');
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        try {
+            await signIn({ username: email, password });
+            window.location.href = `${getBasePath()}home.html`;
+        } catch (error) {
+            console.error('Giriş hatası:', error);
+            if (error.name === 'UserNotConfirmedException') {
                 window.location.href = `${getBasePath()}verify.html?email=${encodeURIComponent(email)}`;
-            } catch (error) {
-                console.error('Kayıt hatası:', error);
+            } else {
                 alert(error.message);
             }
-        });
-    }
+        }
+    });
+
+    signupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        try {
+            await signUp({ username: email, password, attributes: { email } });
+            window.location.href = `${getBasePath()}verify.html?email=${encodeURIComponent(email)}`;
+        } catch (error) {
+            console.error('Kayıt hatası:', error);
+            alert(error.message);
+        }
+    });
 }
 
-// Logic for verify.html (Email Verification Page)
+// --- Logic for verify.html ---
 if (window.location.pathname.includes('verify.html')) {
     const { confirmSignUp, resendSignUpCode } = await import('aws-amplify/auth');
-
-    const verifyForm = document.getElementById('verify-form');
-    const emailDisplay = document.getElementById('verify-email-display');
-    const verificationCodeInput = document.getElementById('verification-code');
-    const resendCodeButton = document.getElementById('resend-code-button');
     
+    const emailDisplay = document.getElementById('verify-email-display');
     const urlParams = new URLSearchParams(window.location.search);
     const emailFromUrl = urlParams.get('email');
+    if (emailFromUrl) emailDisplay.textContent = emailFromUrl;
 
-    if (emailFromUrl) {
-        emailDisplay.textContent = emailFromUrl;
-    }
+    document.getElementById('verify-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const code = document.getElementById('verification-code').value;
+        if (!emailFromUrl || !code) return alert('E-posta veya doğrulama kodu eksik.');
+        try {
+            await confirmSignUp({ username: emailFromUrl, confirmationCode: code });
+            alert('E-posta başarıyla doğrulandı! Lütfen giriş yapın.');
+            window.location.href = `${getBasePath()}index.html`;
+        } catch (error) {
+            console.error('Doğrulama hatası:', error);
+            alert(error.message);
+        }
+    });
 
-    if (verifyForm) {
-        verifyForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const code = verificationCodeInput.value;
-            if (!emailFromUrl || !code) {
-                alert('E-posta veya doğrulama kodu eksik.');
-                return;
-            }
-            try {
-                await confirmSignUp({ username: emailFromUrl, confirmationCode: code });
-                alert('E-posta başarıyla doğrulandı! Ana sayfaya yönlendiriliyorsunuz...');
-                // After successful confirmation, redirect to home.
-                // A full sign-in is required, so we send them to the login page to do so.
-                window.location.href = `${getBasePath()}index.html`;
-            } catch (error) {
-                console.error('Doğrulama hatası:', error);
-                alert(error.message);
-            }
-        });
-    }
-
-    if (resendCodeButton) {
-        resendCodeButton.addEventListener('click', async (e) => {
-            e.preventDefault();
-            if (!emailFromUrl) {
-                alert('Doğrulama kodu gönderilecek e-posta adresi bulunamadı.');
-                return;
-            }
-            try {
-                await resendSignUpCode({ username: emailFromUrl });
-                alert('Doğrulama kodu tekrar gönderildi.');
-            } catch (error) {
-                console.error('Kodu tekrar gönderme hatası:', error);
-                alert(error.message);
-            }
-        });
-    }
+    document.getElementById('resend-code-button').addEventListener('click', async (e) => {
+        e.preventDefault();
+        if (!emailFromUrl) return alert('E-posta adresi bulunamadı.');
+        try {
+            await resendSignUpCode({ username: emailFromUrl });
+            alert('Doğrulama kodu tekrar gönderildi.');
+        } catch (error) {
+            console.error('Kodu tekrar gönderme hatası:', error);
+            alert(error.message);
+        }
+    });
 }
 
-// Logic for home.html (Home Page)
-if (window.location.pathname.includes('home.html')) {
-    const logoutButton = document.getElementById('logout-button');
-
-    if (logoutButton) {
-        logoutButton.addEventListener('click', async () => {
-            try {
-                await signOut();
-                alert('Başarıyla çıkış yapıldı.');
-                window.location.href = `${getBasePath()}index.html`;
-            } catch (error) {
-                console.error('Çıkış yapma hatası:', error);
-                alert(error.message);
-            }
-        });
-    }
-}
-
-// Logic for forgot-password.html
+// --- Logic for forgot-password.html ---
 if (window.location.pathname.includes('forgot-password.html')) {
     const { resetPassword, confirmResetPassword } = await import('aws-amplify/auth');
     
@@ -234,9 +183,8 @@ if (window.location.pathname.includes('forgot-password.html')) {
 
     sendCodeForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const email = emailInput.value;
         try {
-            await resetPassword({ username: email });
+            await resetPassword({ username: emailInput.value });
             alert('Sıfırlama kodu e-postana gönderildi.');
             sendCodeForm.classList.add('hidden');
             resetPasswordForm.classList.remove('hidden');
@@ -248,15 +196,27 @@ if (window.location.pathname.includes('forgot-password.html')) {
 
     resetPasswordForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const email = emailInput.value;
         const confirmationCode = document.getElementById('reset-code').value;
         const newPassword = document.getElementById('new-password').value;
         try {
-            await confirmResetPassword({ username: email, confirmationCode, newPassword });
+            await confirmResetPassword({ username: emailInput.value, confirmationCode, newPassword });
             alert('Şifren başarıyla değiştirildi. Şimdi giriş yapabilirsin.');
-            window.location.href = './index.html';
+            window.location.href = `${getBasePath()}index.html`;
         } catch (error) {
             console.error('Yeni şifre ayarlama hatası:', error);
+            alert(error.message);
+        }
+    });
+}
+
+// --- Logic for home.html ---
+if (window.location.pathname.includes('home.html')) {
+    document.getElementById('logout-button').addEventListener('click', async () => {
+        try {
+            await signOut();
+            window.location.href = `${getBasePath()}index.html`;
+        } catch (error) {
+            console.error('Çıkış yapma hatası:', error);
             alert(error.message);
         }
     });
