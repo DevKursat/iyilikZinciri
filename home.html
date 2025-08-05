@@ -8,50 +8,43 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="app-header">
-        <div class="header-content">
-            <div class="logo-container">
-                <img src="./assets/Logo.png" alt="İyilik Zinciri Logo" class="header-logo">
-                <h1>İyilik Zinciri</h1>
+    <main class="app-main home-page">
+        <!-- Haftalık Seri Takibi -->
+        <section class="streak-tracker animate-fade-in">
+            <h2 class="section-title">Bu Haftaki İyilik Serin</h2>
+            <div class="streak-circles">
+                <div class="streak-circle" data-task="1"></div>
+                <div class="streak-circle" data-task="2"></div>
+                <div class="streak-circle" data-task="3"></div>
             </div>
-            <button id="logout-button" class="logout-button">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Çıkış Yap</span>
-            </button>
-        </div>
-    </header>
-
-    <main class="app-main">
-        <section class="welcome-banner">
-            <h2>Tekrar Hoş Geldin, <span id="user-email">kullanıcı</span>!</h2>
-            <p>Bugün hangi iyiliği yapacaksın?</p>
         </section>
 
-        <section class="feature-cards">
-            <div class="card">
-                <i class="fas fa-user-circle card-icon"></i>
-                <h3>Profilim</h3>
-                <p>Kişisel bilgilerini ve ayarlarını görüntüle.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-stream card-icon"></i>
-                <h3>İyilik Akışı</h3>
-                <p>Topluluk tarafından yapılan iyilikleri keşfet.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-plus-circle card-icon"></i>
-                <h3>Yeni İyilik Ekle</h3>
-                <p>Yaptığın bir iyiliği paylaşarak zincire katkıda bul.</p>
+        <!-- Günün İyilik Görevi -->
+        <section class="daily-task-card animate-slide-up">
+            <div class="task-card-content">
+                <h3>Günün İyilik Görevi</h3>
+                <p id="daily-task-text">Yükleniyor...</p>
+                <button id="prove-task-btn">
+                    <i class="fas fa-camera"></i> Görevi Kanıtla
+                </button>
             </div>
         </section>
     </main>
 
-    <footer class="app-footer">
-        <p>&copy; 2025 İyilik Zinciri. Tüm hakları saklıdır.</p>
-    </footer>
+    <!-- Alt Navigasyon Barı -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Ana Sayfa</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-stream"></i>
+            <span>Akış</span>
+        </a>
+    </nav>
 
     <script type="module" src="script.js"></script>
 </body>

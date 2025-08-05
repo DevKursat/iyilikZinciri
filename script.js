@@ -264,29 +264,33 @@ if (window.location.pathname.includes('forgot-password.html')) {
 
 // --- Logic for home.html ---
 if (window.location.pathname.includes('home.html')) {
-    const userEmailSpan = document.getElementById('user-email');
+    const dailyTaskText = document.getElementById('daily-task-text');
+    const streakCircles = document.querySelectorAll('.streak-circle');
 
-    async function displayUserEmail() {
-        try {
-            const { attributes } = await getCurrentUser();
-            if (attributes.email) {
-                userEmailSpan.textContent = attributes.email;
-            }
-        } catch (error) {
-            console.error('Kullanıcı bilgileri alınamadı:', error);
-            userEmailSpan.textContent = 'iyiliksever'; // Fallback text
-        }
+    const goodDeeds = [
+        "Bir sokak hayvanına su ver.",
+        "Yaşlı bir komşunun poşetlerini taşımasına yardım et.",
+        "Toplu taşımada birine yer ver.",
+        "Bugün birine içten bir şekilde iltifat et.",
+        "Çevrendeki bir çöpü yere atma, çöp kutusuna at.",
+        "Bir arkadaşına nasıl olduğunu sor.",
+        "Okuduğun güzel bir kitabı birine hediye et.",
+        "Bir fidan dik."
+    ];
+
+    // Rastgele bir görev seç ve göster
+    function setRandomDeed() {
+        const randomIndex = Math.floor(Math.random() * goodDeeds.length);
+        dailyTaskText.textContent = goodDeeds[randomIndex];
     }
 
-    document.getElementById('logout-button').addEventListener('click', async () => {
-        try {
-            await signOut();
-            window.location.href = `${getBasePath()}index.html`;
-        } catch (error) {
-            console.error('Çıkış yapma hatası:', error);
-            alert(error.message);
-        }
+    // Seri dairelerine tıklama olayı ekle
+    streakCircles.forEach(circle => {
+        circle.addEventListener('click', () => {
+            circle.classList.toggle('completed');
+        });
     });
 
-    displayUserEmail();
+    // Sayfa yüklendiğinde fonksiyonları çalıştır
+    setRandomDeed();
 }

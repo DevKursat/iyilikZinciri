@@ -1,19 +1,30 @@
-Run npm run build
+Sayfa Yapısı ve Bileşenleri:
 
-> iyilik-zinciri@1.0.0 build
-> npx parcel build index.html --public-url /Good-Loop_iyilik-zinciri_/
+Haftalık Seri Takibi (Üst Kısım):
 
-npm warn exec The following package was not found and will be installed: parcel@2.15.4
-Building...
-🚨 Build failed.
+"Bu Haftaki İyilik Serin" başlığı olsun.
 
-@parcel/transformer-css: Invalid empty selector
+Yan yana duran, haftada yapılması gereken 3 iyiliği temsil eden 3 adet daire olsun. Tamamlanan her görev için bu daireler, yumuşak bir animasyonla dolarak yeşil renge dönsün.
 
-  /home/runner/work/Good-Loop_iyilik-zinciri_/Good-Loop_iyilik-zinciri_/style.css:45:1
-    44 |     }
-  > 45 | }
-  >    | ^
-    46 | 
-    47 | /* --- HOME PAGE STYLES --- */
+Günün İyilik Görevi (Orta Kısım):
 
-Error: Process completed with exit code 1.
+Dikkat çekici, gölgeli bir kart tasarımı kullan.
+
+Kartın içinde, "Günün İyilik Görevi" başlığı altında, o günün rastgele görev metni (ör: "Bir sokak hayvanına su ver.") büyük ve okunaklı bir şekilde yazsın.
+
+Kartın altında, kullanıcıyı fotoğraf/video yüklemeye yönlendirecek, belirgin ve davetkar bir "Görevi Kanıtla" butonu bulunsun.
+
+Navigasyon Barı (Alt Kısım):
+
+Ekranın altına sabitlenmiş, modern bir navigasyon barı oluştur.
+
+Bu barda sadece iki ikon bulunsun: Biri "Ana Sayfa" (bu ekran), diğeri ise iyiliklerin paylaşıldığı TikTok benzeri akış için "Akış".
+
+Tasarım ve Animasyon Stili:
+
+Renkler: Güven ve pozitifliği yansıtan yeşil ve turuncu tonlarını kullan.
+
+Yazı Tipi: Modern ve okunaklı bir sans-serif font ailesi seç.
+
+Animasyon: Sayfa yüklendiğinde bileşenler hafifçe kayarak veya belirerek ekrana gelsin. Butonların üzerine gelindiğinde veya dokunulduğunda ince bir gölge veya boyut animasyonu olsun.
+

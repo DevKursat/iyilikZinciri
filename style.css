@@ -1,8 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
 :root {
-    --primary-color: #4CAF50;
-    --secondary-color: #45a049;
+    --primary-color: #4CAF50; /* Yeşil */
+    --secondary-color: #FF9800; /* Turuncu */
     --background-color: #f0f2f5;
     --card-background: #ffffff;
     --text-color: #333;
@@ -11,26 +9,175 @@
     --border-color: #e0e0e0;
     --shadow-light: rgba(0, 0, 0, 0.1);
     --shadow-dark: rgba(0, 0, 0, 0.2);
-    --invalid-color: #ff4d4d;
-    --valid-color: #4CAF50;
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: 'Nunito', sans-serif;
 }
 
 body {
     background-color: var(--background-color);
-    font-family: 'Poppins', sans-serif;
+    color: var(--text-color);
+}
+
+/* --- YENİ ANA SAYFA STİLLERİ --- */
+
+.home-page {
+    padding: 2rem 1.5rem 100px 1.5rem; /* Alttaki nav bar için boşluk */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+/* Haftalık Seri Takibi */
+.streak-tracker {
+    width: 100%;
+}
+
+.streak-circles {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.streak-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--card-background);
+    border: 3px solid var(--border-color);
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+
+.streak-circle.completed {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+}
+
+/* Günün İyilik Görevi Kartı */
+.daily-task-card {
+    background: var(--card-background);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 10px 30px var(--shadow-light);
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.task-card-content h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--light-text-color);
+    margin-bottom: 1rem;
+}
+
+.task-card-content p {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-color);
+    min-height: 80px; /* Metin değiştiğinde zıplamayı önler */
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    min-height: 100vh;
+    margin-bottom: 2rem;
 }
 
+#prove-task-btn {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(45deg, var(--secondary-color), #ffbf00);
+    color: var(--white-color);
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(255, 152, 0, 0.3);
+}
+
+#prove-task-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 25px rgba(255, 152, 0, 0.4);
+}
+
+#prove-task-btn i {
+    margin-right: 0.5rem;
+}
+
+/* Alt Navigasyon Barı */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background-color: var(--card-background);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -5px 20px var(--shadow-light);
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--light-text-color);
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.nav-item i {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.nav-item.active {
+    color: var(--primary-color);
+    transform: translateY(-5px);
+}
+
+/* Animasyonlar */
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* --- ESKİ AUTH SAYFASI STİLLERİ --- */
 #auth-page-container {
     display: flex;
     align-items: center;
@@ -38,154 +185,11 @@ body {
     width: 100%;
     padding: 1rem;
 }
-
 .toggle-panel .app-logo {
     width: 80px;
     height: 80px;
     margin-bottom: 1rem;
 }
-
-/* --- HOME PAGE STYLES --- */
-.app-header {
-    width: 100%;
-    background-color: var(--card-background);
-    box-shadow: 0 2px 10px var(--shadow-light);
-    padding: 1rem 2rem;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 100;
-}
-
-.header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.logo-container {
-    display: flex;
-    align-items: center;
-}
-
-.header-logo {
-    width: 40px;
-    height: 40px;
-    margin-right: 1rem;
-}
-
-.logo-container h1 {
-    font-size: 1.5rem;
-    color: var(--text-color);
-}
-
-.logout-button {
-    background-color: transparent;
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-}
-
-.logout-button:hover {
-    background-color: var(--primary-color);
-    color: var(--white-color);
-}
-
-.logout-button i {
-    margin-right: 0.5rem;
-}
-
-.app-main {
-    padding-top: 80px; /* Header height */
-    padding-bottom: 60px; /* Footer height */
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-left: 2rem;
-    padding-right: 2rem;
-}
-
-.welcome-banner {
-    background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
-    color: var(--white-color);
-    padding: 2rem;
-    border-radius: 15px;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-.welcome-banner h2 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-}
-
-.feature-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-}
-
-.card {
-    background-color: var(--card-background);
-    border-radius: 15px;
-    box-shadow: 0 5px 15px var(--shadow-light);
-    padding: 2rem;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 25px var(--shadow-dark);
-}
-
-.card-icon {
-    font-size: 3rem;
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-}
-
-.card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    color: var(--text-color);
-}
-
-.card p {
-    color: var(--light-text-color);
-}
-
-.app-footer {
-    width: 100%;
-    background-color: #333;
-    color: var(--white-color);
-    padding: 1.5rem 2rem;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-}
-
-.mobile-logo-container {
-    display: none;
-    width: 100%;
-    text-align: center;
-    padding: 2rem 0 1rem 0;
-}
-
-.mobile-app-logo {
-    width: 60px;
-    height: 60px;
-}
-
 .auth-container-animated {
     background-color: var(--card-background);
     border-radius: 30px;
@@ -196,27 +200,23 @@ body {
     max-width: 768px;
     min-height: 480px;
 }
-
 .auth-container-animated p {
     font-size: 14px;
     line-height: 20px;
     letter-spacing: 0.3px;
     margin: 15px 0;
 }
-
 .auth-container-animated span {
     font-size: 12px;
     color: var(--light-text-color);
     margin-bottom: 10px;
 }
-
 .auth-container-animated a {
     color: var(--text-color);
     font-size: 13px;
     text-decoration: none;
     margin: 10px 0;
 }
-
 .auth-container-animated form {
     background-color: var(--card-background);
     display: flex;
@@ -226,7 +226,6 @@ body {
     padding: 0 40px;
     height: 100%;
 }
-
 .auth-container-animated input {
     background-color: #eee;
     border: none;
@@ -239,11 +238,9 @@ body {
     height: 40px;
     box-sizing: border-box;
 }
-
 #forgot-password-link {
     margin-top: 15px;
 }
-
 @media (min-width: 769px) {
     .form-container {
         position: absolute;
@@ -251,42 +248,35 @@ body {
         height: 100%;
         transition: all 0.6s ease-in-out;
     }
-
     .sign-in {
         left: 0;
         width: 50%;
         z-index: 2;
     }
-
     .sign-up {
         left: 0;
         width: 50%;
         opacity: 0;
         z-index: 1;
     }
-
     .auth-container-animated.active .sign-in {
         transform: translateX(100%);
         opacity: 0;
     }
-
     .auth-container-animated.active .sign-up {
         transform: translateX(100%);
         opacity: 1;
         z-index: 5;
         animation: move 0.6s;
     }
-
     @keyframes move {
         0%, 49.99% { opacity: 0; z-index: 1; }
         50%, 100% { opacity: 1; z-index: 5; }
     }
 }
-
 .social-icons {
     margin: 20px 0;
 }
-
 .social-icons a {
     border: 1px solid var(--border-color);
     border-radius: 20%;
@@ -298,12 +288,10 @@ body {
     height: 40px;
     transition: all 0.2s ease-in-out;
 }
-
 .social-icons a:hover {
     transform: scale(1.1);
     border-color: var(--primary-color);
 }
-
 @media (min-width: 769px) {
     .toggle-container {
         position: absolute;
@@ -316,14 +304,12 @@ body {
         border-radius: 150px 0 0 150px;
         z-index: 1000;
     }
-
     .auth-container-animated.active .toggle-container {
         transform: translateX(-100%);
         border-radius: 0 150px 150px 0;
     }
-
     .toggle {
-        background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+        background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
         color: var(--white-color);
         position: relative;
         left: -100%;
@@ -332,11 +318,9 @@ body {
         transform: translateX(0);
         transition: all 0.6s ease-in-out;
     }
-
     .auth-container-animated.active .toggle {
         transform: translateX(50%);
     }
-
     .toggle-panel {
         position: absolute;
         width: 50%;
@@ -352,25 +336,20 @@ body {
         transition: all 0.6s ease-in-out;
         cursor: pointer;
     }
-
     .toggle-left {
         transform: translateX(-200%);
     }
-
     .auth-container-animated.active .toggle-left {
         transform: translateX(0);
     }
-
     .toggle-right {
         right: 0;
         transform: translateX(0);
     }
-
     .auth-container-animated.active .toggle-right {
         transform: translateX(200%);
     }
 }
-
 /* --- DYNAMIC BUTTONS (LOGIN & SIGNUP) --- */
 .password-strength-meter, #login-button-container {
     width: 100%;
@@ -383,7 +362,6 @@ body {
     cursor: not-allowed;
     transition: background-color 0.4s ease-in-out;
 }
-
 .password-strength-meter .strength-bar {
     height: 100%;
     width: 0%;
@@ -395,7 +373,6 @@ body {
     left: 0;
     z-index: 1;
 }
-
 #strength-text, #login-text {
     position: absolute;
     top: 0;
@@ -414,24 +391,20 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
-
 /* Signup Bar Specifics */
 .strength-bar.weak { background-color: #ff4d4d; }
 .strength-bar.medium { background-color: #ffc107; }
 .strength-bar.strong { background-color: var(--valid-color); }
-
 /* Transformed state for BOTH buttons */
 #login-button-container.transformed,
 .password-strength-meter.transformed {
     background-color: var(--primary-color);
     cursor: pointer;
 }
-
 #login-button-container.transformed #login-text,
 .password-strength-meter.transformed #strength-text {
     color: var(--white-color);
 }
-
 /* --- STANDALONE FORM STYLING (VERIFY, FORGOT PASSWORD) --- */
 .auth-container-standalone {
     background-color: var(--card-background);
@@ -459,7 +432,6 @@ body {
 .auth-container-standalone h1 { margin-bottom: 1rem; text-align: center; }
 .auth-container-standalone span { font-size: 14px; color: var(--light-text-color); margin-bottom: 1.5rem; text-align: center; display: block; }
 .auth-container-standalone .back-to-login { margin-top: 1.5rem; font-size: 14px; }
-
 /* --- UNIFIED BUTTON STYLES --- */
 .auth-container-standalone button {
     width: 100%;
@@ -478,7 +450,6 @@ body {
     height: 40px;
     box-sizing: border-box;
 }
-
 .auth-container-standalone input {
     background-color: #eee;
     border: none;
@@ -491,9 +462,9 @@ body {
     height: 40px;
     box-sizing: border-box;
 }
-
-.mobile-toggle-form { display: none; }
-
+.mobile-logo-container {
+    display: none;
+}
 /* --- MOBILE STYLES --- */
 @media (max-width: 768px) {
     #auth-page-container {
@@ -531,5 +502,24 @@ body {
     }
     .toggle-panel .app-logo {
         display: none;
+    }
+}
+/* --- HOME PAGE MOBILE STYLES --- */
+@media (max-width: 768px) {
+    .home-page {
+        padding: 1.5rem 1rem 100px 1rem;
+    }
+    .section-title {
+        font-size: 1.1rem;
+    }
+    .streak-circle {
+        width: 50px;
+        height: 50px;
+    }
+    .daily-task-card {
+        padding: 1.5rem;
+    }
+    .task-card-content p {
+        font-size: 1.3rem;
     }
 }
