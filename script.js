@@ -42,6 +42,21 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
     const strengthBar = document.getElementById('strength-bar');
     const strengthText = document.getElementById('strength-text');
 
+    const toggleForm = (isRegister) => {
+        if (container) {
+            if (isRegister) {
+                container.classList.add('active');
+            } else {
+                container.classList.remove('active');
+            }
+        }
+    };
+
+    if (registerBtn) registerBtn.addEventListener('click', () => toggleForm(true));
+    if (loginBtn) loginBtn.addEventListener('click', () => toggleForm(false));
+    if (showLoginMobileBtn) showLoginMobileBtn.addEventListener('click', (e) => { e.preventDefault(); toggleForm(false); });
+    if (showSignupMobileBtn) showSignupMobileBtn.addEventListener('click', (e) => { e.preventDefault(); toggleForm(true); });
+
     // Password Strength Logic
     if (signupPasswordInput) {
         signupPasswordInput.addEventListener('input', () => {
