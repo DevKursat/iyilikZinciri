@@ -267,6 +267,7 @@ body {
     margin: 8px 0;
     overflow: hidden;
     position: relative;
+    /* Use flexbox for perfect centering of the child text */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -278,6 +279,7 @@ body {
     background-color: var(--invalid-color);
     border-radius: 4px;
     transition: width 0.4s ease-in-out, background-color 0.4s ease-in-out;
+    /* Position behind the text */
     position: absolute;
     top: 0;
     left: 0;
@@ -291,8 +293,9 @@ body {
     white-space: nowrap;
     opacity: 1;
     transition: opacity 0.3s ease-in-out;
-    z-index: 2;
+    /* Let flexbox handle positioning */
     position: relative;
+    z-index: 2;
 }
 
 .strength-button {
