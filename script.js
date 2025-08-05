@@ -19,7 +19,7 @@ async function checkAuthAndRedirect() {
         await getCurrentUser();
         // User is authenticated, redirect to home.html if not already there
         if (!currentPath.includes('home.html')) {
-            window.location.href = 'home.html';
+            window.location.href = './home.html';
         }
     } catch (error) {
         // User is not authenticated.
@@ -27,7 +27,7 @@ async function checkAuthAndRedirect() {
         // Otherwise, redirect them to the login page.
         const isLoginPage = (currentPath === appBasePath || currentPath === `${appBasePath}index.html`);
         if (!isLoginPage && !currentPath.includes('verify.html')) {
-            window.location.href = 'index.html';
+            window.location.href = './index.html';
         }
     }
 }
@@ -47,11 +47,8 @@ if (currentPath === appBasePath || currentPath === `${appBasePath}index.html`) {
 
     const signupPasswordInput = document.getElementById('signup-password');
     const strengthBar = document.querySelector('.strength-bar');
-    const lengthCheck = document.getElementById('length-check');
-    const uppercaseCheck = document.getElementById('uppercase-check');
-    const lowercaseCheck = document.getElementById('lowercase-check');
-    const numberCheck = document.getElementById('number-check');
-    const specialCheck = document.getElementById('special-check');
+    const strengthText = document.getElementById('strength-text');
+    const signupButton = document.getElementById('signup-button');
 
     const toggleForm = (isRegister) => {
         if (container) {
@@ -90,61 +87,35 @@ if (currentPath === appBasePath || currentPath === `${appBasePath}index.html`) {
     if (signupPasswordInput) {
         signupPasswordInput.addEventListener('input', () => {
             const password = signupPasswordInput.value;
+            const requirements = [
+                { regex: /.{8,}/, message: "En az 8 karakter" },
+                { regex: /[A-Z]/, message: "Büyük harf (A-Z)" },
+                { regex: /[a-z]/, message: "Küçük harf (a-z)" },
+                { regex: /[0-9]/, message: "Sayı (0-9)" },
+                { regex: /[!@#$%^&*]/, message: "Özel karakter (!@#$%^&*)" }
+            ];
+
             let strength = 0;
+            let firstUnmetRequirement = null;
 
-            // Length check
-            if (password.length >= 8) {
-                lengthCheck.classList.remove('invalid');
-                lengthCheck.classList.add('valid');
-                strength++;
-            } else {
-                lengthCheck.classList.remove('valid');
-                lengthCheck.classList.add('invalid');
-            }
+            requirements.forEach(req => {
+                if (req.regex.test(password)) {
+                    strength++;
+                } else if (!firstUnmetRequirement) {
+                    firstUnmetRequirement = req.message;
+                }
+            });
 
-            // Uppercase check
-            if (/[A-Z]/.test(password)) {
-                uppercaseCheck.classList.remove('invalid');
-                uppercaseCheck.classList.add('valid');
-                strength++;
-            } else {
-                uppercaseCheck.classList.remove('valid');
-                uppercaseCheck.classList.add('invalid');
-            }
-
-            // Lowercase check
-            if (/[a-z]/.test(password)) {
-                lowercaseCheck.classList.remove('invalid');
-                lowercaseCheck.classList.add('valid');
-                strength++;
-            } else {
-                lowercaseCheck.classList.remove('valid');
-                lowercaseCheck.classList.add('invalid');
-            }
-
-            // Number check
-            if (/[0-9]/.test(password)) {
-                numberCheck.classList.remove('invalid');
-                numberCheck.classList.add('valid');
-                strength++;
-            } else {
-                numberCheck.classList.remove('valid');
-                numberCheck.classList.add('invalid');
-            }
-
-            // Special character check
-            if (/[!@#$%^&*]/.test(password)) {
-                specialCheck.classList.remove('invalid');
-                specialCheck.classList.add('valid');
-                strength++;
-            } else {
-                specialCheck.classList.remove('valid');
-                specialCheck.classList.add('invalid');
-            }
-
-            // Update strength bar
-            const strengthPercentage = (strength / 5) * 100;
+            const strengthPercentage = (strength / requirements.length) * 100;
             strengthBar.style.width = `${strengthPercentage}%`;
+
+            if (strength === requirements.length) {
+                strengthText.textContent = "Güçlü Şifre";
+                signupButton.style.display = 'block';
+            } else {
+                strengthText.textContent = `${strength}/${requirements.length}: ${firstUnmetRequirement}`;
+                signupButton.style.display = 'none';
+            }
 
             strengthBar.classList.remove('weak', 'medium', 'strong');
             if (strengthPercentage < 40) {
@@ -169,13 +140,13 @@ if (currentPath === appBasePath || currentPath === `${appBasePath}index.html`) {
             try {
                 await signIn({ username: email, password });
                 alert('Giriş başarılı!');
-                window.location.href = 'home.html';
+                window.location.href = './home.html';
             } catch (error) {
                 console.error('Giriş hatası:', error);
                 if (error.name === 'UserNotConfirmedException') {
                     alert('Hesabınız doğrulanmamış. Lütfen e-postanızı doğrulayın.');
                     // Redirect to verification page with email
-                    window.location.href = `verify.html?email=${encodeURIComponent(email)}`;
+                    window.location.href = `./verify.html?email=${encodeURIComponent(email)}`;
                 } else {
                     alert(error.message);
                 }
@@ -192,7 +163,7 @@ if (currentPath === appBasePath || currentPath === `${appBasePath}index.html`) {
                 await signUp({ username: email, password, attributes: { email } });
                 alert('Kayıt başarılı! Lütfen e-postanıza gönderilen doğrulama linkine tıklayın.');
                 // Redirect to verification page with email
-                window.location.href = `verify.html?email=${encodeURIComponent(email)}`;
+                window.location.href = `./verify.html?email=${encodeURIComponent(email)}`;
             } catch (error) {
                 console.error('Kayıt hatası:', error);
                 alert(error.message);
@@ -226,7 +197,7 @@ if (currentPath.includes('verify.html')) {
                 // After successful confirmation, try to sign in automatically
                 // If confirmSignUp doesn't automatically sign in, user will be redirected to login page
                 // Removed automatic sign-in here to avoid password prompt
-                window.location.href = 'home.html'; // Redirect directly to home after successful verification
+                window.location.href = './home.html'; // Redirect directly to home after successful verification
             } catch (error) {
                 console.error('Doğrulama hatası:', error);
                 alert(error.message);
@@ -263,7 +234,7 @@ if (currentPath.includes('home.html')) {
             try {
                 await signOut();
                 alert('Başarıyla çıkış yapıldı.');
-                window.location.href = 'index.html';
+                window.location.href = './index.html';
             } catch (error) {
                 console.error('Çıkış yapma hatası:', error);
                 alert(error.message);

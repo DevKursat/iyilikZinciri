@@ -377,6 +377,16 @@ body {
     background-color: var(--invalid-color);
     border-radius: 4px;
     transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#strength-text {
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
 .strength-bar.weak {
@@ -391,33 +401,3 @@ body {
     background-color: var(--valid-color);
 }
 
-.password-criteria {
-    list-style: none;
-    width: 100%;
-    margin-bottom: 15px;
-    padding-left: 0;
-}
-
-.password-criteria li {
-    font-size: 12px;
-    color: var(--light-text-color);
-    margin-bottom: 5px;
-    display: flex;
-    align-items: center;
-}
-
-.password-criteria li::before {
-    content: '\2716'; /* Cross mark */
-    color: var(--invalid-color);
-    margin-right: 8px;
-    font-weight: bold;
-}
-
-.password-criteria li.valid {
-    color: var(--text-color);
-}
-
-.password-criteria li.valid::before {
-    content: '\2714'; /* Check mark */
-    color: var(--valid-color);
-}

@@ -28,16 +28,9 @@
                     <input type="email" id="signup-email" placeholder="E-posta" required>
                     <input type="password" id="signup-password" placeholder="Şifre" required>
                     <div class="password-strength-meter">
-                        <div class="strength-bar"></div>
+                        <div class="strength-bar"><span id="strength-text"></span></div>
                     </div>
-                    <ul class="password-criteria">
-                        <li id="length-check" class="invalid">En az 8 karakter</li>
-                        <li id="uppercase-check" class="invalid">Büyük harf (A-Z)</li>
-                        <li id="lowercase-check" class="invalid">Küçük harf (a-z)</li>
-                        <li id="number-check" class="invalid">Sayı (0-9)</li>
-                        <li id="special-check" class="invalid">Özel karakter (!@#$%^&*)</li>
-                    </ul>
-                    <button type="submit">Kayıt Ol</button>
+                    <button type="submit" id="signup-button" style="display: none;">Kayıt Ol</button>
                     <p class="mobile-toggle-form">Zaten hesabın var mı? <a href="#" id="show-login-mobile">Giriş Yap</a></p>
                 </form>
             </div>

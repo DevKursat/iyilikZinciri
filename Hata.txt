@@ -1,0 +1,20 @@
+Run npm run build
+
+> iyilik-zinciri@1.0.0 build
+> npx parcel build index.html --public-url /Good-Loop_iyilik-zinciri_/
+
+npm warn exec The following package was not found and will be installed: parcel@2.15.4
+Building...
+🚨 Build failed.
+
+@parcel/core: node_modules/@aws-amplify/auth/dist/esm/index.mjs does not export 
+'Auth'
+  /home/runner/work/Good-Loop_iyilik-zinciri_/Good-Loop_iyilik-zinciri_/script.js:3:10
+    2 | import 'process';
+  > 3 | import { Auth } from '@aws-amplify/auth';
+  >   |          ^^^^
+    4 | import amplifyconfig from './src/amplifyconfiguration.json';
+    5 | 
+
+
+Error: Process completed with exit code 1.
