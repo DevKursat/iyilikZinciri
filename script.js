@@ -55,6 +55,9 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
 
     // Password Strength Logic
     if (signupPasswordInput) {
+        // Initial state
+        strengthText.textContent = "Kayıt Ol";
+
         signupPasswordInput.addEventListener('input', () => {
             const password = signupPasswordInput.value;
             const requirements = [
@@ -64,6 +67,13 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
                 { regex: /[0-9]/, message: "Sayı (0-9)" },
                 { regex: /[!@#$%^&*]/, message: "Özel karakter (!@#$%^&*)" }
             ];
+
+            if (password.length === 0) {
+                strengthText.textContent = "Kayıt Ol";
+                strengthMeterContainer.classList.remove('transformed');
+                strengthBar.style.width = `0%`;
+                return;
+            }
 
             let strength = 0;
             let firstUnmetRequirement = null;
@@ -81,7 +91,7 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
 
             // Update text and colors
             if (strength === requirements.length) {
-                strengthText.textContent = "Şifre Güçlü";
+                strengthText.textContent = "Kayıt Ol";
                 strengthMeterContainer.classList.add('transformed');
             } else {
                 strengthText.textContent = `${strength}/${requirements.length}: ${firstUnmetRequirement || ''}`;
