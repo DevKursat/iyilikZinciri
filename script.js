@@ -211,3 +211,41 @@ if (window.location.pathname.includes('home.html')) {
         });
     }
 }
+
+// Logic for forgot-password.html
+if (window.location.pathname.includes('forgot-password.html')) {
+    const { resetPassword, confirmResetPassword } = await import('aws-amplify/auth');
+    
+    const sendCodeForm = document.getElementById('send-code-form');
+    const resetPasswordForm = document.getElementById('reset-password-form');
+    const emailInput = document.getElementById('reset-email');
+
+    sendCodeForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = emailInput.value;
+        try {
+            await resetPassword({ username: email });
+            alert('Sıfırlama kodu e-postana gönderildi.');
+            sendCodeForm.classList.add('hidden');
+            resetPasswordForm.classList.remove('hidden');
+        } catch (error) {
+            console.error('Şifre sıfırlama hatası:', error);
+            alert(error.message);
+        }
+    });
+
+    resetPasswordForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = emailInput.value;
+        const confirmationCode = document.getElementById('reset-code').value;
+        const newPassword = document.getElementById('new-password').value;
+        try {
+            await confirmResetPassword({ username: email, confirmationCode, newPassword });
+            alert('Şifren başarıyla değiştirildi. Şimdi giriş yapabilirsin.');
+            window.location.href = './index.html';
+        } catch (error) {
+            console.error('Yeni şifre ayarlama hatası:', error);
+            alert(error.message);
+        }
+    });
+}

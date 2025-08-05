@@ -46,14 +46,14 @@ body {
 }
 
 .mobile-logo-container {
-    display: none; /* Hidden by default */
+    display: none;
     width: 100%;
     text-align: center;
-    padding: 1rem 0;
+    padding: 2rem 0 1rem 0;
 }
 
 .mobile-app-logo {
-    width: 60px; /* Adjust size as needed */
+    width: 60px;
     height: 60px;
 }
 
@@ -72,7 +72,7 @@ body {
     font-size: 14px;
     line-height: 20px;
     letter-spacing: 0.3px;
-    margin: 20px 0;
+    margin: 15px 0;
 }
 
 .auth-container-animated span {
@@ -85,13 +85,13 @@ body {
     color: var(--text-color);
     font-size: 13px;
     text-decoration: none;
-    margin: 15px 0 10px;
+    margin: 10px 0;
 }
 
 .auth-container-animated button {
     background-color: var(--primary-color);
     color: var(--white-color);
-    font-size: 12px;
+    font-size: 13px;
     padding: 10px 45px;
     border: 1px solid transparent;
     border-radius: 8px;
@@ -101,11 +101,8 @@ body {
     margin-top: 10px;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-}
-
-.auth-container-animated button.hidden {
-    background-color: transparent;
-    border-color: var(--white-color);
+    height: 40px; /* Match input height */
+    line-height: 1;
 }
 
 .auth-container-animated button:hover {
@@ -132,6 +129,11 @@ body {
     border-radius: 8px;
     width: 100%;
     outline: none;
+    height: 40px;
+}
+
+#forgot-password-link {
+    margin-top: 15px;
 }
 
 .form-container {
@@ -156,6 +158,7 @@ body {
 
 .auth-container-animated.active .sign-in {
     transform: translateX(100%);
+    opacity: 0;
 }
 
 .auth-container-animated.active .sign-up {
@@ -166,14 +169,8 @@ body {
 }
 
 @keyframes move {
-    0%, 49.99% {
-        opacity: 0;
-        z-index: 1;
-    }
-    50%, 100% {
-        opacity: 1;
-        z-index: 5;
-    }
+    0%, 49.99% { opacity: 0; z-index: 1; }
+    50%, 100% { opacity: 1; z-index: 5; }
 }
 
 .social-icons {
@@ -215,8 +212,6 @@ body {
 }
 
 .toggle {
-    background-color: var(--primary-color);
-    height: 100%;
     background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
     color: var(--white-color);
     position: relative;
@@ -244,18 +239,7 @@ body {
     top: 0;
     transform: translateX(0);
     transition: all 0.6s ease-in-out;
-    cursor: pointer; /* Make the entire panel clickable */
-}
-
-.toggle-action-text {
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    margin-top: 10px;
-    padding: 10px 20px;
-    border: 1px solid var(--white-color);
-    border-radius: 8px;
-    display: inline-block;
+    cursor: pointer;
 }
 
 .toggle-left {
@@ -275,116 +259,17 @@ body {
     transform: translateX(200%);
 }
 
-@media (max-width: 768px) {
-    .auth-container-animated {
-        width: 100%;
-        height: 100vh;
-        border-radius: 0;
-        box-shadow: none;
-        max-width: none;
-        min-height: auto;
-        overflow: hidden; /* Prevent scrollbars during animation */
-    }
-
-    .form-container {
-        width: 100%;
-        height: calc(100% - 180px); /* Adjust height to leave space for toggle container */
-        position: absolute;
-        transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    .sign-in {
-        transform: translateX(0);
-        z-index: 2;
-    }
-
-    .sign-up {
-        transform: translateX(100%);
-        opacity: 1;
-        z-index: 1;
-    }
-
-    .auth-container-animated.active .sign-in {
-        transform: translateX(-100%);
-    }
-
-    .auth-container-animated.active .sign-up {
-        transform: translateX(0);
-        z-index: 2;
-    }
-
-    .toggle-container {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 180px; /* Fixed height for the bottom bar */
-        border-radius: 0;
-        transform: none !important;
-    }
-
-    .toggle {
-        width: 100%;
-        height: 100%;
-        left: 0;
-        transform: none !important;
-        border-radius: 30px 30px 0 0; /* Rounded corners on top */
-    }
-
-    .toggle-panel {
-        width: 100%;
-        transform: none !important;
-        transition: opacity 0.6s ease-in-out, visibility 0.6s;
-        visibility: hidden;
-        opacity: 0;
-    }
-    
-    .toggle-panel .app-logo {
-        width: 50px;
-        height: 50px;
-    }
-
-    .toggle-left {
-        visibility: hidden;
-        opacity: 0;
-    }
-
-    .toggle-right {
-        visibility: visible;
-        opacity: 1;
-    }
-
-    .auth-container-animated.active .toggle-left {
-        visibility: visible;
-        opacity: 1;
-    }
-
-    .auth-container-animated.active .toggle-right {
-        visibility: hidden;
-        opacity: 0;
-    }
-
-    .mobile-logo-container {
-        display: block;
-    }
-
-    .app-logo {
-        display: block; /* Ensure logo is visible in toggle panels */
-    }
-}
-
-
-/* Password Strength Meter */
 .password-strength-meter {
     width: 100%;
-    height: 38px;
+    height: 40px;
     background-color: #e0e0e0;
     border-radius: 8px;
     margin: 8px 0;
     overflow: hidden;
-    position: relative; /* Required for positioning the button inside */
+    position: relative;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .strength-bar {
@@ -393,24 +278,21 @@ body {
     background-color: var(--invalid-color);
     border-radius: 4px;
     transition: width 0.4s ease-in-out, background-color 0.4s ease-in-out;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1; /* Ensure bar is behind text initially */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
 }
 
 #strength-text {
-    color: var(--text-color); /* Change to dark color for readability on gray background */
+    color: var(--text-color);
     font-size: 12px;
     font-weight: 600;
     white-space: nowrap;
     opacity: 1;
     transition: opacity 0.3s ease-in-out;
     z-index: 2;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Perfect centering */
+    position: relative;
 }
 
 .strength-button {
@@ -421,64 +303,110 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-    border: none; /* Remove border to help with centering */
-    line-height: 1; /* Ensure line height doesn't add extra space */
+    border: none;
     border-radius: 8px;
     opacity: 0;
     pointer-events: none;
     z-index: 3;
     transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     transform: scale(0.95);
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-/* New style for the text-based toggle link */
-.toggle-link {
-    background: none;
-    border: 1px solid var(--white-color);
-    color: var(--white-color);
-    padding: 10px 45px;
-    border-radius: 8px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    margin-top: 10px;
+.password-strength-meter.transformed {
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
 }
 
-.toggle-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-
-/* Transformation logic */
 .password-strength-meter.transformed .strength-bar {
-    width: 100% !important; /* Force full width */
+    width: 100% !important;
     background-color: var(--primary-color);
 }
 
 .password-strength-meter.transformed #strength-text {
-    opacity: 0; /* Hide the text */
+    opacity: 0;
 }
 
 .password-strength-meter.transformed .strength-button {
-    opacity: 1; /* Show the button */
-    pointer-events: auto; /* Make it clickable */
-    transform: scale(1); /* Grow to full size */
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
 }
 
-.strength-bar.weak {
-    background-color: var(--invalid-color);
+.strength-bar.weak { background-color: var(--invalid-color); }
+.strength-bar.medium { background-color: orange; }
+.strength-bar.strong { background-color: var(--valid-color); }
+
+.form-container-standalone {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background-color: var(--card-background);
+    border-radius: 15px;
+    box-shadow: 0 5px 15px var(--shadow-dark);
+    width: 100%;
+    max-width: 420px;
 }
 
-.strength-bar.medium {
-    background-color: orange;
-}
+.form-container-standalone h1 { margin-bottom: 1rem; }
+.form-container-standalone span { font-size: 14px; color: var(--light-text-color); margin-bottom: 1rem; text-align: center; }
+.form-container-standalone form { width: 100%; }
+.form-container-standalone .hidden { display: none; }
+.back-to-login { margin-top: 1.5rem; font-size: 14px; }
 
-.strength-bar.strong {
-    background-color: var(--valid-color);
-}
+.mobile-toggle-form { display: none; }
 
+@media (max-width: 768px) {
+    #auth-page-container {
+        padding: 0;
+    }
+    .auth-container-animated {
+        max-width: 100%;
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+        display: block;
+    }
+    .toggle-container {
+        display: none;
+    }
+    .form-container {
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+        padding: 20px;
+        opacity: 1;
+        transform: none;
+        animation: none;
+        transition: opacity 0.4s ease-in-out, visibility 0.4s;
+        visibility: visible;
+    }
+    .sign-up {
+        visibility: hidden;
+        opacity: 0;
+    }
+    .auth-container-animated.active .sign-in {
+        visibility: hidden;
+        opacity: 0;
+    }
+    .auth-container-animated.active .sign-up {
+        visibility: visible;
+        opacity: 1;
+    }
+    .mobile-toggle-form {
+        margin-top: 20px;
+        display: block;
+        text-align: center;
+    }
+    .mobile-toggle-form a {
+        font-weight: bold;
+        color: var(--primary-color);
+        cursor: pointer;
+    }
+    .mobile-logo-container {
+        display: block;
+    }
+    .app-logo {
+        display: none;
+    }
+}
