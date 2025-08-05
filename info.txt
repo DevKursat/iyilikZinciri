@@ -1,0 +1,19 @@
+Run npm run build
+
+> iyilik-zinciri@1.0.0 build
+> npx parcel build index.html --public-url /Good-Loop_iyilik-zinciri_/
+
+npm warn exec The following package was not found and will be installed: parcel@2.15.4
+Building...
+🚨 Build failed.
+
+@parcel/transformer-css: Invalid empty selector
+
+  /home/runner/work/Good-Loop_iyilik-zinciri_/Good-Loop_iyilik-zinciri_/style.css:45:1
+    44 |     }
+  > 45 | }
+  >    | ^
+    46 | 
+    47 | /* --- HOME PAGE STYLES --- */
+
+Error: Process completed with exit code 1.
