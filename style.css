@@ -117,6 +117,12 @@ body {
     box-shadow: none;
 }
 
+/* Make form buttons full-width to match text fields */
+.form-container form button[type="submit"],
+.form-container-standalone form button[type="submit"] {
+    width: 100%;
+}
+
 .auth-container-animated form {
     background-color: var(--card-background);
     display: flex;
