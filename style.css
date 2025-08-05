@@ -387,16 +387,17 @@ body {
 }
 
 #strength-text {
-    color: white;
+    color: var(--text-color); /* Change to dark color for readability on gray background */
     font-size: 12px;
     font-weight: 600;
     white-space: nowrap;
     opacity: 1;
     transition: opacity 0.3s ease-in-out;
-    z-index: 2; /* Text is on top */
-    position: absolute; /* Center it within the container */
+    z-index: 2;
+    position: absolute;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%); /* Perfect centering */
 }
 
 .strength-button {
@@ -405,13 +406,17 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    margin: 0;
+    margin: 0; /* Reset margin */
+    padding: 0; /* Reset padding */
     border-radius: 8px;
     opacity: 0;
-    pointer-events: none; /* Button is not clickable when invisible */
-    z-index: 3; /* Button is on top when visible */
-    transition: opacity 0.4s ease-in-out;
-    transform: scale(0.95); /* Start slightly smaller */
+    pointer-events: none;
+    z-index: 3;
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+    transform: scale(0.95);
+    display: flex; /* Add flex properties for centering */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
 }
 
 /* Transformation logic */
