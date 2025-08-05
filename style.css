@@ -368,17 +368,17 @@ body {
 }
 
 /* --- DYNAMIC BUTTONS (LOGIN & SIGNUP) --- */
-.password-strength-meter, #login-button-container {
+.password-strength-meter {
     width: 100%;
-    height: 40px;
-    background-color: transparent;
+    height: 20px; /* Reduced height */
+    background-color: #eee;
     border-radius: 8px;
-    margin: 8px 0;
+    margin: 8px 0 15px 0; /* Adjusted margin */
     position: relative;
     overflow: hidden;
 }
 
-.password-strength-meter .strength-bar, #login-button-container .strength-bar {
+.password-strength-meter .strength-bar {
     height: 100%;
     width: 0%;
     background-color: var(--invalid-color);
@@ -390,9 +390,9 @@ body {
     z-index: 1;
 }
 
-#strength-text, #login-text {
+#strength-text {
     position: absolute;
-    top: 0;
+    top: -2px; /* Adjusted for vertical centering */
     left: 0;
     width: 100%;
     height: 100%;
@@ -400,40 +400,16 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text-color);
-    font-size: 13px;
+    color: var(--light-text-color);
+    font-size: 11px; /* Reduced font size */
     font-weight: 600;
     white-space: nowrap;
-    transition: color 0.4s ease-in-out;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
-/* Signup Bar Specifics */
-.password-strength-meter.transformed {
-    cursor: pointer;
-}
-.password-strength-meter.transformed #strength-text {
-    color: var(--white-color);
-}
 .strength-bar.weak { background-color: #ff4d4d; }
 .strength-bar.medium { background-color: #ffc107; }
 .strength-bar.strong { background-color: var(--valid-color); }
 
-/* Login Bar Specifics */
-#login-button-container .strength-bar {
-    background-color: #e0e0e0;
-    width: 100%;
-}
-#login-button-container.transformed {
-    cursor: pointer;
-}
-#login-button-container.transformed .strength-bar {
-    background-color: var(--primary-color);
-}
-#login-button-container.transformed #login-text {
-    color: var(--white-color);
-}
 
 /* --- STANDALONE FORM STYLING (VERIFY, FORGOT PASSWORD) --- */
 .auth-container-standalone {
@@ -462,12 +438,11 @@ body {
 .auth-container-standalone h1 { margin-bottom: 1rem; text-align: center; }
 .auth-container-standalone span { font-size: 14px; color: var(--light-text-color); margin-bottom: 1.5rem; text-align: center; display: block; }
 .auth-container-standalone .back-to-login { margin-top: 1.5rem; font-size: 14px; }
+
+/* --- UNIFIED BUTTON STYLES --- */
 .auth-container-standalone button,
 .auth-container-animated button {
     width: 100%;
-}
-.auth-container-standalone button,
-.auth-container-animated button {
     background-color: var(--primary-color);
     color: var(--white-color);
     font-size: 13px;
@@ -484,13 +459,8 @@ body {
     box-sizing: border-box;
 }
 
-.sign-up button {
-    margin-top: 15px;
-}
-
-
-.auth-container-animated button.hidden {
-    display: none;
+.auth-container-animated button {
+    margin-top: 15px; /* Consistent margin for both buttons */
 }
 
 .auth-container-animated button:disabled {

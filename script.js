@@ -106,25 +106,20 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
     // --- Login Logic ---
     const loginEmailInput = document.getElementById('login-email');
     const loginPasswordInput = document.getElementById('login-password');
-    const loginButtonContainer = document.getElementById('login-button-container');
+    const loginButton = document.getElementById('login-button');
     const loginForm = document.getElementById('login-form');
 
     function validateLoginInputs() {
         const email = loginEmailInput.value;
         const password = loginPasswordInput.value;
-        loginButtonContainer.classList.toggle('transformed', email.length > 0 && password.length > 0);
+        loginButton.disabled = !(email.length > 0 && password.length > 0);
     }
 
     if (loginEmailInput && loginPasswordInput) {
+        loginButton.disabled = true;
         loginEmailInput.addEventListener('input', validateLoginInputs);
         loginPasswordInput.addEventListener('input', validateLoginInputs);
     }
-
-    loginButtonContainer.addEventListener('click', () => {
-        if (loginButtonContainer.classList.contains('transformed')) {
-            loginForm.requestSubmit();
-        }
-    });
 
     // --- Form Submissions ---
     loginForm.addEventListener('submit', async (e) => {
