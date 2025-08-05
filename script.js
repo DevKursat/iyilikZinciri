@@ -1,6 +1,6 @@
 import 'buffer';
 import 'process';
-import Amplify from 'aws-amplify';
+import { Amplify } from 'aws-amplify';
 import amplifyconfig from './src/amplifyconfiguration.json';
 
 /* eslint-disable */
