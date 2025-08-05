@@ -88,6 +88,11 @@ body {
     margin: 10px 0;
 }
 
+.auth-container-animated input,
+.auth-container-animated button {
+    box-sizing: border-box; /* GUARANTEES consistent height */
+}
+
 .auth-container-animated button {
     background-color: var(--primary-color);
     color: var(--white-color);
