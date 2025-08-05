@@ -510,24 +510,28 @@ body {
         width: 100%;
         height: 100%;
         padding: 20px;
-        opacity: 1;
         transform: none;
         animation: none;
-        transition: opacity 0.4s ease-in-out, visibility 0.4s;
-        visibility: visible;
-    }
-    .sign-up {
-        visibility: hidden;
+        transition: opacity 0.4s ease-in-out, pointer-events 0.4s;
         opacity: 0;
+        pointer-events: none; /* Varsayılan olarak tüm formlar etkileşimsiz */
     }
+
+    .sign-in {
+        opacity: 1; /* Sadece giriş formu başlangıçta görünür */
+        pointer-events: auto;
+    }
+
     .auth-container-animated.active .sign-in {
-        visibility: hidden;
         opacity: 0;
+        pointer-events: none;
     }
+
     .auth-container-animated.active .sign-up {
-        visibility: visible;
         opacity: 1;
+        pointer-events: auto;
     }
+
     .mobile-toggle-form {
         margin-top: 20px;
         display: block;
