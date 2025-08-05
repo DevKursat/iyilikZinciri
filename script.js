@@ -54,9 +54,11 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
     const strengthBar = document.getElementById('strength-bar');
     const strengthText = document.getElementById('strength-text');
     const signupForm = document.getElementById('signup-form');
+    const signupButton = document.getElementById('signup-button');
 
     if (signupPasswordInput) {
-        strengthText.textContent = "Kayıt Ol";
+        signupButton.classList.remove('hidden');
+        signupButton.disabled = true;
 
         signupPasswordInput.addEventListener('input', () => {
             const password = signupPasswordInput.value;
@@ -69,10 +71,10 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             ];
 
             if (password.length === 0) {
-                strengthText.textContent = "Kayıt Ol";
-                strengthMeterContainer.classList.remove('transformed');
+                strengthText.textContent = "";
                 strengthBar.style.width = '0%';
-                strengthBar.className = 'strength-bar'; // Reset color
+                strengthBar.className = 'strength-bar';
+                signupButton.disabled = true;
                 return;
             }
 
@@ -87,23 +89,17 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             strengthBar.style.width = `${strengthPercentage}%`;
 
             if (strength === requirements.length) {
-                strengthText.textContent = "Kayıt Ol";
-                strengthMeterContainer.classList.add('transformed');
+                strengthText.textContent = "Şifre güçlü";
+                signupButton.disabled = false;
             } else {
-                strengthText.textContent = `${strength}/${requirements.length}: ${firstUnmetRequirement || ''}`;
-                strengthMeterContainer.classList.remove('transformed');
+                strengthText.textContent = `${firstUnmetRequirement}`;
+                signupButton.disabled = true;
             }
 
             strengthBar.className = 'strength-bar';
             if (strengthPercentage === 100) strengthBar.classList.add('strong');
             else if (strengthPercentage >= 60) strengthBar.classList.add('medium');
             else strengthBar.classList.add('weak');
-        });
-
-        strengthMeterContainer.addEventListener('click', () => {
-            if (strengthMeterContainer.classList.contains('transformed')) {
-                signupForm.requestSubmit();
-            }
         });
     }
 
@@ -154,7 +150,8 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
         const password = signupPasswordInput.value;
         try {
             await signUp({ username: email, password, attributes: { email } });
-            window.location.href = `${getBasePath()}verify.html?email=${encodeURIComponent(email)}`;
+            alert('Hesap başarıyla oluşturuldu! Lütfen giriş yapın.');
+            window.location.href = `${getBasePath()}index.html`;
         } catch (error) {
             console.error('Kayıt hatası:', error);
             alert(error.message);

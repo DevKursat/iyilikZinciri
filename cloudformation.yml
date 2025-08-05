@@ -90,8 +90,6 @@ Resources:
           RequireNumbers: true
           RequireSymbols: false
           RequireUppercase: true
-      AutoVerifiedAttributes:
-        - email
 
   CognitoUserPoolClient:
     Type: AWS::Cognito::UserPoolClient

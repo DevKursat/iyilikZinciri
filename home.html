@@ -4,14 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>İyilik Zinciri - Ana Sayfa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>Hoş Geldiniz!</h1>
-        <p>Başarıyla giriş yaptınız.</p>
-        <button id="logout-button">Çıkış Yap</button>
-    </div>
+    <header class="app-header">
+        <div class="header-content">
+            <div class="logo-container">
+                <img src="./assets/Logo.png" alt="İyilik Zinciri Logo" class="header-logo">
+                <h1>İyilik Zinciri</h1>
+            </div>
+            <button id="logout-button" class="logout-button">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Çıkış Yap</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="welcome-banner">
+            <h2>Tekrar Hoş Geldin, <span id="user-email">kullanıcı</span>!</h2>
+            <p>Bugün hangi iyiliği yapacaksın?</p>
+        </section>
+
+        <section class="feature-cards">
+            <div class="card">
+                <i class="fas fa-user-circle card-icon"></i>
+                <h3>Profilim</h3>
+                <p>Kişisel bilgilerini ve ayarlarını görüntüle.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-stream card-icon"></i>
+                <h3>İyilik Akışı</h3>
+                <p>Topluluk tarafından yapılan iyilikleri keşfet.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-plus-circle card-icon"></i>
+                <h3>Yeni İyilik Ekle</h3>
+                <p>Yaptığın bir iyiliği paylaşarak zincire katkıda bul.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <p>&copy; 2025 İyilik Zinciri. Tüm hakları saklıdır.</p>
+    </footer>
+
     <script type="module" src="script.js"></script>
 </body>
 </html>
