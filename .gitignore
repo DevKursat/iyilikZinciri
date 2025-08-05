@@ -4,7 +4,6 @@ package-lock.json
 amplify/
 aws-exports.js
 .parcel-cache/
-dist/
 
 # Amplify CLI generated files - do not edit below this line
 #amplify-do-not-edit-begin
