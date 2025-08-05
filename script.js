@@ -264,6 +264,20 @@ if (window.location.pathname.includes('forgot-password.html')) {
 
 // --- Logic for home.html ---
 if (window.location.pathname.includes('home.html')) {
+    const userEmailSpan = document.getElementById('user-email');
+
+    async function displayUserEmail() {
+        try {
+            const { attributes } = await getCurrentUser();
+            if (attributes.email) {
+                userEmailSpan.textContent = attributes.email;
+            }
+        } catch (error) {
+            console.error('Kullanıcı bilgileri alınamadı:', error);
+            userEmailSpan.textContent = 'iyiliksever'; // Fallback text
+        }
+    }
+
     document.getElementById('logout-button').addEventListener('click', async () => {
         try {
             await signOut();
@@ -273,4 +287,6 @@ if (window.location.pathname.includes('home.html')) {
             alert(error.message);
         }
     });
+
+    displayUserEmail();
 }
