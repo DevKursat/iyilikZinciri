@@ -72,6 +72,7 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
                 strengthText.textContent = "Kayıt Ol";
                 strengthMeterContainer.classList.remove('transformed');
                 strengthBar.style.width = '0%';
+                strengthBar.className = 'strength-bar'; // Reset color
                 return;
             }
 
