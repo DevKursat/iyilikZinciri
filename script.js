@@ -1,3 +1,5 @@
+import 'buffer';
+import 'process';
 import { Amplify } from 'aws-amplify';
 
 /* eslint-disable */
