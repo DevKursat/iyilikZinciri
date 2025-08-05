@@ -141,7 +141,7 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             const password = document.getElementById('signup-password').value;
             try {
                 await signUp({ username: email, password, attributes: { email } });
-                alert('Kayıt başarılı! Lütfen e-postanıza gönderilen doğrulama linkine tıklayın.');
+                // Redirect to verification page with email after successful signup
                 window.location.href = `${getBasePath()}verify.html?email=${encodeURIComponent(email)}`;
             } catch (error) {
                 console.error('Kayıt hatası:', error);
@@ -153,26 +153,34 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
 
 // Logic for verify.html (Email Verification Page)
 if (window.location.pathname.includes('verify.html')) {
+    const { confirmSignUp, resendSignUpCode } = await import('aws-amplify/auth');
+
     const verifyForm = document.getElementById('verify-form');
-    const verifyEmailInput = document.getElementById('verify-email');
+    const emailDisplay = document.getElementById('verify-email-display');
     const verificationCodeInput = document.getElementById('verification-code');
     const resendCodeButton = document.getElementById('resend-code-button');
-
+    
     const urlParams = new URLSearchParams(window.location.search);
     const emailFromUrl = urlParams.get('email');
+
     if (emailFromUrl) {
-        verifyEmailInput.value = emailFromUrl;
+        emailDisplay.textContent = emailFromUrl;
     }
 
     if (verifyForm) {
         verifyForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = verifyEmailInput.value;
             const code = verificationCodeInput.value;
+            if (!emailFromUrl || !code) {
+                alert('E-posta veya doğrulama kodu eksik.');
+                return;
+            }
             try {
-                await confirmSignUp({ username: email, confirmationCode: code });
-                alert('E-posta başarıyla doğrulandı! Şimdi giriş yapılıyor...');
-                window.location.href = `${getBasePath()}home.html`;
+                await confirmSignUp({ username: emailFromUrl, confirmationCode: code });
+                alert('E-posta başarıyla doğrulandı! Ana sayfaya yönlendiriliyorsunuz...');
+                // After successful confirmation, redirect to home.
+                // A full sign-in is required, so we send them to the login page to do so.
+                window.location.href = `${getBasePath()}index.html`;
             } catch (error) {
                 console.error('Doğrulama hatası:', error);
                 alert(error.message);
@@ -181,14 +189,14 @@ if (window.location.pathname.includes('verify.html')) {
     }
 
     if (resendCodeButton) {
-        resendCodeButton.addEventListener('click', async () => {
-            const email = verifyEmailInput.value;
-            if (!email) {
-                alert('Lütfen e-posta adresinizi girin.');
+        resendCodeButton.addEventListener('click', async (e) => {
+            e.preventDefault();
+            if (!emailFromUrl) {
+                alert('Doğrulama kodu gönderilecek e-posta adresi bulunamadı.');
                 return;
             }
             try {
-                await resendSignUpCode({ username: email });
+                await resendSignUpCode({ username: emailFromUrl });
                 alert('Doğrulama kodu tekrar gönderildi.');
             } catch (error) {
                 console.error('Kodu tekrar gönderme hatası:', error);

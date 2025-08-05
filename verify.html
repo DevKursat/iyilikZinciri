@@ -5,17 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>İyilik Zinciri - E-posta Doğrulama</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="auth-container-animated">
-        <div class="form-container sign-in">
+    <div class="auth-page-container">
+        <div class="form-container-standalone">
             <form id="verify-form">
-                <h1>E-posta Doğrulama</h1>
-                <p>Kaydınızı tamamlamak için e-postanıza gönderilen doğrulama kodunu girin.</p>
-                <input type="email" id="verify-email" placeholder="E-posta" required>
-                <input type="text" id="verification-code" placeholder="Doğrulama Kodu" required>
-                <button type="submit">Doğrula</button>
-                <button type="button" id="resend-code-button">Kodu Tekrar Gönder</button>
+                <h1>E-postanı Doğrula</h1>
+                <span id="verify-info-text">Lütfen <strong id="verify-email-display"></strong> adresine gönderilen 6 haneli kodu gir.</span>
+                <input type="text" id="verification-code" placeholder="Doğrulama Kodu" required maxlength="6">
+                <button type="submit">Doğrula ve Giriş Yap</button>
+                <a href="#" id="resend-code-button" class="back-to-login">Kodu Tekrar Gönder</a>
             </form>
         </div>
     </div>
