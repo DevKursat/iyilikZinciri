@@ -10,13 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="auth-page-container">
-        <div class="form-container-standalone">
+    <div id="auth-page-container">
+        <div class="auth-container-standalone">
             <form id="verify-form">
                 <h1>E-postanı Doğrula</h1>
-                <span id="verify-info-text">Lütfen <strong id="verify-email-display"></strong> adresine gönderilen 6 haneli kodu gir.</span>
+                <span>Lütfen <strong id="verify-email-display"></strong> adresine gönderilen 6 haneli kodu gir.</span>
                 <input type="text" id="verification-code" placeholder="Doğrulama Kodu" required maxlength="6">
-                <button type="submit">Doğrula ve Giriş Yap</button>
+                <button type="submit">Doğrula</button>
                 <a href="#" id="resend-code-button" class="back-to-login">Kodu Tekrar Gönder</a>
             </form>
         </div>
