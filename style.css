@@ -510,7 +510,7 @@ body {
         width: 100%;
         height: auto;
         padding: 40px 20px;
-        /* JS now handles display property on mobile */
+        /* JS now handles the display property for mobile */
     }
     .mobile-toggle-form {
         margin-top: 20px;

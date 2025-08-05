@@ -1,84 +1,86 @@
 import 'buffer';
 import 'process';
 import { Amplify } from 'aws-amplify';
-import { signIn, signUp, signOut, getCurrentUser } from 'aws-amplify/auth';
+import { signIn, signUp, signOut, getCurrentUser, resetPassword, confirmResetPassword } from 'aws-amplify/auth';
 import amplifyconfig from './src/amplifyconfiguration.json';
 
 Amplify.configure(amplifyconfig);
 
 // Function to get the correct base path for redirects
 function getBasePath() {
-    return window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1')
-        ? '/'
-        : '/Good-Loop_iyilik-zinciri_/';
+    const host = window.location.hostname;
+    if (host.includes('localhost') || host.includes('127.0.0.1')) {
+        return '/';
+    }
+    return '/Good-Loop_iyilik-zinciri_/';
 }
 
-// Function to check if user is authenticated and redirect
-async function checkAuthAndRedirect() {
+// --- Page Routing and Auth Check ---
+(async () => {
+    const currentPath = window.location.pathname;
+    const isAuthPage = currentPath.endsWith('/') || currentPath.endsWith('index.html') || currentPath.includes('verify.html') || currentPath.includes('forgot-password.html');
+
     try {
         await getCurrentUser();
-        if (!window.location.pathname.includes('home.html')) {
+        // User is authenticated
+        if (isAuthPage) {
             window.location.href = `${getBasePath()}home.html`;
         }
     } catch (error) {
-        const allowedPaths = ['index.html', 'verify.html', 'forgot-password.html'];
-        const currentFile = window.location.pathname.split('/').pop();
-        if (!allowedPaths.includes(currentFile) && window.location.pathname !== getBasePath()) {
+        // User is not authenticated
+        if (!isAuthPage) {
             window.location.href = `${getBasePath()}index.html`;
         }
     }
-}
+})();
 
-checkAuthAndRedirect();
 
 // --- Logic for index.html (Login/Signup Page) ---
 if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html')) {
     const container = document.getElementById('auth-container-animated');
-    const registerBtn = document.getElementById('register');
-    const loginBtn = document.getElementById('login');
-    const showLoginMobileBtn = document.getElementById('show-login-mobile');
-    const showSignupMobileBtn = document.getElementById('show-signup-mobile');
     const signInForm = document.querySelector('.form-container.sign-in');
     const signUpForm = document.querySelector('.form-container.sign-up');
 
-    const setupFormsForDevice = () => {
-        if (window.innerWidth <= 768) {
-            // Mobile: JS controls display
-            const isRegisterActive = container.classList.contains('active');
-            signInForm.style.display = isRegisterActive ? 'none' : 'flex';
-            signUpForm.style.display = isRegisterActive ? 'flex' : 'none';
-        } else {
-            // Desktop: CSS controls display, remove inline styles
-            signInForm.style.display = '';
-            signUpForm.style.display = '';
+    // --- Device-specific form toggling ---
+    if (window.innerWidth <= 768) {
+        // --- MOBILE ---
+        const showLoginMobileBtn = document.getElementById('show-login-mobile');
+        const showSignupMobileBtn = document.getElementById('show-signup-mobile');
+
+        signInForm.style.display = 'flex';
+        signUpForm.style.display = 'none';
+
+        if (showSignupMobileBtn) {
+            showSignupMobileBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                signInForm.style.display = 'none';
+                signUpForm.style.display = 'flex';
+            });
         }
-    };
-
-    const toggleForm = (isRegister) => {
-        container.classList.toggle('active', isRegister);
-        setupFormsForDevice(); // Update display based on new state
-    };
-
-    // Setup listeners
-    if (registerBtn) registerBtn.addEventListener('click', () => toggleForm(true));
-    if (loginBtn) loginBtn.addEventListener('click', () => toggleForm(false));
-    if (showLoginMobileBtn) showLoginMobileBtn.addEventListener('click', (e) => { e.preventDefault(); toggleForm(true); });
-    if (showSignupMobileBtn) showSignupMobileBtn.addEventListener('click', (e) => { e.preventDefault(); toggleForm(false); });
-
-    // Setup on initial load and on resize
-    window.addEventListener('resize', setupFormsForDevice);
-    setupFormsForDevice(); // Initial setup
+        if (showLoginMobileBtn) {
+            showLoginMobileBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                signInForm.style.display = 'flex';
+                signUpForm.style.display = 'none';
+            });
+        }
+    } else {
+        // --- DESKTOP ---
+        const registerBtn = document.getElementById('register');
+        const loginBtn = document.getElementById('login');
+        if (registerBtn) registerBtn.addEventListener('click', () => container.classList.add('active'));
+        if (loginBtn) loginBtn.addEventListener('click', () => container.classList.remove('active'));
+    }
 
     // --- Signup Logic ---
     const signupPasswordInput = document.getElementById('signup-password');
     const strengthMeterContainer = document.getElementById('strength-meter-container');
     const strengthBar = document.getElementById('strength-bar');
     const strengthText = document.getElementById('strength-text');
-    const signupForm = document.getElementById('signup-form');
+    const signupFormEl = document.getElementById('signup-form');
 
     if (signupPasswordInput) {
         strengthText.textContent = "Kayıt Ol";
-
         signupPasswordInput.addEventListener('input', () => {
             const password = signupPasswordInput.value;
             const requirements = [
@@ -88,25 +90,21 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
                 { regex: /[0-9]/, message: "Sayı (0-9)" },
                 { regex: /[!@#$%^&*]/, message: "Özel karakter (!@#$%^&*)" }
             ];
-
             if (password.length === 0) {
                 strengthText.textContent = "Kayıt Ol";
                 strengthMeterContainer.classList.remove('transformed');
                 strengthBar.style.width = '0%';
-                strengthBar.className = 'strength-bar'; // Reset color
+                strengthBar.className = 'strength-bar';
                 return;
             }
-
             let strength = 0;
             let firstUnmetRequirement = null;
             requirements.forEach(req => {
                 if (req.regex.test(password)) strength++;
                 else if (!firstUnmetRequirement) firstUnmetRequirement = req.message;
             });
-
             const strengthPercentage = (strength / requirements.length) * 100;
             strengthBar.style.width = `${strengthPercentage}%`;
-
             if (strength === requirements.length) {
                 strengthText.textContent = "Kayıt Ol";
                 strengthMeterContainer.classList.add('transformed');
@@ -114,16 +112,14 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
                 strengthText.textContent = `${strength}/${requirements.length}: ${firstUnmetRequirement || ''}`;
                 strengthMeterContainer.classList.remove('transformed');
             }
-
             strengthBar.className = 'strength-bar';
             if (strengthPercentage === 100) strengthBar.classList.add('strong');
             else if (strengthPercentage >= 60) strengthBar.classList.add('medium');
             else strengthBar.classList.add('weak');
         });
-
         strengthMeterContainer.addEventListener('click', () => {
             if (strengthMeterContainer.classList.contains('transformed')) {
-                signupForm.requestSubmit();
+                signupFormEl.requestSubmit();
             }
         });
     }
@@ -132,62 +128,62 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
     const loginEmailInput = document.getElementById('login-email');
     const loginPasswordInput = document.getElementById('login-password');
     const loginButtonContainer = document.getElementById('login-button-container');
-    const loginForm = document.getElementById('login-form');
+    const loginFormEl = document.getElementById('login-form');
 
     function validateLoginInputs() {
         const email = loginEmailInput.value;
         const password = loginPasswordInput.value;
         loginButtonContainer.classList.toggle('transformed', email.length > 0 && password.length > 0);
     }
-
     if (loginEmailInput && loginPasswordInput) {
         loginEmailInput.addEventListener('input', validateLoginInputs);
         loginPasswordInput.addEventListener('input', validateLoginInputs);
     }
-
-    loginButtonContainer.addEventListener('click', () => {
-        if (loginButtonContainer.classList.contains('transformed')) {
-            loginForm.requestSubmit();
-        }
-    });
+    if (loginButtonContainer) {
+        loginButtonContainer.addEventListener('click', () => {
+            if (loginButtonContainer.classList.contains('transformed')) {
+                loginFormEl.requestSubmit();
+            }
+        });
+    }
 
     // --- Form Submissions ---
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = loginEmailInput.value;
-        const password = loginPasswordInput.value;
-        try {
-            await signIn({ username: email, password });
-            window.location.href = `${getBasePath()}home.html`;
-        } catch (error) {
-            console.error('Giriş hatası:', error);
-            if (error.name === 'UserNotConfirmedException') {
-                window.location.href = `${getBasePath()}verify.html?email=${encodeURIComponent(email)}`;
-            } else {
+    if (loginFormEl) {
+        loginFormEl.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                await signIn({ username: loginEmailInput.value, password: loginPasswordInput.value });
+                window.location.href = `${getBasePath()}home.html`;
+            } catch (error) {
+                console.error('Giriş hatası:', error);
+                if (error.name === 'UserNotConfirmedException') {
+                    window.location.href = `${getBasePath()}verify.html?email=${encodeURIComponent(loginEmailInput.value)}`;
+                } else {
+                    alert(error.message);
+                }
+            }
+        });
+    }
+    if (signupFormEl) {
+        signupFormEl.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signup-email').value;
+            const password = signupPasswordInput.value;
+            try {
+                await signUp({ username: email, password, attributes: { email } });
+                alert('Hesap başarıyla oluşturuldu! Lütfen giriş yapın.');
+                window.location.href = `${getBasePath()}index.html`;
+            } catch (error) {
+                console.error('Kayıt hatası:', error);
                 alert(error.message);
             }
-        }
-    });
-
-    signupForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('signup-email').value;
-        const password = signupPasswordInput.value;
-        try {
-            await signUp({ username: email, password, attributes: { email } });
-            alert('Hesap başarıyla oluşturuldu! Lütfen giriş yapın.');
-            window.location.href = `${getBasePath()}index.html`;
-        } catch (error) {
-            console.error('Kayıt hatası:', error);
-            alert(error.message);
-        }
-    });
+        });
+    }
 }
 
 // --- Logic for verify.html ---
 if (window.location.pathname.includes('verify.html')) {
     const { confirmSignUp, resendSignUpCode } = await import('aws-amplify/auth');
-    
     const emailDisplay = document.getElementById('verify-email-display');
     const urlParams = new URLSearchParams(window.location.search);
     const emailFromUrl = urlParams.get('email');
@@ -222,8 +218,6 @@ if (window.location.pathname.includes('verify.html')) {
 
 // --- Logic for forgot-password.html ---
 if (window.location.pathname.includes('forgot-password.html')) {
-    const { resetPassword, confirmResetPassword } = await import('aws-amplify/auth');
-    
     const sendCodeForm = document.getElementById('send-code-form');
     const resetPasswordForm = document.getElementById('reset-password-form');
     const emailInput = document.getElementById('reset-email');
