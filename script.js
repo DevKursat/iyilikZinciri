@@ -38,24 +38,9 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
     const showSignupMobileBtn = document.getElementById('show-signup-mobile');
 
     const signupPasswordInput = document.getElementById('signup-password');
-    const strengthBar = document.querySelector('.strength-bar');
+    const strengthMeterContainer = document.getElementById('strength-meter-container');
+    const strengthBar = document.getElementById('strength-bar');
     const strengthText = document.getElementById('strength-text');
-    const signupButton = document.getElementById('signup-button');
-
-    const toggleForm = (isRegister) => {
-        if (container) {
-            if (isRegister) {
-                container.classList.add('active');
-            } else {
-                container.classList.remove('active');
-            }
-        }
-    };
-
-    if (registerBtn) registerBtn.addEventListener('click', () => toggleForm(true));
-    if (loginBtn) loginBtn.addEventListener('click', () => toggleForm(false));
-    if (showLoginMobileBtn) showLoginMobileBtn.addEventListener('click', (e) => { e.preventDefault(); toggleForm(false); });
-    if (showSignupMobileBtn) showSignupMobileBtn.addEventListener('click', (e) => { e.preventDefault(); toggleForm(true); });
 
     // Password Strength Logic
     if (signupPasswordInput) {
@@ -68,7 +53,6 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
                 { regex: /[0-9]/, message: "Sayı (0-9)" },
                 { regex: /[!@#$%^&*]/, message: "Özel karakter (!@#$%^&*)" }
             ];
-            const activationThreshold = 4; // Button activates when 4 out of 5 requirements are met
 
             let strength = 0;
             let firstUnmetRequirement = null;
@@ -84,16 +68,13 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             const strengthPercentage = (strength / requirements.length) * 100;
             strengthBar.style.width = `${strengthPercentage}%`;
 
-            if (strength >= activationThreshold) {
-                signupButton.style.display = 'block';
-            } else {
-                signupButton.style.display = 'none';
-            }
-
+            // Update text and colors
             if (strength === requirements.length) {
-                strengthText.textContent = "Güçlü Şifre";
+                strengthText.textContent = "Şifre Güçlü";
+                strengthMeterContainer.classList.add('transformed');
             } else {
                 strengthText.textContent = `${strength}/${requirements.length}: ${firstUnmetRequirement || ''}`;
+                strengthMeterContainer.classList.remove('transformed');
             }
 
             strengthBar.classList.remove('weak', 'medium', 'strong');

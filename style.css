@@ -364,13 +364,14 @@ body {
 /* Password Strength Meter */
 .password-strength-meter {
     width: 100%;
-    height: 38px; /* Match input field height */
+    height: 38px;
     background-color: #e0e0e0;
-    border-radius: 8px; /* Match input field border-radius */
-    margin: 8px 0; /* Match input field margin */
+    border-radius: 8px;
+    margin: 8px 0;
     overflow: hidden;
-    display: flex; /* Use flexbox to align text */
-    align-items: center; /* Center text vertically */
+    position: relative; /* Required for positioning the button inside */
+    display: flex;
+    align-items: center;
 }
 
 .strength-bar {
@@ -378,18 +379,55 @@ body {
     width: 0%;
     background-color: var(--invalid-color);
     border-radius: 4px;
-    transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    transition: width 0.4s ease-in-out, background-color 0.4s ease-in-out;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 10px; /* Add some padding for the text */
+    z-index: 1; /* Ensure bar is behind text initially */
 }
 
 #strength-text {
     color: white;
-    font-size: 12px; /* Increase font size for readability */
+    font-size: 12px;
     font-weight: 600;
     white-space: nowrap;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 2; /* Text is on top */
+    position: absolute; /* Center it within the container */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.strength-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: 8px;
+    opacity: 0;
+    pointer-events: none; /* Button is not clickable when invisible */
+    z-index: 3; /* Button is on top when visible */
+    transition: opacity 0.4s ease-in-out;
+    transform: scale(0.95); /* Start slightly smaller */
+}
+
+/* Transformation logic */
+.password-strength-meter.transformed .strength-bar {
+    width: 100% !important; /* Force full width */
+    background-color: var(--primary-color);
+}
+
+.password-strength-meter.transformed #strength-text {
+    opacity: 0; /* Hide the text */
+}
+
+.password-strength-meter.transformed .strength-button {
+    opacity: 1; /* Show the button */
+    pointer-events: auto; /* Make it clickable */
+    transform: scale(1); /* Grow to full size */
 }
 
 .strength-bar.weak {
