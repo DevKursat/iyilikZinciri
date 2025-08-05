@@ -9,3 +9,4 @@ aws-exports.js
 #amplify-do-not-edit-begin
 #amplify-do-not-edit-end
 "info.txt" 
+"dist" 

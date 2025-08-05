@@ -39,9 +39,11 @@ body {
     padding: 1rem;
 }
 
-.app-logo {
-        display: none;
-    }
+.toggle-panel .app-logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1rem;
+}
 
 /* --- HOME PAGE STYLES --- */
 .app-header {
@@ -482,6 +484,11 @@ body {
     box-sizing: border-box;
 }
 
+.sign-up button {
+    margin-top: 15px;
+}
+
+
 .auth-container-animated button.hidden {
     display: none;
 }
@@ -557,7 +564,7 @@ body {
     .mobile-logo-container {
         display: block;
     }
-    .app-logo {
+    .toggle-panel .app-logo {
         display: none;
     }
 }
