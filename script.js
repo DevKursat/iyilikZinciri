@@ -34,8 +34,6 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
     const container = document.getElementById('auth-container-animated');
     const registerBtn = document.getElementById('register');
     const loginBtn = document.getElementById('login');
-    const showLoginMobileBtn = document.getElementById('show-login-mobile');
-    const showSignupMobileBtn = document.getElementById('show-signup-mobile');
 
     const signupPasswordInput = document.getElementById('signup-password');
     const strengthMeterContainer = document.getElementById('strength-meter-container');
@@ -54,8 +52,6 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
 
     if (registerBtn) registerBtn.addEventListener('click', () => toggleForm(true));
     if (loginBtn) loginBtn.addEventListener('click', () => toggleForm(false));
-    if (showLoginMobileBtn) showLoginMobileBtn.addEventListener('click', (e) => { e.preventDefault(); toggleForm(false); });
-    if (showSignupMobileBtn) showSignupMobileBtn.addEventListener('click', (e) => { e.preventDefault(); toggleForm(true); });
 
     // Password Strength Logic
     if (signupPasswordInput) {
