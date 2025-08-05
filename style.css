@@ -101,7 +101,7 @@ body {
     margin-top: 10px;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    height: 40px; /* Match input height */
+    height: 40px;
     line-height: 1;
 }
 
@@ -310,6 +310,10 @@ body {
     z-index: 3;
     transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     transform: scale(0.95);
+    /* Perfect centering for the button text */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .password-strength-meter.transformed {
