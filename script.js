@@ -38,15 +38,30 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
     const loginBtn = document.getElementById('login');
     const showLoginMobileBtn = document.getElementById('show-login-mobile');
     const showSignupMobileBtn = document.getElementById('show-signup-mobile');
+    const signInForm = document.querySelector('.form-container.sign-in');
+    const signUpForm = document.querySelector('.form-container.sign-up');
 
     const toggleForm = (isRegister) => {
+        // Desktop animation
         container.classList.toggle('active', isRegister);
+        
+        // Mobile form switching
+        if (window.innerWidth <= 768) {
+            signInForm.style.display = isRegister ? 'none' : 'flex';
+            signUpForm.style.display = isRegister ? 'flex' : 'none';
+        }
     };
 
     if (registerBtn) registerBtn.addEventListener('click', () => toggleForm(true));
     if (loginBtn) loginBtn.addEventListener('click', () => toggleForm(false));
     if (showLoginMobileBtn) showLoginMobileBtn.addEventListener('click', (e) => { e.preventDefault(); toggleForm(false); });
     if (showSignupMobileBtn) showSignupMobileBtn.addEventListener('click', (e) => { e.preventDefault(); toggleForm(true); });
+
+    // Initial state for mobile
+    if (window.innerWidth <= 768) {
+        signInForm.style.display = 'flex';
+        signUpForm.style.display = 'none';
+    }
 
     // --- Signup Logic ---
     const signupPasswordInput = document.getElementById('signup-password');
