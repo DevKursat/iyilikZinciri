@@ -88,46 +88,6 @@ body {
     margin: 10px 0;
 }
 
-.auth-container-animated input,
-.auth-container-animated button {
-    box-sizing: border-box; /* GUARANTEES consistent height */
-}
-
-.auth-container-animated button {
-    background-color: var(--primary-color);
-    color: var(--white-color);
-    font-size: 13px;
-    padding: 10px 45px;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    margin-top: 10px;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    height: 40px;
-    line-height: 1;
-}
-
-.auth-container-animated button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 3px 8px var(--shadow-light);
-}
-
-.auth-container-animated button:disabled {
-    background-color: #a5d6a7; /* Lighter shade of primary color */
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-/* Make form buttons full-width to match text fields */
-.form-container form button[type="submit"],
-.form-container-standalone form button[type="submit"] {
-    width: 100%;
-}
-
 .auth-container-animated form {
     background-color: var(--card-background);
     display: flex;
@@ -148,6 +108,7 @@ body {
     width: 100%;
     outline: none;
     height: 40px;
+    box-sizing: border-box;
 }
 
 #forgot-password-link {
@@ -277,17 +238,18 @@ body {
     transform: translateX(200%);
 }
 
-/* Password Strength Meter - FINAL & GUARANTEED CENTERING */
-.password-strength-meter {
+/* --- DYNAMIC BUTTONS (LOGIN & SIGNUP) --- */
+.password-strength-meter, #login-button-container {
     width: 100%;
     height: 40px;
-    background-color: #e0e0e0;
+    background-color: transparent; /* No background on container */
     border-radius: 8px;
     margin: 8px 0;
     position: relative;
+    overflow: hidden; /* Important for border-radius on children */
 }
 
-.strength-bar {
+.password-strength-meter .strength-bar, #login-button-container .strength-bar {
     height: 100%;
     width: 0%;
     background-color: var(--invalid-color);
@@ -299,7 +261,7 @@ body {
     z-index: 1;
 }
 
-#strength-text {
+#strength-text, #login-text {
     position: absolute;
     top: 0;
     left: 0;
@@ -310,23 +272,40 @@ body {
     align-items: center;
     justify-content: center;
     color: var(--text-color);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     white-space: nowrap;
     transition: color 0.4s ease-in-out;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
+/* Signup Bar Specifics */
 .password-strength-meter.transformed {
     cursor: pointer;
 }
-
 .password-strength-meter.transformed #strength-text {
     color: var(--white-color);
 }
-
 .strength-bar.weak { background-color: #ff4d4d; }
 .strength-bar.medium { background-color: #ffc107; }
 .strength-bar.strong { background-color: var(--valid-color); }
+
+/* Login Bar Specifics */
+#login-button-container .strength-bar {
+    background-color: #e0e0e0; /* Disabled color */
+    width: 100%; /* Always full width */
+}
+#login-button-container.transformed {
+    cursor: pointer;
+}
+#login-button-container.transformed .strength-bar {
+    background-color: var(--primary-color); /* Enabled color */
+}
+#login-button-container.transformed #login-text {
+    color: var(--white-color);
+}
+
 
 /* Standalone Form Styling (Verify, Forgot Password) */
 .form-container-standalone {
@@ -341,12 +320,18 @@ body {
     width: 100%;
     max-width: 420px;
 }
-
+.form-container-standalone form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .form-container-standalone h1 { margin-bottom: 1rem; }
 .form-container-standalone span { font-size: 14px; color: var(--light-text-color); margin-bottom: 1rem; text-align: center; }
-.form-container-standalone form { width: 100%; }
 .form-container-standalone .hidden { display: none; }
 .back-to-login { margin-top: 1.5rem; font-size: 14px; }
+.form-container-standalone button { width: 100%; }
+
 
 .mobile-toggle-form { display: none; }
 

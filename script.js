@@ -39,12 +39,6 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
     const showLoginMobileBtn = document.getElementById('show-login-mobile');
     const showSignupMobileBtn = document.getElementById('show-signup-mobile');
 
-    const signupPasswordInput = document.getElementById('signup-password');
-    const strengthMeterContainer = document.getElementById('strength-meter-container');
-    const strengthBar = document.getElementById('strength-bar');
-    const strengthText = document.getElementById('strength-text');
-    const signupForm = document.getElementById('signup-form');
-
     const toggleForm = (isRegister) => {
         container.classList.toggle('active', isRegister);
     };
@@ -53,6 +47,13 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
     if (loginBtn) loginBtn.addEventListener('click', () => toggleForm(false));
     if (showLoginMobileBtn) showLoginMobileBtn.addEventListener('click', (e) => { e.preventDefault(); toggleForm(false); });
     if (showSignupMobileBtn) showSignupMobileBtn.addEventListener('click', (e) => { e.preventDefault(); toggleForm(true); });
+
+    // --- Signup Logic ---
+    const signupPasswordInput = document.getElementById('signup-password');
+    const strengthMeterContainer = document.getElementById('strength-meter-container');
+    const strengthBar = document.getElementById('strength-bar');
+    const strengthText = document.getElementById('strength-text');
+    const signupForm = document.getElementById('signup-form');
 
     if (signupPasswordInput) {
         strengthText.textContent = "Kayıt Ol";
@@ -92,7 +93,7 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
                 strengthMeterContainer.classList.remove('transformed');
             }
 
-            strengthBar.className = 'strength-bar'; // Reset classes
+            strengthBar.className = 'strength-bar';
             if (strengthPercentage === 100) strengthBar.classList.add('strong');
             else if (strengthPercentage >= 60) strengthBar.classList.add('medium');
             else strengthBar.classList.add('weak');
@@ -105,22 +106,30 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
         });
     }
 
-    const loginForm = document.getElementById('login-form');
+    // --- Login Logic ---
     const loginEmailInput = document.getElementById('login-email');
     const loginPasswordInput = document.getElementById('login-password');
-    const loginButton = document.getElementById('login-button');
+    const loginButtonContainer = document.getElementById('login-button-container');
+    const loginForm = document.getElementById('login-form');
 
     function validateLoginInputs() {
         const email = loginEmailInput.value;
         const password = loginPasswordInput.value;
-        loginButton.disabled = !(email.length > 0 && password.length > 0);
+        loginButtonContainer.classList.toggle('transformed', email.length > 0 && password.length > 0);
     }
 
-    if(loginEmailInput && loginPasswordInput) {
+    if (loginEmailInput && loginPasswordInput) {
         loginEmailInput.addEventListener('input', validateLoginInputs);
         loginPasswordInput.addEventListener('input', validateLoginInputs);
     }
 
+    loginButtonContainer.addEventListener('click', () => {
+        if (loginButtonContainer.classList.contains('transformed')) {
+            loginForm.requestSubmit();
+        }
+    });
+
+    // --- Form Submissions ---
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = loginEmailInput.value;
@@ -141,7 +150,7 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
     signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('signup-email').value;
-        const password = document.getElementById('signup-password').value;
+        const password = signupPasswordInput.value;
         try {
             await signUp({ username: email, password, attributes: { email } });
             window.location.href = `${getBasePath()}verify.html?email=${encodeURIComponent(email)}`;
