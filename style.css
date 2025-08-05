@@ -9,186 +9,34 @@
     --border-color: #e0e0e0;
     --shadow-light: rgba(0, 0, 0, 0.1);
     --shadow-dark: rgba(0, 0, 0, 0.2);
+    --invalid-color: #ff4d4d;
+    --valid-color: #4CAF50;
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Nunito', sans-serif;
 }
 
 body {
     background-color: var(--background-color);
+    font-family: 'Nunito', sans-serif;
     color: var(--text-color);
-}
-
-/* --- YENİ ANA SAYFA STİLLERİ --- */
-
-.home-page {
-    padding: 2rem 1.5rem 100px 1.5rem; /* Alttaki nav bar için boşluk */
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
-.section-title {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--text-color);
-    margin-bottom: 1rem;
-    text-align: center;
-}
-
-/* Haftalık Seri Takibi */
-.streak-tracker {
-    width: 100%;
-}
-
-.streak-circles {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-}
-
-.streak-circle {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: var(--card-background);
-    border: 3px solid var(--border-color);
-    transition: all 0.4s ease;
-    cursor: pointer;
-}
-
-.streak-circle.completed {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-    transform: scale(1.1);
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
-}
-
-/* Günün İyilik Görevi Kartı */
-.daily-task-card {
-    background: var(--card-background);
-    border-radius: 20px;
-    padding: 2rem;
-    text-align: center;
-    box-shadow: 0 10px 30px var(--shadow-light);
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.task-card-content h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--light-text-color);
-    margin-bottom: 1rem;
-}
-
-.task-card-content p {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-color);
-    min-height: 80px; /* Metin değiştiğinde zıplamayı önler */
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 2rem;
-}
-
-#prove-task-btn {
-    width: 100%;
-    padding: 1rem;
-    border: none;
-    border-radius: 15px;
-    background: linear-gradient(45deg, var(--secondary-color), #ffbf00);
-    color: var(--white-color);
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 20px rgba(255, 152, 0, 0.3);
-}
-
-#prove-task-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 7px 25px rgba(255, 152, 0, 0.4);
-}
-
-#prove-task-btn i {
-    margin-right: 0.5rem;
-}
-
-/* Alt Navigasyon Barı */
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 80px;
-    background-color: var(--card-background);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    box-shadow: 0 -5px 20px var(--shadow-light);
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
-}
-
-.nav-item {
-    display: flex;
     flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    color: var(--light-text-color);
-    font-size: 0.8rem;
-    transition: all 0.3s ease;
+    min-height: 100vh;
 }
 
-.nav-item i {
-    font-size: 1.5rem;
-    margin-bottom: 0.25rem;
-}
-
-.nav-item.active {
-    color: var(--primary-color);
-    transform: translateY(-5px);
-}
-
-/* Animasyonlar */
-.animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
-}
-
-.animate-slide-up {
-    animation: slideUp 0.8s ease-out forwards;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-
-/* --- ESKİ AUTH SAYFASI STİLLERİ --- */
+/* --- AUTH PAGE STYLES --- */
 #auth-page-container {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     padding: 1rem;
-}
-.toggle-panel .app-logo {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 1rem;
 }
 .auth-container-animated {
     background-color: var(--card-background);
@@ -241,6 +89,81 @@ body {
 #forgot-password-link {
     margin-top: 15px;
 }
+.social-icons {
+    margin: 20px 0;
+}
+.social-icons a {
+    border: 1px solid var(--border-color);
+    border-radius: 20%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 3px;
+    width: 40px;
+    height: 40px;
+    transition: all 0.2s ease-in-out;
+}
+.social-icons a:hover {
+    transform: scale(1.1);
+    border-color: var(--primary-color);
+}
+.password-strength-meter, #login-button-container {
+    width: 100%;
+    height: 40px;
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    margin: 15px 0;
+    position: relative;
+    overflow: hidden;
+    cursor: not-allowed;
+    transition: background-color 0.4s ease-in-out;
+}
+.password-strength-meter .strength-bar {
+    height: 100%;
+    width: 0%;
+    background-color: var(--invalid-color);
+    border-radius: 4px;
+    transition: width 0.4s ease-in-out, background-color 0.4s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+#strength-text, #login-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: color 0.4s ease-in-out;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.strength-bar.weak { background-color: #ffc107; }
+.strength-bar.medium { background-color: #ffc107; }
+.strength-bar.strong { background-color: var(--valid-color); }
+#login-button-container.transformed,
+.password-strength-meter.transformed {
+    background-color: var(--primary-color);
+    cursor: pointer;
+}
+#login-button-container.transformed #login-text,
+.password-strength-meter.transformed #strength-text {
+    color: var(--white-color);
+}
+.mobile-logo-container {
+    display: none;
+}
+
+/* --- DESKTOP-ONLY AUTH STYLES --- */
 @media (min-width: 769px) {
     .form-container {
         position: absolute;
@@ -273,26 +196,6 @@ body {
         0%, 49.99% { opacity: 0; z-index: 1; }
         50%, 100% { opacity: 1; z-index: 5; }
     }
-}
-.social-icons {
-    margin: 20px 0;
-}
-.social-icons a {
-    border: 1px solid var(--border-color);
-    border-radius: 20%;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 3px;
-    width: 40px;
-    height: 40px;
-    transition: all 0.2s ease-in-out;
-}
-.social-icons a:hover {
-    transform: scale(1.1);
-    border-color: var(--primary-color);
-}
-@media (min-width: 769px) {
     .toggle-container {
         position: absolute;
         top: 0;
@@ -349,62 +252,53 @@ body {
     .auth-container-animated.active .toggle-right {
         transform: translateX(200%);
     }
+    .toggle-panel .app-logo {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 1rem;
+    }
 }
-/* --- DYNAMIC BUTTONS (LOGIN & SIGNUP) --- */
-.password-strength-meter, #login-button-container {
-    width: 100%;
-    height: 40px;
-    background-color: #e0e0e0; /* Default disabled background */
-    border-radius: 8px;
-    margin: 15px 0;
-    position: relative;
-    overflow: hidden;
-    cursor: not-allowed;
-    transition: background-color 0.4s ease-in-out;
+
+/* --- MOBILE-ONLY AUTH STYLES --- */
+@media (max-width: 768px) {
+    #auth-page-container {
+        padding: 0;
+    }
+    .auth-container-animated, .auth-container-standalone {
+        max-width: 100%;
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+        display: block;
+    }
+    .toggle-container {
+        display: none;
+    }
+    .form-container {
+        position: relative;
+        width: 100%;
+        height: auto;
+        padding: 40px 20px;
+        display: none; /* Controlled by JS */
+    }
+    .mobile-toggle-form {
+        margin-top: 20px;
+        display: block;
+        text-align: center;
+    }
+    .mobile-toggle-form a {
+        font-weight: bold;
+        color: var(--primary-color);
+        cursor: pointer;
+    }
+    .mobile-logo-container {
+        display: block;
+    }
+    .toggle-panel .app-logo {
+        display: none;
+    }
 }
-.password-strength-meter .strength-bar {
-    height: 100%;
-    width: 0%;
-    background-color: var(--invalid-color);
-    border-radius: 4px;
-    transition: width 0.4s ease-in-out, background-color 0.4s ease-in-out;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-}
-#strength-text, #login-text {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-color);
-    font-size: 13px;
-    font-weight: 600;
-    white-space: nowrap;
-    transition: color 0.4s ease-in-out;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-/* Signup Bar Specifics */
-.strength-bar.weak { background-color: #ff4d4d; }
-.strength-bar.medium { background-color: #ffc107; }
-.strength-bar.strong { background-color: var(--valid-color); }
-/* Transformed state for BOTH buttons */
-#login-button-container.transformed,
-.password-strength-meter.transformed {
-    background-color: var(--primary-color);
-    cursor: pointer;
-}
-#login-button-container.transformed #login-text,
-.password-strength-meter.transformed #strength-text {
-    color: var(--white-color);
-}
+
 /* --- STANDALONE FORM STYLING (VERIFY, FORGOT PASSWORD) --- */
 .auth-container-standalone {
     background-color: var(--card-background);
@@ -432,7 +326,6 @@ body {
 .auth-container-standalone h1 { margin-bottom: 1rem; text-align: center; }
 .auth-container-standalone span { font-size: 14px; color: var(--light-text-color); margin-bottom: 1.5rem; text-align: center; display: block; }
 .auth-container-standalone .back-to-login { margin-top: 1.5rem; font-size: 14px; }
-/* --- UNIFIED BUTTON STYLES --- */
 .auth-container-standalone button {
     width: 100%;
     background-color: var(--primary-color);
@@ -462,49 +355,136 @@ body {
     height: 40px;
     box-sizing: border-box;
 }
-.mobile-logo-container {
-    display: none;
+
+
+/* --- YENİ ANA SAYFA STİLLERİ --- */
+.home-page {
+    padding: 2rem 1.5rem 100px 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
-/* --- MOBILE STYLES --- */
-@media (max-width: 768px) {
-    #auth-page-container {
-        padding: 0;
-    }
-    .auth-container-animated, .auth-container-standalone {
-        max-width: 100%;
-        min-height: 100vh;
-        border-radius: 0;
-        box-shadow: none;
-        display: block;
-    }
-    .toggle-container {
-        display: none; /* Explicitly hide the toggle container on mobile */
-    }
-    .form-container {
-        position: relative;
-        width: 100%;
-        height: auto;
-        padding: 40px 20px;
-        display: none; /* Controlled by JS */
-    }
-    .mobile-toggle-form {
-        margin-top: 20px;
-        display: block;
-        text-align: center;
-    }
-    .mobile-toggle-form a {
-        font-weight: bold;
-        color: var(--primary-color);
-        cursor: pointer;
-    }
-    .mobile-logo-container {
-        display: block;
-    }
-    .toggle-panel .app-logo {
-        display: none;
-    }
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    text-align: center;
 }
-/* --- HOME PAGE MOBILE STYLES --- */
+.streak-tracker {
+    width: 100%;
+}
+.streak-circles {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+}
+.streak-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--card-background);
+    border: 3px solid var(--border-color);
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+.streak-circle.completed {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+}
+.daily-task-card {
+    background: var(--card-background);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 10px 30px var(--shadow-light);
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+.task-card-content h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--light-text-color);
+    margin-bottom: 1rem;
+}
+.task-card-content p {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-color);
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+#prove-task-btn {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(45deg, var(--secondary-color), #ffbf00);
+    color: var(--white-color);
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(255, 152, 0, 0.3);
+}
+#prove-task-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 25px rgba(255, 152, 0, 0.4);
+}
+#prove-task-btn i {
+    margin-right: 0.5rem;
+}
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background-color: var(--card-background);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -5px 20px var(--shadow-light);
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+}
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--light-text-color);
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+.nav-item i {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+.nav-item.active {
+    color: var(--primary-color);
+    transform: translateY(-5px);
+}
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+.animate-slide-up {
+    animation: slideUp 0.8s ease-out forwards;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 @media (max-width: 768px) {
     .home-page {
         padding: 1.5rem 1rem 100px 1rem;
