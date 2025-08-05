@@ -361,56 +361,66 @@ body {
 .mobile-toggle-form { display: none; }
 
 @media (max-width: 768px) {
-    #auth-page-container {
-        padding: 0;
-    }
     .auth-container-animated {
         max-width: 100%;
+        height: 100vh;
         min-height: 100vh;
         border-radius: 0;
         box-shadow: none;
-        display: block;
     }
-    .toggle-container {
-        display: none;
-    }
+
     .form-container {
-        position: absolute;
         width: 100%;
-        height: 100vh;
-        padding: 20px;
-        opacity: 1;
+        height: 100%;
         transform: none;
-        animation: none;
-        transition: opacity 0.4s ease-in-out, visibility 0.4s;
-        visibility: visible;
+        transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        padding: 2rem;
     }
+
+    .sign-in {
+        z-index: 2;
+    }
+
     .sign-up {
-        visibility: hidden;
+        z-index: 1;
         opacity: 0;
+        transform: translateY(30px);
     }
+
     .auth-container-animated.active .sign-in {
-        visibility: hidden;
         opacity: 0;
+        transform: translateY(30px);
+        pointer-events: none;
     }
+
     .auth-container-animated.active .sign-up {
-        visibility: visible;
         opacity: 1;
+        z-index: 2;
+        transform: translateY(0);
     }
-    .mobile-toggle-form {
-        margin-top: 20px;
-        display: block;
-        text-align: center;
+
+    .toggle-container {
+        display: none; /* Hide desktop toggle */
     }
-    .mobile-toggle-form a {
-        font-weight: bold;
-        color: var(--primary-color);
-        cursor: pointer;
-    }
+
     .mobile-logo-container {
         display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
     }
-    .app-logo {
-        display: none;
+
+    .mobile-toggle-form {
+        display: block;
+        text-align: center;
+        margin-top: 1.5rem;
+    }
+
+    .mobile-toggle-form a {
+        color: var(--primary-color);
+        font-weight: bold;
+        cursor: pointer;
     }
 }
