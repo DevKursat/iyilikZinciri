@@ -187,8 +187,8 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             const password = signupPasswordInput.value;
             try {
                 await signUp({ username: email, password, attributes: { email } });
-                alert('Hesap başarıyla oluşturuldu! Lütfen giriş yapın.');
-                window.location.href = `${getBasePath()}index.html`;
+                alert('Hesap başarıyla oluşturuldu! Doğrulama kodu e-postana gönderildi. Spam (gereksiz) klasörünü kontrol etmeyi unutma.');
+                window.location.href = `${getBasePath()}verify.html?email=${encodeURIComponent(email)}`;
             } catch (error) {
                 console.error('Kayıt hatası:', error);
                 alert(error.message);
@@ -224,7 +224,7 @@ if (window.location.pathname.includes('verify.html')) {
         if (!emailFromUrl) return alert('E-posta adresi bulunamadı.');
         try {
             await resendSignUpCode({ username: emailFromUrl });
-            alert('Doğrulama kodu tekrar gönderildi.');
+            alert('Doğrulama kodu tekrar gönderildi. Spam (gereksiz) klasörünü kontrol etmeyi unutma.');
         } catch (error) {
             console.error('Kodu tekrar gönderme hatası:', error);
             alert(error.message);
@@ -246,7 +246,7 @@ if (window.location.pathname.includes('forgot-password.html')) {
         e.preventDefault();
         try {
             await resetPassword({ username: emailInput.value });
-            alert('Sıfırlama kodu e-postana gönderildi.');
+            alert('Sıfırlama kodu e-postana gönderildi. Spam (gereksiz) klasörünü kontrol etmeyi unutma.');
             
             // Switch forms directly using display style for reliability
             sendCodeForm.style.display = 'none';
@@ -259,7 +259,7 @@ if (window.location.pathname.includes('forgot-password.html')) {
                 const { resendSignUpCode } = await import('aws-amplify/auth');
                 try {
                     await resendSignUpCode({ username: emailInput.value });
-                    alert('Şifrenizi sıfırlamak için önce e-postanızı doğrulamanız gerekiyor. Size yeni bir doğrulama kodu gönderdik, lütfen e-postanızı kontrol edin.');
+                    alert('Şifrenizi sıfırlamak için önce e-postanızı doğrulamanız gerekiyor. Size yeni bir doğrulama kodu gönderdik, lütfen spam (gereksiz) klasörünüzü kontrol edin.');
                     window.location.href = `${getBasePath()}verify.html?email=${encodeURIComponent(emailInput.value)}`;
                 } catch (resendError) {
                     console.error('Doğrulama kodu gönderme hatası:', resendError);
