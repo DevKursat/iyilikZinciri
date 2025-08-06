@@ -238,19 +238,15 @@ if (window.location.pathname.includes('forgot-password.html')) {
     const resetPasswordForm = document.getElementById('reset-password-form');
     const emailInput = document.getElementById('reset-email');
 
-    // Ensure initial state is correct
-    resetPasswordForm.style.display = 'none';
-    sendCodeForm.style.display = 'flex';
-
     sendCodeForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         try {
             await resetPassword({ username: emailInput.value });
             alert('Sıfırlama kodu e-postana gönderildi. Spam (gereksiz) klasörünü kontrol etmeyi unutma.');
             
-            // Switch forms directly using display style for reliability
-            sendCodeForm.style.display = 'none';
-            resetPasswordForm.style.display = 'flex';
+            // Switch forms by toggling the 'hidden' class, which is the correct way
+            sendCodeForm.classList.add('hidden');
+            resetPasswordForm.classList.remove('hidden');
 
         } catch (error) {
             console.error('Şifre sıfırlama hatası:', error);
