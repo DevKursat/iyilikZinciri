@@ -6,6 +6,15 @@ import amplifyconfig from './src/amplifyconfiguration.json';
 
 Amplify.configure(amplifyconfig);
 
+// Function to get the correct base path for redirects
+function getBasePath() {
+    const host = window.location.hostname;
+    if (host.includes('localhost') || host.includes('127.0.0.1')) {
+        return '/';
+    }
+    return '/Good-Loop_iyilik-zinciri_/';
+}
+
 // --- Page Routing and Auth Check ---
 (async () => {
     const currentPath = window.location.pathname;
@@ -15,12 +24,12 @@ Amplify.configure(amplifyconfig);
         await getCurrentUser();
         // User is authenticated
         if (isAuthPage) {
-            window.location.href = 'home.html';
+            window.location.href = `${getBasePath()}home.html`;
         }
     } catch (error) {
         // User is not authenticated
         if (!isAuthPage) {
-            window.location.href = 'index.html';
+            window.location.href = `${getBasePath()}index.html`;
         }
     }
 })();
@@ -149,11 +158,11 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             e.preventDefault();
             try {
                 await signIn({ username: loginEmailInput.value, password: loginPasswordInput.value });
-                window.location.href = 'home.html';
+                window.location.href = `${getBasePath()}home.html`;
             } catch (error) {
                 console.error('Giriş hatası:', error);
                 if (error.name === 'UserNotConfirmedException') {
-                    window.location.href = `verify.html?email=${encodeURIComponent(loginEmailInput.value)}`;
+                    window.location.href = `${getBasePath()}verify.html?email=${encodeURIComponent(loginEmailInput.value)}`;
                 } else {
                     alert(error.message);
                 }
@@ -168,7 +177,7 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             try {
                 await signUp({ username: email, password, attributes: { email } });
                 alert('Hesap başarıyla oluşturuldu! Lütfen giriş yapın.');
-                window.location.href = 'index.html';
+                window.location.href = `${getBasePath()}index.html`;
             } catch (error) {
                 console.error('Kayıt hatası:', error);
                 alert(error.message);
@@ -192,7 +201,7 @@ if (window.location.pathname.includes('verify.html')) {
         try {
             await confirmSignUp({ username: emailFromUrl, confirmationCode: code });
             alert('E-posta başarıyla doğrulandı! Lütfen giriş yapın.');
-            window.location.href = 'index.html';
+            window.location.href = `${getBasePath()}index.html`;
         } catch (error) {
             console.error('Doğrulama hatası:', error);
             alert(error.message);
@@ -232,7 +241,7 @@ if (window.location.pathname.includes('forgot-password.html')) {
                 try {
                     await resendSignUpCode({ username: emailInput.value });
                     alert('Hesabınız henüz doğrulanmamış. Şifrenizi sıfırlamadan önce e-postanızı doğrulamanız gerekiyor. Size yeni bir doğrulama kodu gönderdik, lütfen e-postanızı kontrol edin.');
-                    window.location.href = `verify.html?email=${encodeURIComponent(emailInput.value)}`;
+                    window.location.href = `${getBasePath()}verify.html?email=${encodeURIComponent(emailInput.value)}`;
                 } catch (resendError) {
                     console.error('Doğrulama kodu gönderme hatası:', resendError);
                     alert('Bir hata oluştu. Lütfen tekrar deneyin.');
@@ -250,7 +259,7 @@ if (window.location.pathname.includes('forgot-password.html')) {
         try {
             await confirmResetPassword({ username: emailInput.value, confirmationCode, newPassword });
             alert('Şifren başarıyla değiştirildi. Şimdi giriş yapabilirsin.');
-            window.location.href = 'index.html';
+            window.location.href = `${getBasePath()}index.html`;
         } catch (error) {
             console.error('Yeni şifre ayarlama hatası:', error);
             alert(error.message);
