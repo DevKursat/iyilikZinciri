@@ -324,14 +324,15 @@ if (window.location.pathname.includes('profile-setup.html')) {
     };
 
     // Adım 1 Formu - BUTON HATASI DÜZELTİLDİ
-    document.getElementById('step-1-btn').addEventListener('click', (e) => {
-        const form = document.getElementById('step-1-form');
-        if (form.checkValidity()) {
-            e.preventDefault();
+    document.getElementById('step-1-btn').addEventListener('click', () => {
+        const nameInput = document.getElementById('name');
+        const birthdateInput = document.getElementById('birthdate');
+
+        if (nameInput.value.trim() !== '' && birthdateInput.value.trim() !== '') {
             currentStep = 1;
             showStep(currentStep);
         } else {
-            form.reportValidity(); // Show validation messages if fields are empty
+            alert('Lütfen devam etmeden önce isim ve doğum tarihi alanlarını doldurun.');
         }
     });
 
