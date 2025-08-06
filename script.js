@@ -308,19 +308,31 @@ if (window.location.pathname.includes('profile-setup.html')) {
     const { updateUserAttributes } = await import('aws-amplify/auth');
 
     const steps = document.querySelectorAll('.setup-step');
+    const progressBarInner = document.querySelector('.progress-bar-inner');
     let currentStep = 0;
+
+    const updateProgressBar = () => {
+        const progress = (currentStep / (steps.length - 1)) * 100;
+        progressBarInner.style.width = `${progress}%`;
+    };
 
     const showStep = (stepIndex) => {
         steps.forEach((step, index) => {
             step.classList.toggle('active', index === stepIndex);
         });
+        updateProgressBar();
     };
 
-    // Adım 1 Formu
-    document.getElementById('step-1-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-        currentStep = 1;
-        showStep(currentStep);
+    // Adım 1 Formu - BUTON HATASI DÜZELTİLDİ
+    document.getElementById('step-1-btn').addEventListener('click', (e) => {
+        const form = document.getElementById('step-1-form');
+        if (form.checkValidity()) {
+            e.preventDefault();
+            currentStep = 1;
+            showStep(currentStep);
+        } else {
+            form.reportValidity(); // Show validation messages if fields are empty
+        }
     });
 
     // Adım 2 Tercihler

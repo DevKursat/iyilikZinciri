@@ -16,6 +16,11 @@
     <div id="auth-page-container">
         <div class="auth-container-standalone profile-setup-container">
             
+            <!-- İlerleme Çubuğu -->
+            <div class="progress-bar">
+                <div class="progress-bar-inner"></div>
+            </div>
+
             <!-- Adım 1: Temel Bilgiler -->
             <div class="setup-step active" id="step-1">
                 <h1>Seni Tanıyalım</h1>
@@ -23,7 +28,7 @@
                 <form id="step-1-form">
                     <input type="text" id="name" placeholder="İsim" required>
                     <input type="date" id="birthdate" required>
-                    <button type="submit">Devam Et</button>
+                    <button type="button" id="step-1-btn">Devam Et</button>
                 </form>
             </div>
 
@@ -47,6 +52,22 @@
                     <div class="preference-card" data-preference="toplum">
                         <i class="fas fa-hands-helping"></i>
                         <span>Toplum</span>
+                    </div>
+                    <div class="preference-card" data-preference="egitim">
+                        <i class="fas fa-book-open"></i>
+                        <span>Eğitim</span>
+                    </div>
+                    <div class="preference-card" data-preference="saglik">
+                        <i class="fas fa-heartbeat"></i>
+                        <span>Sağlık</span>
+                    </div>
+                    <div class="preference-card" data-preference="sanat">
+                        <i class="fas fa-paint-brush"></i>
+                        <span>Sanat & Kültür</span>
+                    </div>
+                    <div class="preference-card" data-preference="teknoloji">
+                        <i class="fas fa-laptop-code"></i>
+                        <span>Teknoloji</span>
                     </div>
                 </div>
                 <button id="step-2-btn">Devam Et</button>
