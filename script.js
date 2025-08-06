@@ -161,7 +161,15 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             e.preventDefault();
             try {
                 await signIn({ username: loginEmailInput.value, password: loginPasswordInput.value });
-                window.location.href = `${getBasePath()}home.html`;
+                
+                // Check for profile setup immediately after sign-in
+                const { attributes } = await getCurrentUser();
+                if (attributes['custom:profil_kurulumu_tamamlandi'] === 'evet') {
+                    window.location.href = `${getBasePath()}home.html`;
+                } else {
+                    window.location.href = `${getBasePath()}profile-setup.html`;
+                }
+
             } catch (error) {
                 console.error('Giriş hatası:', error);
                 if (error.name === 'UserNotConfirmedException') {
