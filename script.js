@@ -238,17 +238,23 @@ if (window.location.pathname.includes('forgot-password.html')) {
     const resetPasswordForm = document.getElementById('reset-password-form');
     const emailInput = document.getElementById('reset-email');
 
+    // Ensure initial state is correct
+    resetPasswordForm.style.display = 'none';
+    sendCodeForm.style.display = 'flex';
+
     sendCodeForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         try {
             await resetPassword({ username: emailInput.value });
             alert('Sıfırlama kodu e-postana gönderildi.');
-            sendCodeForm.classList.add('hidden');
-            resetPasswordForm.classList.remove('hidden');
+            
+            // Switch forms directly using display style for reliability
+            sendCodeForm.style.display = 'none';
+            resetPasswordForm.style.display = 'flex';
+
         } catch (error) {
             console.error('Şifre sıfırlama hatası:', error);
 
-            // Hem doğrulanmamış kullanıcılar hem de doğrulanmış e-postası olmayanlar için ortak çözüm
             if (error.name === 'UserNotConfirmedException' || error.name === 'InvalidParameterException') {
                 const { resendSignUpCode } = await import('aws-amplify/auth');
                 try {
