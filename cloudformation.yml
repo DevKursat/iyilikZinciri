@@ -125,6 +125,10 @@ Resources:
           RequireNumbers: true
           RequireSymbols: false
           RequireUppercase: true
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+          - Name: verified_email
+            Priority: 1
 
   CognitoUserPoolClient:
     Type: AWS::Cognito::UserPoolClient

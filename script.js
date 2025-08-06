@@ -247,11 +247,13 @@ if (window.location.pathname.includes('forgot-password.html')) {
             resetPasswordForm.classList.remove('hidden');
         } catch (error) {
             console.error('Şifre sıfırlama hatası:', error);
-            if (error.name === 'UserNotConfirmedException') {
+
+            // Hem doğrulanmamış kullanıcılar hem de doğrulanmış e-postası olmayanlar için ortak çözüm
+            if (error.name === 'UserNotConfirmedException' || error.name === 'InvalidParameterException') {
                 const { resendSignUpCode } = await import('aws-amplify/auth');
                 try {
                     await resendSignUpCode({ username: emailInput.value });
-                    alert('Hesabınız henüz doğrulanmamış. Şifrenizi sıfırlamadan önce e-postanızı doğrulamanız gerekiyor. Size yeni bir doğrulama kodu gönderdik, lütfen e-postanızı kontrol edin.');
+                    alert('Şifrenizi sıfırlamak için önce e-postanızı doğrulamanız gerekiyor. Size yeni bir doğrulama kodu gönderdik, lütfen e-postanızı kontrol edin.');
                     window.location.href = `${getBasePath()}verify.html?email=${encodeURIComponent(emailInput.value)}`;
                 } catch (resendError) {
                     console.error('Doğrulama kodu gönderme hatası:', resendError);
