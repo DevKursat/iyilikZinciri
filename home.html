@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang=tr><meta charset=UTF-8><meta name=viewport content="width=device-width, initial-scale=1.0"><title>İyilik Zinciri - Ana Sayfa</title><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css><link rel=stylesheet href=/Good-Loop_iyilik-zinciri_/Good-Loop_iyilik-zinciri_.f28160c5.css><link rel=stylesheet href=/Good-Loop_iyilik-zinciri_/home.c0d14b7c.css><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&amp;display=swap" rel=stylesheet><body>
+<!DOCTYPE html><html lang=tr><meta charset=UTF-8><meta name=viewport content="width=device-width, initial-scale=1.0"><title>İyilik Zinciri - Ana Sayfa</title><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css><link rel=stylesheet href=/Good-Loop_iyilik-zinciri_/Good-Loop_iyilik-zinciri_.f28160c5.css><link rel=stylesheet href=/Good-Loop_iyilik-zinciri_/home.bc097bbb.css><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&amp;display=swap" rel=stylesheet><body>
     <header class=app-header>
         <div class=header-content>
             <div class=logo-container>
@@ -57,6 +57,17 @@
                 </div>
             </div>
         </section>
+
+        
+        <section class="animate-fade-in calendar-container">
+            <div class=calendar-header>
+                <h2 class=section-title>Bu Ayki İlerlemen</h2>
+                <button id=share-calendar-btn><i class="fa-share-alt fas"></i> Paylaş</button>
+            </div>
+            <div class=calendar-grid id=calendar-grid>
+                
+            </div>
+        </section>
     </main>
 
     <footer class=app-footer>
@@ -83,6 +94,16 @@
         </a>
     </nav>
 
-    <script type=module src=/Good-Loop_iyilik-zinciri_/Good-Loop_iyilik-zinciri_.babc5be3.js></script>
+    <script type=module src=/Good-Loop_iyilik-zinciri_/Good-Loop_iyilik-zinciri_.f8a391c1.js></script>
+
+    
+    <div id=day-detail-modal class=modal-overlay>
+        <div class=modal-content>
+            <button id=close-modal-btn class=close-btn>×</button>
+            <h3 id=modal-date></h3>
+            <p id=modal-task></p>
+            <div id=modal-status></div>
+        </div>
+    </div>
 
 
