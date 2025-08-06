@@ -91,10 +91,25 @@ Resources:
           AttributeDataType: String
           Required: false
           Mutable: true
-        - Name: custom:social_twitter
+        - Name: custom:social_x
           AttributeDataType: String
           Mutable: true
         - Name: custom:social_instagram
+          AttributeDataType: String
+          Mutable: true
+        - Name: custom:social_tiktok
+          AttributeDataType: String
+          Mutable: true
+        - Name: custom:social_facebook
+          AttributeDataType: String
+          Mutable: true
+        - Name: custom:social_reddit
+          AttributeDataType: String
+          Mutable: true
+        - Name: custom:social_linkedin
+          AttributeDataType: String
+          Mutable: true
+        - Name: custom:social_bereal
           AttributeDataType: String
           Mutable: true
         - Name: custom:iyilik_tercihleri

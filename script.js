@@ -348,15 +348,25 @@ if (window.location.pathname.includes('profile-setup.html')) {
         try {
             const name = document.getElementById('name').value;
             const birthdate = document.getElementById('birthdate').value;
-            const twitter = document.getElementById('twitter').value;
             const instagram = document.getElementById('instagram').value;
+            const tiktok = document.getElementById('tiktok').value;
+            const x = document.getElementById('x').value;
+            const facebook = document.getElementById('facebook').value;
+            const reddit = document.getElementById('reddit').value;
+            const linkedin = document.getElementById('linkedin').value;
+            const bereal = document.getElementById('bereal').value;
 
             await updateUserAttributes({
                 userAttributes: {
                     name,
                     birthdate,
-                    'custom:social_twitter': twitter,
                     'custom:social_instagram': instagram,
+                    'custom:social_tiktok': tiktok,
+                    'custom:social_x': x,
+                    'custom:social_facebook': facebook,
+                    'custom:social_reddit': reddit,
+                    'custom:social_linkedin': linkedin,
+                    'custom:social_bereal': bereal,
                     'custom:iyilik_tercihleri': preferences.join(','),
                     'custom:profil_kurulumu_tamamlandi': 'evet'
                 }
