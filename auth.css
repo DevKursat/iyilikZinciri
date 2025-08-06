@@ -31,11 +31,13 @@ body {
     min-height: 100vh;
 }
 
+/* --- AUTH PAGE STYLES --- */
 #auth-page-container {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
+    min-height: 100vh; /* Ensure it takes full screen height */
     padding: 1rem;
 }
 
