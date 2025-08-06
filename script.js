@@ -44,6 +44,11 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
     // --- Device-specific form toggling ---
     if (window.innerWidth <= 768) {
         // --- MOBILE ---
+        const toggleContainer = document.querySelector('.toggle-container');
+        if (toggleContainer) {
+            toggleContainer.remove(); // Remove the element entirely on mobile
+        }
+
         const showLoginMobileBtn = document.getElementById('show-login-mobile');
         const showSignupMobileBtn = document.getElementById('show-signup-mobile');
 
