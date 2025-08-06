@@ -5,10 +5,10 @@
   },
   "name": "iyilik-zinciri",
   "version": "1.0.0",
-  "scripts": {
+    "scripts": {
     "start": "npx parcel index.html",
-        "build": "npx parcel build index.html home.html forgot-password.html verify.html --public-url /Good-Loop_iyilik-zinciri_/",
-  },
+        "build": "npx parcel build index.html home.html forgot-password.html verify.html profile-setup.html --public-url /Good-Loop_iyilik-zinciri_/",
+  },,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DevKursat/Good-Loop_iyilik-zinciri_.git"
