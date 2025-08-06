@@ -1,0 +1,104 @@
+.profile-setup-container {
+    max-width: 550px;
+    overflow: hidden; /* Adımlar arası geçiş için */
+}
+
+.setup-step {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.setup-step.active {
+    display: flex;
+}
+
+.setup-step h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.setup-step p {
+    color: var(--light-text-color);
+    margin-bottom: 2rem;
+}
+
+.setup-step form {
+    width: 100%;
+}
+
+/* Adım 2: Tercihler */
+.preferences-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.preference-card {
+    background-color: #f9f9f9;
+    border: 2px solid var(--border-color);
+    border-radius: 15px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.preference-card i {
+    font-size: 2.5rem;
+    color: var(--light-text-color);
+    transition: all 0.3s ease;
+}
+
+.preference-card span {
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.preference-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+}
+
+.preference-card.selected {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--white-color);
+    transform: scale(1.05);
+}
+
+.preference-card.selected i,
+.preference-card.selected span {
+    color: var(--white-color);
+}
+
+/* Adım 3: Sosyal Medya */
+.social-input {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.social-input i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--light-text-color);
+}
+
+.social-input input {
+    padding-left: 40px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

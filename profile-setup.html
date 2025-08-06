@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İyilik Zinciri - Profil Kurulumu</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css"> <!-- Ortak auth stillerini kullanır -->
+    <link rel="stylesheet" href="profile-setup.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <div id="auth-page-container">
+        <div class="auth-container-standalone profile-setup-container">
+            
+            <!-- Adım 1: Temel Bilgiler -->
+            <div class="setup-step active" id="step-1">
+                <h1>Seni Tanıyalım</h1>
+                <p>Profilini oluşturarak başlayalım.</p>
+                <form id="step-1-form">
+                    <input type="text" id="name" placeholder="İsim" required>
+                    <input type="date" id="birthdate" required>
+                    <button type="submit">Devam Et</button>
+                </form>
+            </div>
+
+            <!-- Adım 2: İyilik Tercihleri -->
+            <div class="setup-step" id="step-2">
+                <h1>İlgi Alanların</h1>
+                <p>Hangi alanlarda iyilik yapmak istersin?</p>
+                <div class="preferences-grid">
+                    <div class="preference-card" data-preference="hayvanlar">
+                        <i class="fas fa-paw"></i>
+                        <span>Hayvanlar</span>
+                    </div>
+                    <div class="preference-card" data-preference="cevre">
+                        <i class="fas fa-leaf"></i>
+                        <span>Çevre</span>
+                    </div>
+                    <div class="preference-card" data-preference="insanlar">
+                        <i class="fas fa-users"></i>
+                        <span>İnsanlar</span>
+                    </div>
+                    <div class="preference-card" data-preference="toplum">
+                        <i class="fas fa-hands-helping"></i>
+                        <span>Toplum</span>
+                    </div>
+                </div>
+                <button id="step-2-btn">Devam Et</button>
+            </div>
+
+            <!-- Adım 3: Sosyal Medya -->
+            <div class="setup-step" id="step-3">
+                <h1>İyiliklerini Paylaş</h1>
+                <p>Sosyal medya hesaplarını ekle (isteğe bağlı).</p>
+                <form id="step-3-form">
+                    <div class="social-input">
+                        <i class="fab fa-twitter"></i>
+                        <input type="text" id="twitter" placeholder="Twitter Kullanıcı Adı">
+                    </div>
+                    <div class="social-input">
+                        <i class="fab fa-instagram"></i>
+                        <input type="text" id="instagram" placeholder="Instagram Kullanıcı Adı">
+                    </div>
+                    <button type="submit">Profili Tamamla ve Başla!</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <script type="module" src="script.js"></script>
+</body>
+</html>

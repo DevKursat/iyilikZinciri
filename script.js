@@ -19,16 +19,19 @@ function getBasePath() {
 (async () => {
     const currentPath = window.location.pathname;
     const isAuthPage = currentPath.endsWith('/') || currentPath.endsWith('index.html') || currentPath.includes('verify.html') || currentPath.includes('forgot-password.html');
+    const isSetupPage = currentPath.includes('profile-setup.html');
 
     try {
-        await getCurrentUser();
+        const { attributes } = await getCurrentUser();
         // User is authenticated
-        if (isAuthPage) {
+        if (attributes['custom:profil_kurulumu_tamamlandi'] !== 'evet' && !isSetupPage) {
+            window.location.href = `${getBasePath()}profile-setup.html`;
+        } else if (isAuthPage || (attributes['custom:profil_kurulumu_tamamlandi'] === 'evet' && isSetupPage)) {
             window.location.href = `${getBasePath()}home.html`;
         }
     } catch (error) {
         // User is not authenticated
-        if (!isAuthPage) {
+        if (!isAuthPage && !isSetupPage) {
             window.location.href = `${getBasePath()}index.html`;
         }
     }
@@ -298,4 +301,74 @@ if (window.location.pathname.includes('home.html')) {
 
     // Sayfa yüklendiğinde fonksiyonları çalıştır
     setRandomDeed();
+}
+
+// --- Logic for profile-setup.html ---
+if (window.location.pathname.includes('profile-setup.html')) {
+    const { updateUserAttributes } = await import('aws-amplify/auth');
+
+    const steps = document.querySelectorAll('.setup-step');
+    let currentStep = 0;
+
+    const showStep = (stepIndex) => {
+        steps.forEach((step, index) => {
+            step.classList.toggle('active', index === stepIndex);
+        });
+    };
+
+    // Adım 1 Formu
+    document.getElementById('step-1-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        currentStep = 1;
+        showStep(currentStep);
+    });
+
+    // Adım 2 Tercihler
+    const preferences = [];
+    document.querySelectorAll('.preference-card').forEach(card => {
+        card.addEventListener('click', () => {
+            card.classList.toggle('selected');
+            const preference = card.dataset.preference;
+            if (preferences.includes(preference)) {
+                preferences.splice(preferences.indexOf(preference), 1);
+            } else {
+                preferences.push(preference);
+            }
+        });
+    });
+
+    document.getElementById('step-2-btn').addEventListener('click', () => {
+        currentStep = 2;
+        showStep(currentStep);
+    });
+
+    // Adım 3 Formu ve Veri Gönderme
+    document.getElementById('step-3-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+            const name = document.getElementById('name').value;
+            const birthdate = document.getElementById('birthdate').value;
+            const twitter = document.getElementById('twitter').value;
+            const instagram = document.getElementById('instagram').value;
+
+            await updateUserAttributes({
+                userAttributes: {
+                    name,
+                    birthdate,
+                    'custom:social_twitter': twitter,
+                    'custom:social_instagram': instagram,
+                    'custom:iyilik_tercihleri': preferences.join(','),
+                    'custom:profil_kurulumu_tamamlandi': 'evet'
+                }
+            });
+
+            window.location.href = `${getBasePath()}home.html`;
+
+        } catch (error) {
+            console.error('Profil güncelleme hatası:', error);
+            alert('Profiliniz güncellenirken bir hata oluştu. Lütfen tekrar deneyin.');
+        }
+    });
+
+    showStep(currentStep);
 }

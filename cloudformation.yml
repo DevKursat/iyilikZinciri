@@ -82,6 +82,26 @@ Resources:
         - Name: email
           AttributeDataType: String
           Required: true
+          Mutable: false
+        - Name: name
+          AttributeDataType: String
+          Required: false
+          Mutable: true
+        - Name: birthdate
+          AttributeDataType: String
+          Required: false
+          Mutable: true
+        - Name: custom:social_twitter
+          AttributeDataType: String
+          Mutable: true
+        - Name: custom:social_instagram
+          AttributeDataType: String
+          Mutable: true
+        - Name: custom:iyilik_tercihleri
+          AttributeDataType: String
+          Mutable: true
+        - Name: custom:profil_kurulumu_tamamlandi
+          AttributeDataType: String
           Mutable: true
       Policies:
         PasswordPolicy:
