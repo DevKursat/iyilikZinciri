@@ -380,7 +380,7 @@ if (window.location.pathname.includes('profile-setup.html')) {
     (async () => {
         try {
             const { attributes } = await getCurrentUser();
-            if (attributes && attributes['custom:profil_kurulumu_tamamlandi'] === 'evet') {
+            if (attributes && attributes['custom:prof_setup'] === 'true') {
                 window.location.href = `${getBasePath()}home.html`;
                 return; // Stop further execution
             }
@@ -497,9 +497,7 @@ if (window.location.pathname.includes('profile-setup.html')) {
                 'custom:profil_kurulumu_tamamlandi': 'evet'
             };
 
-            await updateUserAttributes({
-                attributes: attributes
-            });
+            await updateUserAttributes({ userAttributes: attributes });
 
             if (goToHome) {
                 window.location.href = `${getBasePath()}home.html`;
