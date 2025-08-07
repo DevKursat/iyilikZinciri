@@ -18,20 +18,42 @@ function getBasePath() {
 // --- Page Routing and Auth Check ---
 (async () => {
     const currentPath = window.location.pathname;
-    const isAuthPage = currentPath.endsWith('/') || currentPath.endsWith('index.html') || currentPath.includes('verify.html') || currentPath.includes('forgot-password.html');
+    const isAuthPage = currentPath.endsWith('/') || currentPath.endsWith('index.html');
+    const isVerifyPage = currentPath.includes('verify.html');
+    const isForgotPasswordPage = currentPath.includes('forgot-password.html');
     const isSetupPage = currentPath.includes('profile-setup.html');
+    const isHomePage = currentPath.includes('home.html');
+
+    // If on the main login/signup page, try to sign out any existing user first.
+    if (isAuthPage) {
+        try {
+            await signOut();
+        } catch (error) {
+            // No user was signed in, which is the expected state.
+        }
+    }
 
     try {
         const { attributes } = await getCurrentUser();
-        // User is authenticated
-        if (attributes['custom:profil_kurulumu_tamamlandi'] !== 'evet' && !isSetupPage) {
-            window.location.href = `${getBasePath()}profile-setup.html`;
-        } else if (isAuthPage || (attributes['custom:profil_kurulumu_tamamlandi'] === 'evet' && isSetupPage)) {
-            window.location.href = `${getBasePath()}home.html`;
+        // User IS authenticated
+        const profileComplete = attributes['custom:profil_kurulumu_tamamlandi'] === 'evet';
+
+        if (profileComplete) {
+            // If profile is complete, they should be on the home page.
+            if (!isHomePage) {
+                window.location.href = `${getBasePath()}home.html`;
+            }
+        } else {
+            // If profile is not complete, they should be on the setup page.
+            if (!isSetupPage) {
+                window.location.href = `${getBasePath()}profile-setup.html`;
+            }
         }
     } catch (error) {
-        // User is not authenticated
-        if (!isAuthPage && !isSetupPage) {
+        // User is NOT authenticated
+        // If they are not on a public page, redirect to login.
+        const isPublicPage = isAuthPage || isVerifyPage || isForgotPasswordPage;
+        if (!isPublicPage) {
             window.location.href = `${getBasePath()}index.html`;
         }
     }
@@ -219,17 +241,72 @@ if (window.location.pathname.includes('verify.html')) {
         }
     });
 
-    document.getElementById('resend-code-button').addEventListener('click', async (e) => {
-        e.preventDefault();
-        if (!emailFromUrl) return alert('E-posta adresi bulunamadı.');
-        try {
-            await resendSignUpCode({ username: emailFromUrl });
-            alert('Doğrulama kodu tekrar gönderildi. Spam (gereksiz) klasörünü kontrol etmeyi unutma.');
-        } catch (error) {
-            console.error('Kodu tekrar gönderme hatası:', error);
-            alert(error.message);
+    const resendContainer = document.getElementById('resend-code-container');
+    const toastContainer = document.getElementById('toast-container');
+    const securityMessages = [
+        "Bu sayfa tamamen güvenlidir.",
+        "E-posta ulaşmadıysa spam (gereksiz) klasörünüzü kontrol edin."
+    ];
+    let messageIndex = 0;
+
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'toast-message';
+        toast.textContent = message;
+        toastContainer.appendChild(toast);
+        setTimeout(() => toast.classList.add('show'), 10); // Delay to allow transition
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 500);
+        }, 4000);
+    }
+
+    function setupResendButton() {
+        resendContainer.innerHTML = `
+            <div id="resend-code-progress"></div>
+            <div id="resend-code-text"></div>
+        `;
+        const progressEl = document.getElementById('resend-code-progress');
+        const textEl = document.getElementById('resend-code-text');
+        
+        let countdown = 90;
+        resendContainer.classList.remove('ready');
+        progressEl.style.transition = 'none'; // Disable transition for immediate reset
+        progressEl.style.width = '0%';
+        
+        const interval = setInterval(() => {
+            countdown--;
+            const progressPercentage = ((90 - countdown) / 90) * 100;
+            progressEl.style.transition = 'width 1s linear'; // Re-enable for smooth progress
+            progressEl.style.width = `${progressPercentage}%`;
+            textEl.textContent = `TEKRAR GÖNDER (${countdown}s)`;
+
+            if (countdown <= 0) {
+                clearInterval(interval);
+                resendContainer.classList.add('ready');
+                textEl.textContent = 'KODU TEKRAR GÖNDER';
+            }
+        }, 1000);
+    }
+
+    resendContainer.addEventListener('click', async () => {
+        if (resendContainer.classList.contains('ready')) {
+            if (!emailFromUrl) return alert('E-posta adresi bulunamadı.');
+            try {
+                await resendSignUpCode({ username: emailFromUrl });
+                alert('Doğrulama kodu tekrar gönderildi. Spam (gereksiz) klasörünü kontrol etmeyi unutma.');
+                setupResendButton(); // Restart timer
+            } catch (error) {
+                console.error('Kodu tekrar gönderme hatası:', error);
+                alert(error.message);
+            }
+        } else {
+            showToast(securityMessages[messageIndex]);
+            messageIndex = (messageIndex + 1) % securityMessages.length;
         }
     });
+
+    setupResendButton(); // Initial setup
 }
 
 // --- Logic for forgot-password.html ---

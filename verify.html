@@ -15,14 +15,12 @@
             <form id="verify-form">
                 <h1>E-postanı Doğrula</h1>
                 <span>Lütfen <strong id="verify-email-display"></strong> adresine gönderilen 6 haneli kodu gir.</span>
-                                <input type="text" id="verification-code" placeholder="Doğrulama Kodu" required>
+                <input type="text" id="verification-code" placeholder="Doğrulama Kodu" required>
                 <button type="submit">Doğrula</button>
-                <button type="button" id="resend-code-button" class="secondary-btn">Kodu Tekrar Gönder</button>
-                <div class="security-note">
-                    <p><i class="fas fa-shield-alt"></i> Bu sayfa tamamen güvenlidir.</p>
-                    <p><i class="fas fa-inbox"></i> E-posta ulaşmadıysa <strong>spam (gereksiz)</strong> klasörünüzü kontrol edin.</p>
-                </div>
             </form>
+            <!-- Dynamic button will be injected here by script.js -->
+            <div id="resend-code-container"></div>
+            <div id="toast-container"></div>
         </div>
     </div>
     <script type="module" src="script.js"></script>
