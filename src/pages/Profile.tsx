@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
-import { USER_ATTRIBUTES } from '../../constants';
 
 const Profile = () => {
     const [user, setUser] = useState(null);
@@ -24,12 +23,20 @@ const Profile = () => {
         if (!user) return;
 
         try {
-            await Auth.updateUserAttributes(user, {
-                [USER_ATTRIBUTES.PROFILE_SETUP]: 'true'
-            });
+            // Attribute değerini string olarak gönderiyoruz
+            const attributes = {
+                'custom:profile_setup': 'true'  // USER_ATTRIBUTES.PROFILE_SETUP yerine direkt string
+            };
+            
+            await Auth.updateUserAttributes(user, attributes);
+            console.log('Profile updated successfully');
             navigate('/somewhere-else');
         } catch (error) {
-            console.log('Error updating user attributes: ', error);
+            console.error('Error updating user attributes: ', error);
+            // Hata detaylarını göster
+            if (error.message) {
+                alert(`Profil güncellenirken hata oluştu: ${error.message}`);
+            }
         }
     };
 
