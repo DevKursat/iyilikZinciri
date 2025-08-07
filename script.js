@@ -501,6 +501,7 @@ if (window.location.pathname.includes('profile-setup.html')) {
                 window.location.href = `${getBasePath()}home.html`;
             }
         } catch (error) {
+            console.error('Profil güncelleme hatası:', error);
             alert('Profiliniz güncellenirken bir hata oluştu. Lütfen tekrar deneyin.');
         }
     };
