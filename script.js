@@ -30,13 +30,7 @@ function getBasePath() {
 
     const isPublicPage = isAuthPage || isVerifyPage || isForgotPasswordPage;
 
-    if (isAuthPage) {
-        try {
-            await signOut();
-        } catch (error) {
-            // No user was signed in, which is the expected state.
-        }
-    }
+    
 
     if (!isPublicPage) {
         try {
@@ -493,7 +487,7 @@ if (window.location.pathname.includes('profile-setup.html')) {
             });
 
             if (goToHome) {
-                window.location.href = `${getBasePath()}redirect.html`;
+                window.location.href = `${getBasePath()}home.html`;
             }
 
         } catch (error) {

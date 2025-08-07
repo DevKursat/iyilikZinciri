@@ -1,3 +1,8 @@
 Diğer sayfaları etkileyecek hiçbir yapıyı BOZMA!
 
--kullanıcı giriş yaptığında redirect diye 404 veren bir sayfaya değil! profile_setup true ise home, false veya boş ise profilesetup sayfasına yönlendirecek.
+-Profile_setup true ise home, false veya boş ise profilesetup sayfasına yönlendirecek.
+-Profil kurulum sayfasındaki cinsiyet kutularının içindeki öğeler kutuların tam ortasında olsun.
+-Profil güncellenirken bu hatayı alıyoruz: Profil güncelleme hatası: NotAuthorizedException: A client attempted to write unauthorized attribute
+    at https://devkursat.github.io/Good-Loop_iyilik-zinciri_/Good-Loop_iyilik-zinciri_.fe0000b6.js:3:19777
+    at async g (https://devkursat.github.io/Good-Loop_iyilik-zinciri_/auth.be4305b3.js:1:4730)
+    at async f (https://devkursat.github.io/Good-Loop_iyilik-zinciri_/Good-Loop_iyilik-zinciri_.fe0000b6.js:6:4931) (Giriş sayfası yenilendiğinde açık oturum varsa kapatıyor ama biz giriş yaptıktan sonra kapatmaması lazım)
