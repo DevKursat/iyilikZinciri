@@ -23,8 +23,9 @@ function getBasePath() {
     const isForgotPasswordPage = currentPath.includes('forgot-password.html');
     const isSetupPage = currentPath.includes('profile-setup.html');
     const isHomePage = currentPath.includes('home.html');
+    const isRedirectPage = currentPath.includes('redirect.html');
 
-    const isPublicPage = isAuthPage || isVerifyPage || isForgotPasswordPage;
+    const isPublicPage = isAuthPage || isVerifyPage || isForgotPasswordPage || isRedirectPage;
 
     if (isAuthPage) {
         try {
@@ -36,27 +37,31 @@ function getBasePath() {
 
     if (!isPublicPage) {
         try {
-            const { attributes } = await getCurrentUser();
-            // User IS authenticated
-            const profileComplete = attributes && attributes['custom:setup_complete'] === 'evet';
-
-            if (profileComplete) {
-                // If profile is complete, they should be on the home page.
-                if (!isHomePage) {
-                    window.location.href = `${getBasePath()}home.html`;
-                }
-            } else {
-                // If profile is not complete, they should be on the setup page.
-                if (!isSetupPage) {
-                    window.location.href = `${getBasePath()}profile-setup.html`;
-                }
-            }
+            await getCurrentUser();
+            // If we are on a protected page and the user is authenticated, we are good.
         } catch (error) {
             // User is NOT authenticated, redirect to login.
             window.location.href = `${getBasePath()}index.html`;
         }
     }
 })();
+
+// --- Logic for redirect.html ---
+if (window.location.pathname.includes('redirect.html')) {
+    (async () => {
+        try {
+            const { attributes } = await getCurrentUser();
+            if (attributes && attributes['custom:setup_complete'] === 'evet') {
+                window.location.href = `${getBasePath()}home.html`;
+            } else {
+                window.location.href = `${getBasePath()}profile-setup.html`;
+            }
+        } catch (error) {
+            // If there's an error getting the user, send them to the login page.
+            window.location.href = `${getBasePath()}index.html`;
+        }
+    })();
+}
 
 
 // --- Logic for index.html (Login/Signup Page) ---
@@ -182,14 +187,7 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             e.preventDefault();
             try {
                 await signIn({ username: loginEmailInput.value, password: loginPasswordInput.value });
-                
-                const { attributes } = await getCurrentUser();
-                if (attributes && attributes['custom:setup_complete'] === 'evet') {
-                    window.location.href = `${getBasePath()}home.html`;
-                } else {
-                    window.location.href = `${getBasePath()}profile-setup.html`;
-                }
-
+                window.location.href = `${getBasePath()}redirect.html`;
             } catch (error) {
                 console.error('Giriş hatası:', error);
                 if (error.name === 'UserNotConfirmedException') {
@@ -425,6 +423,7 @@ if (window.location.pathname.includes('profile-setup.html')) {
     const preferenceCards = document.querySelectorAll('.preference-card');
     const step2Btn = document.getElementById('step-2-btn');
     const completeProfileBtn = document.getElementById('complete-profile-btn');
+    const interestCounter = document.getElementById('interest-counter');
 
     preferenceCards.forEach(card => {
         card.addEventListener('click', () => {
@@ -441,6 +440,8 @@ if (window.location.pathname.includes('profile-setup.html')) {
                     alert('En fazla 6 ilgi alanı seçebilirsiniz.');
                 }
             }
+            // Update counter
+            interestCounter.textContent = `(${preferences.length}/6)`;
             // Validate button state
             step2Btn.disabled = preferences.length < 1;
             completeProfileBtn.disabled = preferences.length < 1;
@@ -487,7 +488,7 @@ if (window.location.pathname.includes('profile-setup.html')) {
             });
 
             if (goToHome) {
-                window.location.href = `${getBasePath()}home.html`;
+                window.location.href = `${getBasePath()}redirect.html`;
             }
 
         } catch (error) {

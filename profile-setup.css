@@ -99,6 +99,13 @@
     color: var(--primary-color);
 }
 
+#interest-counter {
+    font-size: 1rem;
+    color: var(--light-text-color);
+    font-weight: 400;
+}
+
+
 
 /* Adım 2: Tercihler */
 .preferences-grid {

@@ -1,3 +1,6 @@
 Şimdi senden istediğim alanları düzelt sadece başka hiçbir ayarı bozma diğer sayfaları etkileyecek hiçbir yapıyı BOZMA!
 
-Profil kurulu yapmış hesabımla giriş yapmaya çalıştığımda ana sayfaya yönlendirmiyor bu hatayı düzelt ve profil kurulumu kısmına cinsiyet kutularının uzunluğu hala çok fazla bunu textbox'un uzunluğunun 2 katı olarak ayarlayalım ve cinsiyet ile sembol tam kutunun ortasında gözüksün.
+-Cinsiyet kutularının içindeki metinler kutunun tam ortasında olsun.
+-İlgi alanların metninin yanında kaçtane seçtiğimiz gözüksün ve minimum maksimum seçim sınırı anlaşılsın işte bu sayede.
+-profile_setup evet olan kullanıcı tekrar giriş yaptığında profil kurma sayfasına yönlendiriliyor direkt ana sayfaya gitmesi lazım çünkü zaten kurulum yapmış.
+-Profil oluşturmayı tamamladığımızda profil güncellenirken bir hata oluştu lütfen tekrar deneyin hatası alıyoruz.
