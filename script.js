@@ -474,16 +474,11 @@ if (window.location.pathname.includes('profile-setup.html')) {
             const name = document.getElementById('name').value;
             const birthdate = document.getElementById('birthdate').value;
             const gender = document.getElementById('gender').value;
-            const instagram = document.getElementById('instagram').value;
-            const tiktok = document.getElementById('tiktok').value;
-            const x = document.getElementById('x').value;
-            const facebook = document.getElementById('facebook').value;
-            const reddit = document.getElementById('reddit').value;
-            const linkedin = document.getElementById('linkedin').value;
-            const bereal = document.getElementById('bereal').value;
-
+            
+            // Profil güncelleme attributelerini düzenle
             await updateUserAttributes({
                 userAttributes: {
+                    'custom:prof_setup': 'true',  // Daha kısa attribute ismi
                     name,
                     birthdate,
                     gender,
@@ -502,7 +497,6 @@ if (window.location.pathname.includes('profile-setup.html')) {
             if (goToHome) {
                 window.location.href = `${getBasePath()}home.html`;
             }
-
         } catch (error) {
             console.error('Profil güncelleme hatası:', error);
             alert('Profiliniz güncellenirken bir hata oluştu. Lütfen tekrar deneyin.');
