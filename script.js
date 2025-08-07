@@ -508,25 +508,17 @@ if (window.location.pathname.includes('profile-setup.html')) {
             alert('Profiliniz güncellenirken bir hata oluştu. Lütfen tekrar deneyin.');
         }
     };
-    completeProfileBtn.addEventListener('click', () => submitProfile(true));
+    completeProfileBtn.addEventListener('click', () => {
+        submitProfile(true);
+    });
 
     document.getElementById('step-3-form').addEventListener('submit', (e) => {
         e.preventDefault();
-        submitProfile();
+        submitProfile(true);
     });
 
     // Initial State
     step2Btn.disabled = true;
     completeProfileBtn.disabled = true;
     showStep(currentStep);
-}
-}
-        submitProfile();
-    });
-
-    // Initial State
-    step2Btn.disabled = true;
-    completeProfileBtn.disabled = true;
-    showStep(currentStep);
-}
 }
