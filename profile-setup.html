@@ -29,13 +29,20 @@
                     <input type="text" id="name" placeholder="İsim" required>
                     <input type="date" id="birthdate" required>
                     <div class="gender-selection">
-                        <select id="gender" required>
-                            <option value="" disabled selected>Cinsiyetini Seç</option>
-                            <option value="erkek">Erkek</option>
-                            <option value="kadin">Kadın</option>
-                            <option value="belirtmek_istemiyorum">Belirtmek İstemiyorum</option>
-                        </select>
+                        <div class="gender-option" data-gender="erkek">
+                            <i class="fas fa-mars"></i>
+                            <span>Erkek</span>
+                        </div>
+                        <div class="gender-option" data-gender="kadin">
+                            <i class="fas fa-venus"></i>
+                            <span>Kadın</span>
+                        </div>
+                        <div class="gender-option" data-gender="belirtmek_istemiyorum">
+                            <i class="fas fa-genderless"></i>
+                            <span>Belirtmek İstemiyorum</span>
+                        </div>
                     </div>
+                    <input type="hidden" id="gender" required>
                     <button type="button" id="step-1-btn">Devam Et</button>
                 </form>
             </div>
@@ -78,7 +85,10 @@
                         <span>Teknoloji</span>
                     </div>
                 </div>
-                <button id="step-2-btn">Devam Et</button>
+                <div class="step-buttons">
+                    <button id="step-2-btn">Devam Et</button>
+                    <button id="complete-profile-btn" class="secondary-btn">Profili Tamamla</button>
+                </div>
             </div>
 
             <!-- Adım 3: Sosyal Medya -->

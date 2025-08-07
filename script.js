@@ -184,13 +184,15 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             try {
                 await signIn({ username: loginEmailInput.value, password: loginPasswordInput.value });
                 
-                // Check for profile setup immediately after sign-in
-                const { attributes } = await getCurrentUser();
-                if (attributes && attributes['custom:setup_complete'] === 'evet') {
-                    window.location.href = `${getBasePath()}home.html`;
-                } else {
-                    window.location.href = `${getBasePath()}profile-setup.html`;
-                }
+                // Add a small delay to allow the session to update
+                setTimeout(async () => {
+                    const { attributes } = await getCurrentUser();
+                    if (attributes && attributes['custom:setup_complete'] === 'evet') {
+                        window.location.href = `${getBasePath()}home.html`;
+                    } else {
+                        window.location.href = `${getBasePath()}profile-setup.html`;
+                    }
+                }, 500);
 
             } catch (error) {
                 console.error('Giriş hatası:', error);
@@ -399,11 +401,20 @@ if (window.location.pathname.includes('profile-setup.html')) {
         updateProgressBar();
     };
 
-    // Adım 1 Formu - BUTON HATASI DÜZELTİLDİ
+    // --- Adım 1: Cinsiyet Seçimi ---
+    const genderOptions = document.querySelectorAll('.gender-option');
+    const genderInput = document.getElementById('gender');
+    genderOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            genderOptions.forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            genderInput.value = option.dataset.gender;
+        });
+    });
+
     document.getElementById('step-1-btn').addEventListener('click', () => {
         const nameInput = document.getElementById('name');
         const birthdateInput = document.getElementById('birthdate');
-        const genderInput = document.getElementById('gender');
 
         if (nameInput.value.trim() !== '' && birthdateInput.value.trim() !== '' && genderInput.value.trim() !== '') {
             currentStep = 1;
@@ -413,28 +424,43 @@ if (window.location.pathname.includes('profile-setup.html')) {
         }
     });
 
-    // Adım 2 Tercihler
+    // --- Adım 2: İlgi Alanları ---
     const preferences = [];
-    document.querySelectorAll('.preference-card').forEach(card => {
+    const preferenceCards = document.querySelectorAll('.preference-card');
+    const step2Btn = document.getElementById('step-2-btn');
+    const completeProfileBtn = document.getElementById('complete-profile-btn');
+
+    preferenceCards.forEach(card => {
         card.addEventListener('click', () => {
-            card.classList.toggle('selected');
-            const preference = card.dataset.preference;
-            if (preferences.includes(preference)) {
-                preferences.splice(preferences.indexOf(preference), 1);
+            if (preferences.includes(card.dataset.preference)) {
+                // Deselect
+                preferences.splice(preferences.indexOf(card.dataset.preference), 1);
+                card.classList.remove('selected');
             } else {
-                preferences.push(preference);
+                // Select
+                if (preferences.length < 6) {
+                    preferences.push(card.dataset.preference);
+                    card.classList.add('selected');
+                } else {
+                    alert('En fazla 6 ilgi alanı seçebilirsiniz.');
+                }
             }
+            // Validate button state
+            step2Btn.disabled = preferences.length < 1;
+            completeProfileBtn.disabled = preferences.length < 1;
         });
     });
 
-    document.getElementById('step-2-btn').addEventListener('click', () => {
-        currentStep = 2;
-        showStep(currentStep);
+    step2Btn.addEventListener('click', () => {
+        if (preferences.length >= 1) {
+            currentStep = 2;
+            showStep(currentStep);
+        } else {
+            alert('Lütfen en az 1 ilgi alanı seçin.');
+        }
     });
 
-    // Adım 3 Formu ve Veri Gönderme
-    document.getElementById('step-3-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
+    const submitProfile = async (goToHome = true) => {
         try {
             const name = document.getElementById('name').value;
             const birthdate = document.getElementById('birthdate').value;
@@ -464,13 +490,31 @@ if (window.location.pathname.includes('profile-setup.html')) {
                 }
             });
 
-            window.location.href = `${getBasePath()}home.html`;
+            if (goToHome) {
+                window.location.href = `${getBasePath()}home.html`;
+            }
 
         } catch (error) {
             console.error('Profil güncelleme hatası:', error);
             alert('Profiliniz güncellenirken bir hata oluştu. Lütfen tekrar deneyin.');
         }
+    };
+
+    completeProfileBtn.addEventListener('click', () => {
+        if (preferences.length >= 1) {
+            submitProfile();
+        } else {
+            alert('Lütfen en az 1 ilgi alanı seçin.');
+        }
     });
 
+    document.getElementById('step-3-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        submitProfile();
+    });
+
+    // Initial State
+    step2Btn.disabled = true;
+    completeProfileBtn.disabled = true;
     showStep(currentStep);
 }

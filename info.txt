@@ -1,3 +1,3 @@
 Şimdi senden istediğim alanları düzelt sadece başka hiçbir ayarı bozma diğer sayfaları etkileyecek hiçbir yapıyı BOZMA!
 
-custom:setup_complete: evet olan kişiye yine de profil oluşturma sayfasına yönlendiriyor giriş yapınca ve seni tanıyalım kısmında cinsiyet seçme kısmı kaldırılmış. 
+profil kurulumu sayfasında ilgi alanlarının altında devam et butonunun sağına profili profili tamamla butonu ekle tasarıma uygun olacak şekilde ve minimum 1 maksimum 6 ilgi alanı seçilebilsin. Cinsiyet seçme kısmını da çok kötü yapmışsın onu düzeltelim: Text box uzunluğunda 3 dikdörtgen olacak ve bunların ortalarında cinsiyetler yazacak ve seçtiğimizde güzel yeşil renk ile bir animasyon olacak. (Bu arada veritabanında setup_complete:evet olan kullanıcı da giriş yapınca kurulum sayfasına yönlendiriliyor bu hatayı da çözelim.)

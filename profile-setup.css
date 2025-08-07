@@ -49,6 +49,52 @@
     width: 100%;
 }
 
+/* Adım 1: Cinsiyet Seçimi */
+.gender-selection {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+    margin: 1rem 0;
+}
+
+.gender-option {
+    flex: 1;
+    background-color: #f9f9f9;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.gender-option i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--light-text-color);
+    transition: all 0.3s ease;
+}
+
+.gender-option span {
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.gender-option.selected {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--white-color);
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.gender-option.selected i,
+.gender-option.selected span {
+    color: var(--white-color);
+}
+
+
 /* Adım 2: Tercihler */
 .preferences-grid {
     display: grid;
@@ -118,6 +164,23 @@
 .social-input input {
     padding-left: 40px;
 }
+
+.step-buttons {
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+}
+
+.step-buttons button {
+    flex: 1;
+}
+
+.secondary-btn {
+    background-color: var(--card-background);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
 
 @keyframes fadeIn {
     from { opacity: 0; }
