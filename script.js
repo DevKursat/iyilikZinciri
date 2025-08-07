@@ -183,17 +183,7 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             e.preventDefault();
             try {
                 await signIn({ username: loginEmailInput.value, password: loginPasswordInput.value });
-                
-                // Add a small delay to allow the session to update
-                setTimeout(async () => {
-                    const { attributes } = await getCurrentUser();
-                    if (attributes && attributes['custom:setup_complete'] === 'evet') {
-                        window.location.href = `${getBasePath()}home.html`;
-                    } else {
-                        window.location.href = `${getBasePath()}profile-setup.html`;
-                    }
-                }, 500);
-
+                window.location.reload();
             } catch (error) {
                 console.error('Giriş hatası:', error);
                 if (error.name === 'UserNotConfirmedException') {
