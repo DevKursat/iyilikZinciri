@@ -12,13 +12,18 @@ function getBasePath() {
     if (host.includes('localhost') || host.includes('127.0.0.1')) {
         return '/';
     }
+    // For GitHub Pages, the path is /<repository-name>/
     return '/Good-Loop_iyilik-zinciri_/';
 }
 
 // --- Page Routing and Auth Check ---
 (async () => {
     const currentPath = window.location.pathname;
-    const isAuthPage = currentPath.endsWith('/') || currentPath.endsWith('index.html');
+    // Normalize path for consistency
+    const normalizedPath = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
+    const basePath = getBasePath();
+    
+    const isAuthPage = normalizedPath === `${basePath}` || normalizedPath === `${basePath}index.html/`;
     const isVerifyPage = currentPath.includes('verify.html');
     const isForgotPasswordPage = currentPath.includes('forgot-password.html');
     const isSetupPage = currentPath.includes('profile-setup.html');
@@ -41,7 +46,7 @@ function getBasePath() {
             // If we are on a protected page and the user is authenticated, we are good.
         } catch (error) {
             // User is NOT authenticated, redirect to login.
-            window.location.href = `${getBasePath()}index.html`;
+            window.location.href = `${basePath}index.html`;
         }
     }
 })();
@@ -474,7 +479,6 @@ if (window.location.pathname.includes('profile-setup.html')) {
                 userAttributes: {
                     name,
                     birthdate,
-                    gender,
                     'custom:social_instagram': instagram,
                     'custom:social_tiktok': tiktok,
                     'custom:social_x': x,

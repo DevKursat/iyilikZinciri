@@ -99,10 +99,23 @@
     color: var(--primary-color);
 }
 
+.step-header {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.step-header h1 {
+    margin-bottom: 0;
+}
+
 #interest-counter {
     font-size: 1rem;
     color: var(--light-text-color);
     font-weight: 400;
+    margin-left: 10px;
 }
 
 
