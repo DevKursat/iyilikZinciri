@@ -481,9 +481,7 @@ if (window.location.pathname.includes('profile-setup.html')) {
             const reddit = document.getElementById('reddit').value;
             const linkedin = document.getElementById('linkedin').value;
             
-            // Profil güncelleme attributelerini düzenle
-            const attributes = {
-                'custom:prof_setup': 'true',  // Daha kısa attribute ismi
+            const attributesToUpdate = {
                 name: String(name),
                 birthdate: String(birthdate),
                 gender: String(gender),
@@ -494,10 +492,10 @@ if (window.location.pathname.includes('profile-setup.html')) {
                 'custom:social_reddit': String(reddit),
                 'custom:social_linkedin': String(linkedin),
                 'custom:iyilik_tercihleri': String(preferences.join(',')),
-                'custom:profil_kurulumu_tamamlandi': 'evet'
+                'custom:prof_setup': 'true'
             };
 
-            await updateUserAttributes({ userAttributes: attributes });
+            await updateUserAttributes({ userAttributes: attributesToUpdate });
 
             if (goToHome) {
                 window.location.href = `${getBasePath()}home.html`;
