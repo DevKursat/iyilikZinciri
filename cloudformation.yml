@@ -99,7 +99,7 @@ Resources:
         - Name: custom:social_x
           AttributeDataType: String
           StringAttributeConstraints:
-            MaxLength: "32"
+            MaxLength: "256" # Increased to accommodate full URLs
           Mutable: true
         - Name: custom:social_instagram
           AttributeDataType: String

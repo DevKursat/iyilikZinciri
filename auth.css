@@ -115,6 +115,9 @@
 
 .social-icons {
     margin: 20px 0;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
 }
 
 .social-icons a {
