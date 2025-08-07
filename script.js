@@ -191,7 +191,12 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             } catch (error) {
                 console.error('Giriş hatası:', error);
                 if (error.name === 'UserNotConfirmedException') {
-                    window.location.href = `${getBasePath()}verify.html?email=${encodeURIComponent(loginEmailInput.value)}`;
+                    const email = loginEmailInput ? loginEmailInput.value : '';
+                    if (email) {
+                        window.location.href = `${getBasePath()}verify.html?email=${encodeURIComponent(email)}`;
+                    } else {
+                        alert('E-posta adresi bulunamadı. Lütfen tekrar deneyin.');
+                    }
                 } else {
                     alert(error.message);
                 }
