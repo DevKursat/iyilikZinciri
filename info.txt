@@ -1,36 +1,3 @@
 Şimdi senden istediğim alanları düzelt sadece başka hiçbir ayarı bozma diğer sayfaları etkileyecek hiçbir yapıyı BOZMA!
 
-Sayfa Yapısı ve Bileşenleri:
-
-Haftalık Seri Takibi (Üst Kısım):
-
-"Bu Haftaki İyilik Serin" başlığı olsun.
-
-Yan yana duran, haftada yapılması gereken 3 iyiliği temsil eden 3 adet daire olsun. Tamamlanan her görev için bu daireler, yumuşak bir animasyonla dolarak yeşil renge dönsün.
-
-Günün İyilik Görevi (Orta Kısım):
-
-Dikkat çekici, gölgeli bir kart tasarımı kullan.
-
-Kartın içinde, "Günün İyilik Görevi" başlığı altında, o günün rastgele görev metni (ör: "Bir sokak hayvanına su ver.") büyük ve okunaklı bir şekilde yazsın.
-
-Kartın altında, kullanıcıyı fotoğraf/video yüklemeye yönlendirecek, belirgin ve davetkar bir "Görevi Kanıtla" butonu bulunsun.
-
-Navigasyon Barı (Alt Kısım):
-
-Ekranın altına sabitlenmiş, modern bir navigasyon barı oluştur.
-
-Bu barda sadece iki ikon bulunsun: Biri "Ana Sayfa" (bu ekran), diğeri ise iyiliklerin paylaşıldığı TikTok benzeri akış için "Akış".
-
-Tasarım ve Animasyon Stili:
-
-Renkler: Güven ve pozitifliği yansıtan yeşil ve turuncu tonlarını kullan.
-
-Yazı Tipi: Modern ve okunaklı bir sans-serif font ailesi seç.
-
-Animasyon: Sayfa yüklendiğinde bileşenler hafifçe kayarak veya belirerek ekrana gelsin. Butonların üzerine gelindiğinde veya dokunulduğunda ince bir gölge veya boyut animasyonu olsun.
-
-Giriş yap kısmında "There is already a signed in user." hatası alıyoruz bunu çözmek için ana sayfa yüklendiğinde açık oturum varsa kapatalım. 
-
-Mail doğrulama sayfasında kod gönder butonu altındaki metinleri kaldır ve tekrar kod gönder butonu 90sn içinde aktif olacak şekilde ayarla (Buton giriş yap butonu gibi sayfa yüklendiğinde arka plan grimsi gözükecek ve metin de siyah 90sn içinde başından sonuna tamamen yeşil olacak ve yeşil olduğunda tıklanabilir olacak ve arkaplan yeşil olduğunda metin beyaz gözükecek grimsi olan renk ise siyah) ve o kaldırdığımız text kutularındaki metinleri buton aktif olmadığında tıkladığımızda toast message olarak göster.
-
+Cannot read properties of undefined (reading 'custom:profil_kurulumu_tamamlandi') hatası alıyorum giriş yaparken ve sayfa chrome tarafından tehlikeli gözüküyor bu iki sorunu çöz şu an.

@@ -36,7 +36,7 @@ function getBasePath() {
     try {
         const { attributes } = await getCurrentUser();
         // User IS authenticated
-        const profileComplete = attributes['custom:profil_kurulumu_tamamlandi'] === 'evet';
+        const profileComplete = attributes && attributes['custom:profil_kurulumu_tamamlandi'] === 'evet';
 
         if (profileComplete) {
             // If profile is complete, they should be on the home page.
@@ -186,7 +186,7 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
                 
                 // Check for profile setup immediately after sign-in
                 const { attributes } = await getCurrentUser();
-                if (attributes['custom:profil_kurulumu_tamamlandi'] === 'evet') {
+                if (attributes && attributes['custom:profil_kurulumu_tamamlandi'] === 'evet') {
                     window.location.href = `${getBasePath()}home.html`;
                 } else {
                     window.location.href = `${getBasePath()}profile-setup.html`;
