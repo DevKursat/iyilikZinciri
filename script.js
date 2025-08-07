@@ -510,6 +510,11 @@ if (window.location.pathname.includes('profile-setup.html')) {
     };
     completeProfileBtn.addEventListener('click', () => submitProfile(true));
 
+    document.getElementById('step-3-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        submitProfile();
+    });
+
     // Initial State
     step2Btn.disabled = true;
     completeProfileBtn.disabled = true;
