@@ -16,26 +16,39 @@ function getBasePath() {
 }
 
 // --- Page Routing and Auth Check ---
+// --- Page Routing and Auth Check ---
 (async () => {
     const currentPath = window.location.pathname;
-    // Normalize path for consistency
-    const normalizedPath = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
     const basePath = getBasePath();
-    
+    const normalizedPath = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
+
     const isAuthPage = normalizedPath === `${basePath}` || normalizedPath === `${basePath}index.html/`;
     const isVerifyPage = currentPath.includes('verify.html');
     const isForgotPasswordPage = currentPath.includes('forgot-password.html');
-    const isSetupPage = currentPath.includes('profile-setup.html');
-    const isHomePage = currentPath.includes('home.html');
 
+    // If on the login page, check if user is already signed in and redirect them.
+    if (isAuthPage) {
+        try {
+            const { attributes } = await getCurrentUser();
+            // User is already signed in, redirect them to the correct page.
+            if (attributes && attributes['custom:profil_kurulumu_tamamlandi'] === 'evet') {
+                window.location.href = `${basePath}home.html`;
+            } else {
+                window.location.href = `${basePath}profile-setup.html`;
+            }
+            return; // Stop further script execution for this page
+        } catch (error) {
+            // No user is signed in, which is the expected state on the login page.
+            // Do nothing and let the user sign in.
+        }
+    }
+
+    // For all other protected pages, ensure the user is authenticated.
     const isPublicPage = isAuthPage || isVerifyPage || isForgotPasswordPage;
-
-    
-
     if (!isPublicPage) {
         try {
             await getCurrentUser();
-            // If we are on a protected page and the user is authenticated, we are good.
+            // User is authenticated, they can stay on the page.
         } catch (error) {
             // User is NOT authenticated, redirect to login.
             window.location.href = `${basePath}index.html`;
@@ -170,7 +183,7 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             try {
                 await signIn({ username: loginEmailInput.value, password: loginPasswordInput.value });
                 const { attributes } = await getCurrentUser();
-                if (attributes && attributes['custom:setup_complete'] === 'evet') {
+                if (attributes && attributes['custom:profil_kurulumu_tamamlandi'] === 'evet') {
                     window.location.href = `${getBasePath()}home.html`;
                 } else {
                     window.location.href = `${getBasePath()}profile-setup.html`;
@@ -367,7 +380,7 @@ if (window.location.pathname.includes('profile-setup.html')) {
     (async () => {
         try {
             const { attributes } = await getCurrentUser();
-            if (attributes && attributes['custom:setup_complete'] === 'evet') {
+            if (attributes && attributes['custom:profil_kurulumu_tamamlandi'] === 'evet') {
                 window.location.href = `${getBasePath()}home.html`;
                 return; // Stop further execution
             }
@@ -471,9 +484,9 @@ if (window.location.pathname.includes('profile-setup.html')) {
 
             await updateUserAttributes({
                 userAttributes: {
-                    // name,
-                    // birthdate,
-                    // gender,
+                    name,
+                    birthdate,
+                    gender,
                     'custom:social_instagram': instagram,
                     'custom:social_tiktok': tiktok,
                     'custom:social_x': x,
@@ -482,7 +495,7 @@ if (window.location.pathname.includes('profile-setup.html')) {
                     'custom:social_linkedin': linkedin,
                     'custom:social_bereal': bereal,
                     'custom:iyilik_tercihleri': preferences.join(','),
-                    'custom:setup_complete': 'evet'
+                    'custom:profil_kurulumu_tamamlandi': 'evet'
                 }
             });
 
