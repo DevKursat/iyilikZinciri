@@ -1,3 +1,3 @@
 Şimdi senden istediğim alanları düzelt sadece başka hiçbir ayarı bozma diğer sayfaları etkileyecek hiçbir yapıyı BOZMA!
 
-"Belirtmek istemiyorum" yerine "Diğer" yazalım oraya ve arka planın uzunluğu çok büyük olmuş onu küçültelim estetik uygunluğa göre. ve fazla yeşil olmuş seçilen cinsiyet arka planın transparanlık ayarını %20 yeşil yapalım border kısmı yeşil olsun. Ayrıca hala setup_complete: Evet olan kullanıcı direkt anasayfaya yönlendirilsin profil kurma sayfası yerine.
+Profil kurulu yapmış hesabımla giriş yapmaya çalıştığımda ana sayfaya yönlendirmiyor bu hatayı düzelt ve profil kurulumu kısmına cinsiyet kutularının uzunluğu hala çok fazla bunu textbox'un uzunluğunun 2 katı olarak ayarlayalım ve cinsiyet ile sembol tam kutunun ortasında gözüksün.

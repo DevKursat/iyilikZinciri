@@ -24,7 +24,8 @@ function getBasePath() {
     const isSetupPage = currentPath.includes('profile-setup.html');
     const isHomePage = currentPath.includes('home.html');
 
-    // If on the main login/signup page, try to sign out any existing user first.
+    const isPublicPage = isAuthPage || isVerifyPage || isForgotPasswordPage;
+
     if (isAuthPage) {
         try {
             await signOut();
@@ -33,27 +34,25 @@ function getBasePath() {
         }
     }
 
-    try {
-        const { attributes } = await getCurrentUser();
-        // User IS authenticated
-        const profileComplete = attributes && attributes['custom:setup_complete'] === 'evet';
+    if (!isPublicPage) {
+        try {
+            const { attributes } = await getCurrentUser();
+            // User IS authenticated
+            const profileComplete = attributes && attributes['custom:setup_complete'] === 'evet';
 
-        if (profileComplete) {
-            // If profile is complete, they should be on the home page.
-            if (!isHomePage) {
-                window.location.href = `${getBasePath()}home.html`;
+            if (profileComplete) {
+                // If profile is complete, they should be on the home page.
+                if (!isHomePage) {
+                    window.location.href = `${getBasePath()}home.html`;
+                }
+            } else {
+                // If profile is not complete, they should be on the setup page.
+                if (!isSetupPage) {
+                    window.location.href = `${getBasePath()}profile-setup.html`;
+                }
             }
-        } else {
-            // If profile is not complete, they should be on the setup page.
-            if (!isSetupPage) {
-                window.location.href = `${getBasePath()}profile-setup.html`;
-            }
-        }
-    } catch (error) {
-        // User is NOT authenticated
-        // If they are not on a public page, redirect to login.
-        const isPublicPage = isAuthPage || isVerifyPage || isForgotPasswordPage;
-        if (!isPublicPage) {
+        } catch (error) {
+            // User is NOT authenticated, redirect to login.
             window.location.href = `${getBasePath()}index.html`;
         }
     }
@@ -183,7 +182,14 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             e.preventDefault();
             try {
                 await signIn({ username: loginEmailInput.value, password: loginPasswordInput.value });
-                window.location.reload();
+                
+                const { attributes } = await getCurrentUser();
+                if (attributes && attributes['custom:setup_complete'] === 'evet') {
+                    window.location.href = `${getBasePath()}home.html`;
+                } else {
+                    window.location.href = `${getBasePath()}profile-setup.html`;
+                }
+
             } catch (error) {
                 console.error('Giriş hatası:', error);
                 if (error.name === 'UserNotConfirmedException') {
