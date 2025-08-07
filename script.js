@@ -36,7 +36,7 @@ function getBasePath() {
     try {
         const { attributes } = await getCurrentUser();
         // User IS authenticated
-        const profileComplete = attributes && attributes['custom:profil_kurulumu_tamamlandi'] === 'evet';
+        const profileComplete = attributes && attributes['custom:setup_complete'] === 'evet';
 
         if (profileComplete) {
             // If profile is complete, they should be on the home page.
@@ -186,7 +186,7 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
                 
                 // Check for profile setup immediately after sign-in
                 const { attributes } = await getCurrentUser();
-                if (attributes && attributes['custom:profil_kurulumu_tamamlandi'] === 'evet') {
+                if (attributes && attributes['custom:setup_complete'] === 'evet') {
                     window.location.href = `${getBasePath()}home.html`;
                 } else {
                     window.location.href = `${getBasePath()}profile-setup.html`;
@@ -403,12 +403,13 @@ if (window.location.pathname.includes('profile-setup.html')) {
     document.getElementById('step-1-btn').addEventListener('click', () => {
         const nameInput = document.getElementById('name');
         const birthdateInput = document.getElementById('birthdate');
+        const genderInput = document.getElementById('gender');
 
-        if (nameInput.value.trim() !== '' && birthdateInput.value.trim() !== '') {
+        if (nameInput.value.trim() !== '' && birthdateInput.value.trim() !== '' && genderInput.value.trim() !== '') {
             currentStep = 1;
             showStep(currentStep);
         } else {
-            alert('Lütfen devam etmeden önce isim ve doğum tarihi alanlarını doldurun.');
+            alert('Lütfen devam etmeden önce tüm alanları doldurun.');
         }
     });
 
@@ -437,6 +438,7 @@ if (window.location.pathname.includes('profile-setup.html')) {
         try {
             const name = document.getElementById('name').value;
             const birthdate = document.getElementById('birthdate').value;
+            const gender = document.getElementById('gender').value;
             const instagram = document.getElementById('instagram').value;
             const tiktok = document.getElementById('tiktok').value;
             const x = document.getElementById('x').value;
@@ -449,6 +451,7 @@ if (window.location.pathname.includes('profile-setup.html')) {
                 userAttributes: {
                     name,
                     birthdate,
+                    gender,
                     'custom:social_instagram': instagram,
                     'custom:social_tiktok': tiktok,
                     'custom:social_x': x,
@@ -457,7 +460,7 @@ if (window.location.pathname.includes('profile-setup.html')) {
                     'custom:social_linkedin': linkedin,
                     'custom:social_bereal': bereal,
                     'custom:iyilik_tercihleri': preferences.join(','),
-                    'custom:profil_kurulumu_tamamlandi': 'evet'
+                    'custom:setup_complete': 'evet'
                 }
             });
 
