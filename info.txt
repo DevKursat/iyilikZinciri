@@ -1,4 +1,3 @@
 Diğer sayfaları etkileyecek hiçbir yapıyı BOZMA!
 
--Profil kurulum sayfasındaki cinsiyet kutularının içindeki öğeler kutunun tam ortasında olsun.
--profile_setup evet olan kullanıcı ana sayfaya gitsin eğer hayır veya boş ise profil oluşturma sayfasına yönlendirsin.
+-kullanıcı giriş yaptığında redirect diye 404 veren bir sayfaya değil! profile_setup true ise home, false veya boş ise profilesetup sayfasına yönlendirecek.

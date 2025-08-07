@@ -9,10 +9,6 @@ Amplify.configure(amplifyconfig);
 // Function to get the correct base path for redirects
 function getBasePath() {
     let path = window.location.pathname;
-    // If the path is for redirect.html, remove it to get the base path.
-    if (path.endsWith('redirect.html')) {
-        path = path.substring(0, path.lastIndexOf('/') + 1);
-    }
     // If the path includes a file name (e.g., index.html), remove it.
     const lastSlashIndex = path.lastIndexOf('/');
     // Return the path up to the last slash, ensuring it ends with a slash.
@@ -31,9 +27,8 @@ function getBasePath() {
     const isForgotPasswordPage = currentPath.includes('forgot-password.html');
     const isSetupPage = currentPath.includes('profile-setup.html');
     const isHomePage = currentPath.includes('home.html');
-    const isRedirectPage = currentPath.includes('redirect.html');
 
-    const isPublicPage = isAuthPage || isVerifyPage || isForgotPasswordPage || isRedirectPage;
+    const isPublicPage = isAuthPage || isVerifyPage || isForgotPasswordPage;
 
     if (isAuthPage) {
         try {
@@ -54,22 +49,7 @@ function getBasePath() {
     }
 })();
 
-// --- Logic for redirect.html ---
-if (window.location.pathname.includes('redirect.html')) {
-    (async () => {
-        try {
-            const { attributes } = await getCurrentUser();
-            if (attributes && attributes['custom:setup_complete'] === 'evet') {
-                window.location.href = `${getBasePath()}home.html`;
-            } else {
-                window.location.href = `${getBasePath()}profile-setup.html`;
-            }
-        } catch (error) {
-            // If there's an error getting the user, send them to the login page.
-            window.location.href = `${getBasePath()}index.html`;
-        }
-    })();
-}
+
 
 
 // --- Logic for index.html (Login/Signup Page) ---
@@ -195,7 +175,12 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             e.preventDefault();
             try {
                 await signIn({ username: loginEmailInput.value, password: loginPasswordInput.value });
-                window.location.href = `${getBasePath()}redirect.html`;
+                const { attributes } = await getCurrentUser();
+                if (attributes && attributes['custom:setup_complete'] === 'evet') {
+                    window.location.href = `${getBasePath()}home.html`;
+                } else {
+                    window.location.href = `${getBasePath()}profile-setup.html`;
+                }
             } catch (error) {
                 console.error('Giriş hatası:', error);
                 if (error.name === 'UserNotConfirmedException') {
