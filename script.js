@@ -8,12 +8,15 @@ Amplify.configure(amplifyconfig);
 
 // Function to get the correct base path for redirects
 function getBasePath() {
-    const host = window.location.hostname;
-    if (host.includes('localhost') || host.includes('127.0.0.1')) {
-        return '/';
+    let path = window.location.pathname;
+    // If the path is for redirect.html, remove it to get the base path.
+    if (path.endsWith('redirect.html')) {
+        path = path.substring(0, path.lastIndexOf('/') + 1);
     }
-    // For GitHub Pages, the path is /<repository-name>/
-    return '/Good-Loop_iyilik-zinciri_/';
+    // If the path includes a file name (e.g., index.html), remove it.
+    const lastSlashIndex = path.lastIndexOf('/');
+    // Return the path up to the last slash, ensuring it ends with a slash.
+    return path.substring(0, lastSlashIndex + 1);
 }
 
 // --- Page Routing and Auth Check ---
@@ -382,6 +385,18 @@ if (window.location.pathname.includes('home.html')) {
 
 // --- Logic for profile-setup.html ---
 if (window.location.pathname.includes('profile-setup.html')) {
+    (async () => {
+        try {
+            const { attributes } = await getCurrentUser();
+            if (attributes && attributes['custom:setup_complete'] === 'evet') {
+                window.location.href = `${getBasePath()}home.html`;
+                return; // Stop further execution
+            }
+        } catch (error) {
+            // Not logged in, proceed with setup page logic
+        }
+    })();
+
     const { updateUserAttributes } = await import('aws-amplify/auth');
 
     const steps = document.querySelectorAll('.setup-step');
@@ -479,6 +494,7 @@ if (window.location.pathname.includes('profile-setup.html')) {
                 userAttributes: {
                     name,
                     birthdate,
+                    gender,
                     'custom:social_instagram': instagram,
                     'custom:social_tiktok': tiktok,
                     'custom:social_x': x,

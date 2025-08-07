@@ -1,12 +1,4 @@
-Şimdi senden istediğim alanları düzelt sadece başka hiçbir ayarı bozma diğer sayfaları etkileyecek hiçbir yapıyı BOZMA!
+Diğer sayfaları etkileyecek hiçbir yapıyı BOZMA!
 
--Cinsiyet kutularının içindeki metinler kutunun tam ortasında olsun. (Şu an yukarıda gözüküyor)
--İlgi alanların metninin altında değil, sağında kaçtane seçtiğimiz gözüksün ve minimum maksimum seçim sınırı anlaşılsın işte bu sayede.
--profile_setup evet olan kullanıcı tekrar giriş yaptığında profil kurma sayfasına yönlendiriliyor direkt ana sayfaya gitmesi lazım çünkü zaten kurulum yapmış. (Şimdi de redirect diye bir 404 veren sayfaya yönlendiriliyor)
--Profil oluşturmayı tamamladığımızda profil güncellenirken bir hata oluştu lütfen tekrar deneyin hatası alıyoruz. (Profil güncelleme hatası: NotAuthorizedException: A client attempted to write unauthorized attribute
-    at https://devkursat.github.io/Good-Loop_iyilik-zinciri_/Good-Loop_iyilik-zinciri_.bf970971.js:3:19777
-    at async g (https://devkursat.github.io/Good-Loop_iyilik-zinciri_/auth.be4305b3.js:1:4730)
-    at async f (https://devkursat.github.io/Good-Loop_iyilik-zinciri_/Good-Loop_iyilik-zinciri_.bf970971.js:6:4763)
-f @ script.js:495
-await in f
-(anonymous) @ script.js:502)
+-Profil kurulum sayfasındaki cinsiyet kutularının içindeki öğeler kutunun tam ortasında olsun.
+-profile_setup evet olan kullanıcı ana sayfaya gitsin eğer hayır veya boş ise profil oluşturma sayfasına yönlendirsin.
