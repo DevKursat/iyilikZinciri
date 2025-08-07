@@ -15,48 +15,19 @@ function getBasePath() {
     return path.substring(0, lastSlashIndex + 1);
 }
 
-// --- Centralized Authentication Check & Routing ---
+// --- Route Protection for Protected Pages ---
 (async () => {
-    console.log("--- Running Auth Check ---");
     const currentPath = window.location.pathname;
-    const basePath = getBasePath();
-    const isHomePage = currentPath.endsWith('home.html');
-    const isProfileSetupPage = currentPath.includes('profile-setup.html');
-    const isAuthPage = currentPath.endsWith('/') || currentPath.endsWith('index.html');
-    const isPublicPage = isAuthPage || currentPath.includes('verify.html') || currentPath.includes('forgot-password.html');
+    const isPublicPage = currentPath.endsWith('/') || currentPath.endsWith('index.html') || currentPath.includes('verify.html') || currentPath.includes('forgot-password.html');
 
-    try {
-        const { attributes } = await getCurrentUser();
-        console.log("User is LOGGED IN. Attributes:", attributes);
-
-        const setupCompleteValue = attributes['custom:setup_complete'];
-        console.log("Value of 'custom:setup_complete':", setupCompleteValue);
-
-        const isProfileComplete = setupCompleteValue && setupCompleteValue.trim().toLowerCase() === 'evet';
-        console.log("Is profile complete?", isProfileComplete);
-
-        // USER IS LOGGED IN
-        if (isAuthPage) {
-            console.log("On auth page, redirecting in...");
-            window.location.href = isProfileComplete ? `${basePath}home.html` : `${basePath}profile-setup.html`;
-        } else if (isHomePage && !isProfileComplete) {
-            console.log("On home page but profile incomplete, redirecting to setup...");
-            window.location.href = `${basePath}profile-setup.html`;
-        } else if (isProfileSetupPage && isProfileComplete) {
-            console.log("On setup page but profile complete, redirecting to home...");
-            window.location.href = `${basePath}home.html`;
-        } else {
-            console.log("User is logged in and on the correct page.");
-        }
-
-    } catch (error) {
-        console.log("User is NOT LOGGED IN.");
-        // USER IS NOT LOGGED IN
-        if (!isPublicPage) {
-            console.log("On a protected page, redirecting to login...");
-            window.location.href = `${basePath}index.html`;
-        } else {
-            console.log("On a public page, allowing access.");
+    // If we are on a protected page, check for a session.
+    if (!isPublicPage) {
+        try {
+            // This will throw an error if the user is not authenticated.
+            await getCurrentUser();
+        } catch (error) {
+            // No session, redirect to login.
+            window.location.href = getBasePath() + 'index.html';
         }
     }
 })();
@@ -185,31 +156,30 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
     if (loginFormEl) {
         loginFormEl.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const username = loginEmailInput.value;
+            const password = loginPasswordInput.value;
+
             try {
-                await signIn({ username: loginEmailInput.value, password: loginPasswordInput.value });
-                // On successful sign-in, simply reload the page.
-                // The centralized routing logic at the top will handle the redirect.
-                window.location.reload();
+                await signIn({ username, password });
+                // After successful sign-in, get user attributes to decide the redirect.
+                const { attributes } = await getCurrentUser();
+                const isProfileComplete = attributes['custom:setup_complete'] && attributes['custom:setup_complete'].toLowerCase() === 'evet';
+
+                if (isProfileComplete) {
+                    window.location.href = `${getBasePath()}home.html`;
+                } else {
+                    window.location.href = `${getBasePath()}profile-setup.html`;
+                }
+
             } catch (error) {
                 console.error('Giriş hatası:', error);
-
-                // Clear previous errors
-                loginPasswordInput.classList.remove('input-error');
+                loginPasswordInput.classList.remove('input-error'); // Clear previous errors
 
                 if (error.name === 'UserNotConfirmedException') {
-                    const email = loginEmailInput ? loginEmailInput.value : '';
-                    if (email) {
-                        window.location.href = `${getBasePath()}verify.html?email=${encodeURIComponent(email)}`;
-                    } else {
-                        alert('E-posta adresi bulunamadı. Lütfen tekrar deneyin.');
-                    }
+                    window.location.href = `${getBasePath()}verify.html?email=${encodeURIComponent(username)}`;
                 } else if (error.name === 'NotAuthorizedException') {
-                    // Add shake animation to password input
                     loginPasswordInput.classList.add('input-error');
-                    // Remove the class after the animation completes
-                    setTimeout(() => {
-                        loginPasswordInput.classList.remove('input-error');
-                    }, 500); // 500ms matches the animation duration
+                    setTimeout(() => loginPasswordInput.classList.remove('input-error'), 500);
                     alert('Kullanıcı adı veya şifre hatalı.');
                 } else {
                     alert(error.message);
