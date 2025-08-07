@@ -689,6 +689,7 @@ parcelHelpers.export(exports, "updatePassword", ()=>(0, _updatePasswordMjs.updat
 parcelHelpers.export(exports, "setUpTOTP", ()=>(0, _setUpTOTPMjs.setUpTOTP));
 parcelHelpers.export(exports, "updateUserAttributes", ()=>(0, _updateUserAttributesMjs.updateUserAttributes));
 parcelHelpers.export(exports, "updateUserAttribute", ()=>(0, _updateUserAttributeMjs.updateUserAttribute));
+parcelHelpers.export(exports, "updateUserAttributes", ()=>(0, _updateUserAttributesMjs.updateUserAttributes));
 parcelHelpers.export(exports, "getCurrentUser", ()=>(0, _getCurrentUserMjs.getCurrentUser));
 parcelHelpers.export(exports, "confirmUserAttribute", ()=>(0, _confirmUserAttributeMjs.confirmUserAttribute));
 parcelHelpers.export(exports, "signInWithRedirect", ()=>(0, _signInWithRedirectMjs.signInWithRedirect));
