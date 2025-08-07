@@ -31,7 +31,7 @@ function getBasePath() {
         try {
             const { attributes } = await getCurrentUser();
             // User is already signed in, redirect them to the correct page.
-            if (attributes && attributes['custom:profil_kurulumu_tamamlandi'] === 'true') {
+            if (attributes && attributes['custom:prof_setup'] === 'true') {
                 window.location.href = `${basePath}home.html`;
             } else {
                 window.location.href = `${basePath}profile-setup.html`;
@@ -183,7 +183,7 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             try {
                 await signIn({ username: loginEmailInput.value, password: loginPasswordInput.value });
                 const { attributes } = await getCurrentUser();
-                if (attributes && attributes['custom:profil_kurulumu_tamamlandi'] === 'true') {
+                if (attributes && attributes['custom:prof_setup'] === 'true') {
                     window.location.href = `${getBasePath()}home.html`;
                 } else {
                     window.location.href = `${getBasePath()}profile-setup.html`;
