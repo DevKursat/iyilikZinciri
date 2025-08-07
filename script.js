@@ -17,6 +17,7 @@ function getBasePath() {
 
 // --- Centralized Authentication Check & Routing ---
 (async () => {
+    console.log("--- Running Auth Check ---");
     const currentPath = window.location.pathname;
     const basePath = getBasePath();
     const isHomePage = currentPath.endsWith('home.html');
@@ -26,25 +27,36 @@ function getBasePath() {
 
     try {
         const { attributes } = await getCurrentUser();
-        const isProfileComplete = attributes && attributes['custom:setup_complete'] === 'evet';
+        console.log("User is LOGGED IN. Attributes:", attributes);
+
+        const setupCompleteValue = attributes['custom:setup_complete'];
+        console.log("Value of 'custom:setup_complete':", setupCompleteValue);
+
+        const isProfileComplete = setupCompleteValue && setupCompleteValue.trim().toLowerCase() === 'evet';
+        console.log("Is profile complete?", isProfileComplete);
 
         // USER IS LOGGED IN
         if (isAuthPage) {
-            // Logged-in user on login page -> redirect in
+            console.log("On auth page, redirecting in...");
             window.location.href = isProfileComplete ? `${basePath}home.html` : `${basePath}profile-setup.html`;
         } else if (isHomePage && !isProfileComplete) {
-            // Logged-in user on home page but profile is incomplete -> redirect to setup
+            console.log("On home page but profile incomplete, redirecting to setup...");
             window.location.href = `${basePath}profile-setup.html`;
         } else if (isProfileSetupPage && isProfileComplete) {
-            // Logged-in user on setup page but profile is complete -> redirect to home
+            console.log("On setup page but profile complete, redirecting to home...");
             window.location.href = `${basePath}home.html`;
+        } else {
+            console.log("User is logged in and on the correct page.");
         }
 
     } catch (error) {
+        console.log("User is NOT LOGGED IN.");
         // USER IS NOT LOGGED IN
         if (!isPublicPage) {
-            // Not-logged-in user on a protected page -> redirect to login
+            console.log("On a protected page, redirecting to login...");
             window.location.href = `${basePath}index.html`;
+        } else {
+            console.log("On a public page, allowing access.");
         }
     }
 })();
