@@ -19,31 +19,33 @@ function getBasePath() {
 (async () => {
     const currentPath = window.location.pathname;
     const basePath = getBasePath();
-    // Normalize path to handle cases where index.html is implicit
-    const normalizedPath = currentPath.endsWith('/') ? `${currentPath}index.html` : currentPath;
-
-    const isAuthPage = normalizedPath.endsWith('index.html');
+    const isHomePage = currentPath.endsWith('home.html');
+    const isProfileSetupPage = currentPath.includes('profile-setup.html');
+    const isAuthPage = currentPath.endsWith('/') || currentPath.endsWith('index.html');
     const isPublicPage = isAuthPage || currentPath.includes('verify.html') || currentPath.includes('forgot-password.html');
 
     try {
-        // This is the single source of truth for the user's session
         const { attributes } = await getCurrentUser();
         const isProfileComplete = attributes && attributes['custom:prof_setup'] === 'true';
 
         // USER IS LOGGED IN
         if (isAuthPage) {
-            // If they are on the login page, they shouldn't be. Redirect them into the app.
+            // Logged-in user on login page -> redirect in
             window.location.href = isProfileComplete ? `${basePath}home.html` : `${basePath}profile-setup.html`;
+        } else if (isHomePage && !isProfileComplete) {
+            // Logged-in user on home page but profile is incomplete -> redirect to setup
+            window.location.href = `${basePath}profile-setup.html`;
+        } else if (isProfileSetupPage && isProfileComplete) {
+            // Logged-in user on setup page but profile is complete -> redirect to home
+            window.location.href = `${basePath}home.html`;
         }
-        // If they are on any other protected page, they are allowed to be there. Do nothing.
 
     } catch (error) {
         // USER IS NOT LOGGED IN
         if (!isPublicPage) {
-            // If they are on a protected page, they must be redirected to the login page.
+            // Not-logged-in user on a protected page -> redirect to login
             window.location.href = `${basePath}index.html`;
         }
-        // If they are on a public page (like login), they are allowed to be there. Do nothing.
     }
 })();
 
@@ -173,12 +175,9 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             e.preventDefault();
             try {
                 await signIn({ username: loginEmailInput.value, password: loginPasswordInput.value });
-                const { attributes } = await getCurrentUser();
-                if (attributes && attributes['custom:prof_setup'] === 'true') {
-                    window.location.href = `${getBasePath()}home.html`;
-                } else {
-                    window.location.href = `${getBasePath()}profile-setup.html`;
-                }
+                // On successful sign-in, simply reload the page.
+                // The centralized routing logic at the top will handle the redirect.
+                window.location.reload();
             } catch (error) {
                 console.error('Giriş hatası:', error);
                 if (error.name === 'UserNotConfirmedException') {
