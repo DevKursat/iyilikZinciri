@@ -15,44 +15,35 @@ function getBasePath() {
     return path.substring(0, lastSlashIndex + 1);
 }
 
-// --- Page Routing and Auth Check ---
-// --- Page Routing and Auth Check ---
+// --- Centralized Authentication Check & Routing ---
 (async () => {
     const currentPath = window.location.pathname;
     const basePath = getBasePath();
-    const normalizedPath = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
+    // Normalize path to handle cases where index.html is implicit
+    const normalizedPath = currentPath.endsWith('/') ? `${currentPath}index.html` : currentPath;
 
-    const isAuthPage = normalizedPath === `${basePath}` || normalizedPath === `${basePath}index.html/`;
-    const isVerifyPage = currentPath.includes('verify.html');
-    const isForgotPasswordPage = currentPath.includes('forgot-password.html');
+    const isAuthPage = normalizedPath.endsWith('index.html');
+    const isPublicPage = isAuthPage || currentPath.includes('verify.html') || currentPath.includes('forgot-password.html');
 
-    // If on the login page, check if user is already signed in and redirect them.
-    if (isAuthPage) {
-        try {
-            const { attributes } = await getCurrentUser();
-            // User is already signed in, redirect them to the correct page.
-            if (attributes && attributes['custom:prof_setup'] === 'true') {
-                window.location.href = `${basePath}home.html`;
-            } else {
-                window.location.href = `${basePath}profile-setup.html`;
-            }
-            return; // Stop further script execution for this page
-        } catch (error) {
-            // No user is signed in, which is the expected state on the login page.
-            // Do nothing and let the user sign in.
+    try {
+        // This is the single source of truth for the user's session
+        const { attributes } = await getCurrentUser();
+        const isProfileComplete = attributes && attributes['custom:prof_setup'] === 'true';
+
+        // USER IS LOGGED IN
+        if (isAuthPage) {
+            // If they are on the login page, they shouldn't be. Redirect them into the app.
+            window.location.href = isProfileComplete ? `${basePath}home.html` : `${basePath}profile-setup.html`;
         }
-    }
+        // If they are on any other protected page, they are allowed to be there. Do nothing.
 
-    // For all other protected pages, ensure the user is authenticated.
-    const isPublicPage = isAuthPage || isVerifyPage || isForgotPasswordPage;
-    if (!isPublicPage) {
-        try {
-            await getCurrentUser();
-            // User is authenticated, they can stay on the page.
-        } catch (error) {
-            // User is NOT authenticated, redirect to login.
+    } catch (error) {
+        // USER IS NOT LOGGED IN
+        if (!isPublicPage) {
+            // If they are on a protected page, they must be redirected to the login page.
             window.location.href = `${basePath}index.html`;
         }
+        // If they are on a public page (like login), they are allowed to be there. Do nothing.
     }
 })();
 
