@@ -26,7 +26,7 @@ function getBasePath() {
 
     try {
         const { attributes } = await getCurrentUser();
-        const isProfileComplete = attributes && attributes['custom:prof_setup'] === 'true';
+        const isProfileComplete = attributes && attributes['custom:setup_complete'] === 'evet';
 
         // USER IS LOGGED IN
         if (isAuthPage) {
@@ -180,6 +180,10 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
                 window.location.reload();
             } catch (error) {
                 console.error('Giriş hatası:', error);
+
+                // Clear previous errors
+                loginPasswordInput.classList.remove('input-error');
+
                 if (error.name === 'UserNotConfirmedException') {
                     const email = loginEmailInput ? loginEmailInput.value : '';
                     if (email) {
@@ -187,6 +191,14 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
                     } else {
                         alert('E-posta adresi bulunamadı. Lütfen tekrar deneyin.');
                     }
+                } else if (error.name === 'NotAuthorizedException') {
+                    // Add shake animation to password input
+                    loginPasswordInput.classList.add('input-error');
+                    // Remove the class after the animation completes
+                    setTimeout(() => {
+                        loginPasswordInput.classList.remove('input-error');
+                    }, 500); // 500ms matches the animation duration
+                    alert('Kullanıcı adı veya şifre hatalı.');
                 } else {
                     alert(error.message);
                 }
@@ -485,7 +497,7 @@ if (window.location.pathname.includes('profile-setup.html')) {
                         'custom:social_reddit': String(reddit),
                         'custom:social_linkedin': String(linkedin),
                         'custom:iyilik_tercihleri': String(preferences.join(',')),
-                        'custom:prof_setup': 'true'
+                        'custom:setup_complete': 'evet'
                     };
 
                     await updateUserAttributes({ userAttributes: attributesToUpdate });
