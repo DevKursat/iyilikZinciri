@@ -471,9 +471,9 @@ if (window.location.pathname.includes('profile-setup.html')) {
 
             await updateUserAttributes({
                 userAttributes: {
-                    // name,
-                    // birthdate,
-                    // gender,
+                    name,
+                    birthdate,
+                    gender,
                     'custom:social_instagram': instagram,
                     'custom:social_tiktok': tiktok,
                     'custom:social_x': x,
