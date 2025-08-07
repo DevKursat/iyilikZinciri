@@ -480,7 +480,6 @@ if (window.location.pathname.includes('profile-setup.html')) {
             const facebook = document.getElementById('facebook').value;
             const reddit = document.getElementById('reddit').value;
             const linkedin = document.getElementById('linkedin').value;
-            const bereal = document.getElementById('bereal').value;
             
             // Profil güncelleme attributelerini düzenle
             const attributes = {
@@ -494,7 +493,6 @@ if (window.location.pathname.includes('profile-setup.html')) {
                 'custom:social_facebook': String(facebook),
                 'custom:social_reddit': String(reddit),
                 'custom:social_linkedin': String(linkedin),
-                'custom:social_bereal': String(bereal),
                 'custom:iyilik_tercihleri': String(preferences.join(',')),
                 'custom:profil_kurulumu_tamamlandi': 'evet'
             };
@@ -510,10 +508,7 @@ if (window.location.pathname.includes('profile-setup.html')) {
             alert('Profiliniz güncellenirken bir hata oluştu. Lütfen tekrar deneyin.');
         }
     };
-    document.getElementById('step-3-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-        submitProfile();
-    });
+    completeProfileBtn.addEventListener('click', () => submitProfile(true));
 
     // Initial State
     step2Btn.disabled = true;
