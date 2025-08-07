@@ -511,16 +511,16 @@ if (window.location.pathname.includes('profile-setup.html')) {
         }
     };
     document.getElementById('step-3-form').addEventListener('submit', (e) => {
-        e.preventDefault();ventListener('click', () => {
-        submitProfile();length >= 1) {
-            submitProfile();
-        } else {
-            alert('Lütfen en az 1 ilgi alanı seçin.');
-        }
-    });Btn.disabled = true;
-pleteProfileBtn.disabled = true;
-    document.getElementById('step-3-form').addEventListener('submit', (e) => {    showStep(currentStep);
         e.preventDefault();
+        submitProfile();
+    });
+
+    // Initial State
+    step2Btn.disabled = true;
+    completeProfileBtn.disabled = true;
+    showStep(currentStep);
+}
+}
         submitProfile();
     });
 
