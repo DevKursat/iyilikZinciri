@@ -379,143 +379,146 @@ if (window.location.pathname.includes('home.html')) {
 if (window.location.pathname.includes('profile-setup.html')) {
     (async () => {
         try {
+            // First, ensure user is authenticated.
             const { attributes } = await getCurrentUser();
+
+            // If profile is already set up, redirect to home.
             if (attributes && attributes['custom:prof_setup'] === 'true') {
                 window.location.href = `${getBasePath()}home.html`;
                 return; // Stop further execution
             }
-        } catch (error) {
-            // Not logged in, proceed with setup page logic
-        }
-    })();
 
-    const { updateUserAttributes } = await import('aws-amplify/auth');
+            // --- If authenticated and profile not set up, run all page logic ---
+            const { updateUserAttributes } = await import('aws-amplify/auth');
 
-    const steps = document.querySelectorAll('.setup-step');
-    const progressBarInner = document.querySelector('.progress-bar-inner');
-    let currentStep = 0;
+            const steps = document.querySelectorAll('.setup-step');
+            const progressBarInner = document.querySelector('.progress-bar-inner');
+            let currentStep = 0;
 
-    const updateProgressBar = () => {
-        const progress = (currentStep / (steps.length - 1)) * 100;
-        progressBarInner.style.width = `${progress}%`;
-    };
-
-    const showStep = (stepIndex) => {
-        steps.forEach((step, index) => {
-            step.classList.toggle('active', index === stepIndex);
-        });
-        updateProgressBar();
-    };
-
-    // --- Adım 1: Cinsiyet Seçimi ---
-    const genderOptions = document.querySelectorAll('.gender-option');
-    const genderInput = document.getElementById('gender');
-    genderOptions.forEach(option => {
-        option.addEventListener('click', () => {
-            genderOptions.forEach(opt => opt.classList.remove('selected'));
-            option.classList.add('selected');
-            genderInput.value = option.dataset.gender;
-        });
-    });
-
-    document.getElementById('step-1-btn').addEventListener('click', () => {
-        const nameInput = document.getElementById('name');
-        const birthdateInput = document.getElementById('birthdate');
-
-        if (nameInput.value.trim() !== '' && birthdateInput.value.trim() !== '' && genderInput.value.trim() !== '') {
-            currentStep = 1;
-            showStep(currentStep);
-        } else {
-            alert('Lütfen devam etmeden önce tüm alanları doldurun.');
-        }
-    });
-
-    // --- Adım 2: İlgi Alanları ---
-    const preferences = [];
-    const preferenceCards = document.querySelectorAll('.preference-card');
-    const step2Btn = document.getElementById('step-2-btn');
-    const completeProfileBtn = document.getElementById('complete-profile-btn');
-    const interestCounter = document.getElementById('interest-counter');
-
-    preferenceCards.forEach(card => {
-        card.addEventListener('click', () => {
-            if (preferences.includes(card.dataset.preference)) {
-                // Deselect
-                preferences.splice(preferences.indexOf(card.dataset.preference), 1);
-                card.classList.remove('selected');
-            } else {
-                // Select
-                if (preferences.length < 6) {
-                    preferences.push(card.dataset.preference);
-                    card.classList.add('selected');
-                } else {
-                    alert('En fazla 6 ilgi alanı seçebilirsiniz.');
-                }
-            }
-            // Update counter
-            interestCounter.textContent = `(${preferences.length}/6)`;
-            // Validate button state
-            step2Btn.disabled = preferences.length < 1;
-            completeProfileBtn.disabled = preferences.length < 1;
-        });
-    });
-
-    step2Btn.addEventListener('click', () => {
-        if (preferences.length >= 1) {
-            currentStep = 2;
-            showStep(currentStep);
-        } else {
-            alert('Lütfen en az 1 ilgi alanı seçin.');
-        }
-    });
-
-    const submitProfile = async (goToHome = true) => {
-        try {
-            const name = document.getElementById('name').value;
-            const birthdate = document.getElementById('birthdate').value;
-            const gender = document.getElementById('gender').value;
-            const instagram = document.getElementById('instagram').value;
-            const tiktok = document.getElementById('tiktok').value;
-            const x = document.getElementById('x').value;
-            const facebook = document.getElementById('facebook').value;
-            const reddit = document.getElementById('reddit').value;
-            const linkedin = document.getElementById('linkedin').value;
-            
-            const attributesToUpdate = {
-                name: String(name),
-                birthdate: String(birthdate),
-                gender: String(gender),
-                'custom:social_instagram': String(instagram),
-                'custom:social_tiktok': String(tiktok),
-                'custom:social_x': String(x),
-                'custom:social_facebook': String(facebook),
-                'custom:social_reddit': String(reddit),
-                'custom:social_linkedin': String(linkedin),
-                'custom:iyilik_tercihleri': String(preferences.join(',')),
-                'custom:prof_setup': 'true'
+            const updateProgressBar = () => {
+                const progress = (currentStep / (steps.length - 1)) * 100;
+                progressBarInner.style.width = `${progress}%`;
             };
 
-            await updateUserAttributes({ userAttributes: attributesToUpdate });
+            const showStep = (stepIndex) => {
+                steps.forEach((step, index) => {
+                    step.classList.toggle('active', index === stepIndex);
+                });
+                updateProgressBar();
+            };
 
-            if (goToHome) {
-                window.location.href = `${getBasePath()}home.html`;
-            }
+            // Step 1: Gender Selection
+            const genderOptions = document.querySelectorAll('.gender-option');
+            const genderInput = document.getElementById('gender');
+            genderOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    genderOptions.forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    genderInput.value = option.dataset.gender;
+                });
+            });
+
+            document.getElementById('step-1-btn').addEventListener('click', () => {
+                const nameInput = document.getElementById('name');
+                const birthdateInput = document.getElementById('birthdate');
+                if (nameInput.value.trim() !== '' && birthdateInput.value.trim() !== '' && genderInput.value.trim() !== '') {
+                    currentStep = 1;
+                    showStep(currentStep);
+                } else {
+                    alert('Lütfen devam etmeden önce tüm alanları doldurun.');
+                }
+            });
+
+            // Step 2: Interests
+            const preferences = [];
+            const preferenceCards = document.querySelectorAll('.preference-card');
+            const step2Btn = document.getElementById('step-2-btn');
+            const completeProfileBtn = document.getElementById('complete-profile-btn');
+            const interestCounter = document.getElementById('interest-counter');
+
+            preferenceCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const preference = card.dataset.preference;
+                    if (preferences.includes(preference)) {
+                        preferences.splice(preferences.indexOf(preference), 1);
+                        card.classList.remove('selected');
+                    } else {
+                        if (preferences.length < 6) {
+                            preferences.push(preference);
+                            card.classList.add('selected');
+                        } else {
+                            alert('En fazla 6 ilgi alanı seçebilirsiniz.');
+                        }
+                    }
+                    interestCounter.textContent = `(${preferences.length}/6)`;
+                    const isStepValid = preferences.length >= 1;
+                    step2Btn.disabled = !isStepValid;
+                    completeProfileBtn.disabled = !isStepValid;
+                });
+            });
+
+            step2Btn.addEventListener('click', () => {
+                if (preferences.length >= 1) {
+                    currentStep = 2;
+                    showStep(currentStep);
+                } else {
+                    alert('Lütfen en az 1 ilgi alanı seçin.');
+                }
+            });
+
+            // Profile Submission Logic
+            const submitProfile = async (goToHome = true) => {
+                try {
+                    const name = document.getElementById('name').value;
+                    const birthdate = document.getElementById('birthdate').value;
+                    const gender = document.getElementById('gender').value;
+                    const instagram = document.getElementById('instagram').value;
+                    const tiktok = document.getElementById('tiktok').value;
+                    const x = document.getElementById('x').value;
+                    const facebook = document.getElementById('facebook').value;
+                    const reddit = document.getElementById('reddit').value;
+                    const linkedin = document.getElementById('linkedin').value;
+
+                    const attributesToUpdate = {
+                        name: String(name),
+                        birthdate: String(birthdate),
+                        gender: String(gender),
+                        'custom:social_instagram': String(instagram),
+                        'custom:social_tiktok': String(tiktok),
+                        'custom:social_x': String(x),
+                        'custom:social_facebook': String(facebook),
+                        'custom:social_reddit': String(reddit),
+                        'custom:social_linkedin': String(linkedin),
+                        'custom:iyilik_tercihleri': String(preferences.join(',')),
+                        'custom:prof_setup': 'true'
+                    };
+
+                    await updateUserAttributes({ userAttributes: attributesToUpdate });
+
+                    if (goToHome) {
+                        window.location.href = `${getBasePath()}home.html`;
+                    }
+                } catch (error) {
+                    console.error('Profil güncelleme hatası:', error);
+                    alert('Profiliniz güncellenirken bir hata oluştu. Lütfen tekrar deneyin.');
+                }
+            };
+
+            completeProfileBtn.addEventListener('click', () => submitProfile(true));
+            document.getElementById('step-3-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                submitProfile(true);
+            });
+
+            // Initial State
+            step2Btn.disabled = true;
+            completeProfileBtn.disabled = true;
+            showStep(currentStep);
+
         } catch (error) {
-            console.error('Profil güncelleme hatası:', error);
-            alert('Profiliniz güncellenirken bir hata oluştu. Lütfen tekrar deneyin.');
+            // If any error occurs (e.g., user not authenticated), redirect to login.
+            console.error("Authentication error on profile setup page, redirecting.", error);
+            window.location.href = `${getBasePath()}index.html`;
         }
-    };
-    completeProfileBtn.addEventListener('click', () => {
-        submitProfile(true);
-    });
-
-    document.getElementById('step-3-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-        submitProfile(true);
-    });
-
-    // Initial State
-    step2Btn.disabled = true;
-    completeProfileBtn.disabled = true;
-    showStep(currentStep);
+    })();
 }
