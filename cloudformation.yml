@@ -122,9 +122,6 @@ Resources:
         - Name: custom:iyilik_tercihleri
           AttributeDataType: String
           Mutable: true
-        - Name: custom:profil_kurulumu_tamamlandi
-          AttributeDataType: String
-          Mutable: true
       Policies:
         PasswordPolicy:
           MinimumLength: 8
@@ -251,6 +248,9 @@ Outputs:
   FrontendBucketName:
     Description: Frontend S3 Kovası Adı
     Value: !Ref FrontendBucket
+  CloudFrontDistributionDomainName:
+    Description: CloudFront Da??t?m Alan Ad?
+    Value: !GetAtt CloudFrontDistribution.DomainName
   CloudFrontDistributionDomainName:
     Description: CloudFront Da??t?m Alan Ad?
     Value: !GetAtt CloudFrontDistribution.DomainName

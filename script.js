@@ -31,7 +31,7 @@ function getBasePath() {
         try {
             const { attributes } = await getCurrentUser();
             // User is already signed in, redirect them to the correct page.
-            if (attributes && attributes['custom:profil_kurulumu_tamamlandi'] === 'evet') {
+            if (attributes && attributes['custom:profil_kurulumu_tamamlandi'] === 'true') {
                 window.location.href = `${basePath}home.html`;
             } else {
                 window.location.href = `${basePath}profile-setup.html`;
@@ -183,7 +183,7 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             try {
                 await signIn({ username: loginEmailInput.value, password: loginPasswordInput.value });
                 const { attributes } = await getCurrentUser();
-                if (attributes && attributes['custom:profil_kurulumu_tamamlandi'] === 'evet') {
+                if (attributes && attributes['custom:profil_kurulumu_tamamlandi'] === 'true') {
                     window.location.href = `${getBasePath()}home.html`;
                 } else {
                     window.location.href = `${getBasePath()}profile-setup.html`;
@@ -474,44 +474,52 @@ if (window.location.pathname.includes('profile-setup.html')) {
             const name = document.getElementById('name').value;
             const birthdate = document.getElementById('birthdate').value;
             const gender = document.getElementById('gender').value;
+            const instagram = document.getElementById('instagram').value;
+            const tiktok = document.getElementById('tiktok').value;
+            const x = document.getElementById('x').value;
+            const facebook = document.getElementById('facebook').value;
+            const reddit = document.getElementById('reddit').value;
+            const linkedin = document.getElementById('linkedin').value;
+            const bereal = document.getElementById('bereal').value;
             
             // Profil güncelleme attributelerini düzenle
+            const attributes = {
+                'custom:prof_setup': 'true',  // Daha kısa attribute ismi
+                name: String(name),
+                birthdate: String(birthdate),
+                gender: String(gender),
+                'custom:social_instagram': String(instagram),
+                'custom:social_tiktok': String(tiktok),
+                'custom:social_x': String(x),
+                'custom:social_facebook': String(facebook),
+                'custom:social_reddit': String(reddit),
+                'custom:social_linkedin': String(linkedin),
+                'custom:social_bereal': String(bereal),
+                'custom:iyilik_tercihleri': String(preferences.join(',')),
+                'custom:profil_kurulumu_tamamlandi': 'evet'
+            };
+
             await updateUserAttributes({
-                userAttributes: {
-                    'custom:prof_setup': 'true',  // Daha kısa attribute ismi
-                    name,
-                    birthdate,
-                    gender,
-                    'custom:social_instagram': instagram,
-                    'custom:social_tiktok': tiktok,
-                    'custom:social_x': x,
-                    'custom:social_facebook': facebook,
-                    'custom:social_reddit': reddit,
-                    'custom:social_linkedin': linkedin,
-                    'custom:social_bereal': bereal,
-                    'custom:iyilik_tercihleri': preferences.join(','),
-                    'custom:profil_kurulumu_tamamlandi': 'evet'
-                }
+                attributes: attributes
             });
 
             if (goToHome) {
                 window.location.href = `${getBasePath()}home.html`;
             }
         } catch (error) {
-            console.error('Profil güncelleme hatası:', error);
             alert('Profiliniz güncellenirken bir hata oluştu. Lütfen tekrar deneyin.');
         }
     };
-
-    completeProfileBtn.addEventListener('click', () => {
-        if (preferences.length >= 1) {
+    document.getElementById('step-3-form').addEventListener('submit', (e) => {
+        e.preventDefault();ventListener('click', () => {
+        submitProfile();length >= 1) {
             submitProfile();
         } else {
             alert('Lütfen en az 1 ilgi alanı seçin.');
         }
-    });
-
-    document.getElementById('step-3-form').addEventListener('submit', (e) => {
+    });Btn.disabled = true;
+pleteProfileBtn.disabled = true;
+    document.getElementById('step-3-form').addEventListener('submit', (e) => {    showStep(currentStep);
         e.preventDefault();
         submitProfile();
     });
@@ -520,4 +528,5 @@ if (window.location.pathname.includes('profile-setup.html')) {
     step2Btn.disabled = true;
     completeProfileBtn.disabled = true;
     showStep(currentStep);
+}
 }
