@@ -1,7 +1,7 @@
 import 'buffer';
 import 'process';
 import { Amplify } from 'aws-amplify';
-import { signIn, signUp, signOut, getCurrentUser, resetPassword, confirmResetPassword } from 'aws-amplify/auth';
+import { signIn, signUp, getCurrentUser, resetPassword, confirmResetPassword } from 'aws-amplify/auth';
 import amplifyconfig from './src/amplifyconfiguration.json';
 
 Amplify.configure(amplifyconfig);
