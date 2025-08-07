@@ -242,24 +242,11 @@ if (window.location.pathname.includes('verify.html')) {
     });
 
     const resendContainer = document.getElementById('resend-code-container');
-    const toastContainer = document.getElementById('toast-container');
     const securityMessages = [
         "Bu sayfa tamamen güvenlidir.",
         "E-posta ulaşmadıysa spam (gereksiz) klasörünüzü kontrol edin."
     ];
     let messageIndex = 0;
-
-    function showToast(message) {
-        const toast = document.createElement('div');
-        toast.className = 'toast-message';
-        toast.textContent = message;
-        toastContainer.appendChild(toast);
-        setTimeout(() => toast.classList.add('show'), 10); // Delay to allow transition
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 500);
-        }, 4000);
-    }
 
     function setupResendButton() {
         resendContainer.innerHTML = `
@@ -269,14 +256,14 @@ if (window.location.pathname.includes('verify.html')) {
         const progressEl = document.getElementById('resend-code-progress');
         const textEl = document.getElementById('resend-code-text');
         
-        let countdown = 90;
+        let countdown = 30; // Countdown changed to 30 seconds
         resendContainer.classList.remove('ready');
         progressEl.style.transition = 'none'; // Disable transition for immediate reset
         progressEl.style.width = '0%';
         
         const interval = setInterval(() => {
             countdown--;
-            const progressPercentage = ((90 - countdown) / 90) * 100;
+            const progressPercentage = ((30 - countdown) / 30) * 100;
             progressEl.style.transition = 'width 1s linear'; // Re-enable for smooth progress
             progressEl.style.width = `${progressPercentage}%`;
             textEl.textContent = `TEKRAR GÖNDER (${countdown}s)`;
@@ -301,7 +288,7 @@ if (window.location.pathname.includes('verify.html')) {
                 alert(error.message);
             }
         } else {
-            showToast(securityMessages[messageIndex]);
+            alert(securityMessages[messageIndex]); // Changed to alert
             messageIndex = (messageIndex + 1) % securityMessages.length;
         }
     });
