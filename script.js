@@ -333,6 +333,16 @@ if (window.location.pathname.includes('forgot-password.html')) {
 
 // --- Logic for home.html ---
 if (window.location.pathname.includes('home.html')) {
+    // NOTE: The settings menu and edit profile button are assumed to be dynamically added.
+    // This code adds a listener to the document to catch the click on the button when it appears.
+    document.addEventListener('click', (e) => {
+        // Assuming the button or its parent has an ID like 'edit-profile-option'
+        if (e.target.matches('#edit-profile-option') || e.target.closest('#edit-profile-option')) {
+            e.preventDefault();
+            window.location.href = `${getBasePath()}profile-setup.html?mode=edit`;
+        }
+    });
+
     const dailyTaskText = document.getElementById('daily-task-text');
     const streakCircles = document.querySelectorAll('.streak-circle');
 
@@ -347,20 +357,17 @@ if (window.location.pathname.includes('home.html')) {
         "Bir fidan dik."
     ];
 
-    // Rastgele bir görev seç ve göster
     function setRandomDeed() {
         const randomIndex = Math.floor(Math.random() * goodDeeds.length);
         dailyTaskText.textContent = goodDeeds[randomIndex];
     }
 
-    // Seri dairelerine tıklama olayı ekle
     streakCircles.forEach(circle => {
         circle.addEventListener('click', () => {
             circle.classList.toggle('completed');
         });
     });
 
-    // Sayfa yüklendiğinde fonksiyonları çalıştır
     setRandomDeed();
 }
 
@@ -368,37 +375,95 @@ if (window.location.pathname.includes('home.html')) {
 if (window.location.pathname.includes('profile-setup.html')) {
     (async () => {
         try {
-            // First, ensure user is authenticated.
             const { attributes } = await getCurrentUser();
-
-            // If profile is already set up, redirect to home.
-            if (attributes && attributes['custom:prof_setup'] === 'true') {
-                window.location.href = `${getBasePath()}home.html`;
-                return; // Stop further execution
-            }
-
-            // --- If authenticated and profile not set up, run all page logic ---
             const { updateUserAttributes } = await import('aws-amplify/auth');
 
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+            const isEditMode = mode === 'edit';
+
+            // --- DOM Elements ---
             const steps = document.querySelectorAll('.setup-step');
             const progressBarInner = document.querySelector('.progress-bar-inner');
-            let currentStep = 0;
+            const h1 = document.querySelector('h1');
+            const p = document.querySelector('p');
+            const step1Btn = document.getElementById('step-1-btn');
+            const step2Btn = document.getElementById('step-2-btn');
+            const completeProfileBtn = document.getElementById('complete-profile-btn');
+            const finalSubmitBtn = document.querySelector('#step-3-form button[type="submit"]');
 
+            // --- Form Inputs ---
+            const nameInput = document.getElementById('name');
+            const birthdateInput = document.getElementById('birthdate');
+            const genderInput = document.getElementById('gender');
+            const genderOptions = document.querySelectorAll('.gender-option');
+            const preferenceCards = document.querySelectorAll('.preference-card');
+            const interestCounter = document.getElementById('interest-counter');
+            const socialInputs = {
+                instagram: document.getElementById('instagram'),
+                tiktok: document.getElementById('tiktok'),
+                x: document.getElementById('x'),
+                facebook: document.getElementById('facebook'),
+                reddit: document.getElementById('reddit'),
+                linkedin: document.getElementById('linkedin'),
+            };
+
+            let currentStep = 0;
+            const preferences = [];
+
+            // --- Page Setup for Edit Mode ---
+            if (isEditMode) {
+                // Change texts
+                h1.textContent = 'Profilini Düzenle';
+                p.textContent = 'Bilgilerini aşağıdan güncelleyebilirsin.';
+                step1Btn.textContent = 'Değişiklikleri Kaydet';
+                step2Btn.textContent = 'Değişiklikleri Kaydet';
+                completeProfileBtn.textContent = 'Vazgeç';
+                finalSubmitBtn.textContent = 'Değişiklikleri Kaydet';
+
+                // Pre-fill data
+                nameInput.value = attributes.name || '';
+                birthdateInput.value = attributes.birthdate || '';
+                genderInput.value = attributes.gender || '';
+
+                // Select gender
+                if (attributes.gender) {
+                    genderOptions.forEach(opt => {
+                        if (opt.dataset.gender === attributes.gender) {
+                            opt.classList.add('selected');
+                        }
+                    });
+                }
+
+                // Pre-fill social media
+                for (const key in socialInputs) {
+                    if (socialInputs[key]) {
+                        socialInputs[key].value = attributes[`custom:social_${key}`] || '';
+                    }
+                }
+
+                // Select interests
+                const savedPreferences = attributes['custom:iyilik_tercihleri'] ? attributes['custom:iyilik_tercihleri'].split(',') : [];
+                savedPreferences.forEach(pref => {
+                    preferences.push(pref);
+                    const card = document.querySelector(`.preference-card[data-preference="${pref}"]`);
+                    if (card) card.classList.add('selected');
+                });
+                interestCounter.textContent = `(${preferences.length}/6)`;
+            }
+
+            // --- General Logic (applies to both modes) ---
             const updateProgressBar = () => {
                 const progress = (currentStep / (steps.length - 1)) * 100;
                 progressBarInner.style.width = `${progress}%`;
             };
 
             const showStep = (stepIndex) => {
-                steps.forEach((step, index) => {
-                    step.classList.toggle('active', index === stepIndex);
-                });
+                steps.forEach((step, index) => step.classList.toggle('active', index === stepIndex));
                 updateProgressBar();
             };
 
-            // Step 1: Gender Selection
-            const genderOptions = document.querySelectorAll('.gender-option');
-            const genderInput = document.getElementById('gender');
+            // Step 1 Logic
             genderOptions.forEach(option => {
                 option.addEventListener('click', () => {
                     genderOptions.forEach(opt => opt.classList.remove('selected'));
@@ -408,9 +473,8 @@ if (window.location.pathname.includes('profile-setup.html')) {
             });
 
             document.getElementById('step-1-btn').addEventListener('click', () => {
-                const nameInput = document.getElementById('name');
-                const birthdateInput = document.getElementById('birthdate');
-                if (nameInput.value.trim() !== '' && birthdateInput.value.trim() !== '' && genderInput.value.trim() !== '') {
+                if (nameInput.value.trim() && birthdateInput.value && genderInput.value) {
+                    if (isEditMode) return submitProfile(false); // Save and stay
                     currentStep = 1;
                     showStep(currentStep);
                 } else {
@@ -418,13 +482,7 @@ if (window.location.pathname.includes('profile-setup.html')) {
                 }
             });
 
-            // Step 2: Interests
-            const preferences = [];
-            const preferenceCards = document.querySelectorAll('.preference-card');
-            const step2Btn = document.getElementById('step-2-btn');
-            const completeProfileBtn = document.getElementById('complete-profile-btn');
-            const interestCounter = document.getElementById('interest-counter');
-
+            // Step 2 Logic
             preferenceCards.forEach(card => {
                 card.addEventListener('click', () => {
                     const preference = card.dataset.preference;
@@ -448,6 +506,7 @@ if (window.location.pathname.includes('profile-setup.html')) {
 
             step2Btn.addEventListener('click', () => {
                 if (preferences.length >= 1) {
+                    if (isEditMode) return submitProfile(false); // Save and stay
                     currentStep = 2;
                     showStep(currentStep);
                 } else {
@@ -455,29 +514,19 @@ if (window.location.pathname.includes('profile-setup.html')) {
                 }
             });
 
-            // Profile Submission Logic
+            // Submission Logic
             const submitProfile = async (goToHome = true) => {
                 try {
-                    const name = document.getElementById('name').value;
-                    const birthdate = document.getElementById('birthdate').value;
-                    const gender = document.getElementById('gender').value;
-                    const instagram = document.getElementById('instagram').value;
-                    const tiktok = document.getElementById('tiktok').value;
-                    const x = document.getElementById('x').value;
-                    const facebook = document.getElementById('facebook').value;
-                    const reddit = document.getElementById('reddit').value;
-                    const linkedin = document.getElementById('linkedin').value;
-
                     const attributesToUpdate = {
-                        name: String(name),
-                        birthdate: String(birthdate),
-                        gender: String(gender),
-                        'custom:social_instagram': String(instagram),
-                        'custom:social_tiktok': String(tiktok),
-                        'custom:social_x': String(x),
-                        'custom:social_facebook': String(facebook),
-                        'custom:social_reddit': String(reddit),
-                        'custom:social_linkedin': String(linkedin),
+                        name: String(nameInput.value),
+                        birthdate: String(birthdateInput.value),
+                        gender: String(genderInput.value),
+                        'custom:social_instagram': String(socialInputs.instagram.value),
+                        'custom:social_tiktok': String(socialInputs.tiktok.value),
+                        'custom:social_x': String(socialInputs.x.value),
+                        'custom:social_facebook': String(socialInputs.facebook.value),
+                        'custom:social_reddit': String(socialInputs.reddit.value),
+                        'custom:social_linkedin': String(socialInputs.linkedin.value),
                         'custom:iyilik_tercihleri': String(preferences.join(',')),
                         'custom:setup_complete': 'evet'
                     };
@@ -486,6 +535,8 @@ if (window.location.pathname.includes('profile-setup.html')) {
 
                     if (goToHome) {
                         window.location.href = `${getBasePath()}home.html`;
+                    } else {
+                        alert('Profilin başarıyla güncellendi!');
                     }
                 } catch (error) {
                     console.error('Profil güncelleme hatası:', error);
@@ -493,19 +544,23 @@ if (window.location.pathname.includes('profile-setup.html')) {
                 }
             };
 
-            completeProfileBtn.addEventListener('click', () => submitProfile(true));
+            completeProfileBtn.addEventListener('click', () => {
+                if (isEditMode) return window.location.href = `${getBasePath()}home.html`; // Cancel and go home
+                submitProfile(true);
+            });
+
             document.getElementById('step-3-form').addEventListener('submit', (e) => {
                 e.preventDefault();
                 submitProfile(true);
             });
 
             // Initial State
-            step2Btn.disabled = true;
-            completeProfileBtn.disabled = true;
+            const isStepValid = preferences.length >= 1;
+            step2Btn.disabled = !isStepValid;
+            completeProfileBtn.disabled = !isStepValid;
             showStep(currentStep);
 
         } catch (error) {
-            // If any error occurs (e.g., user not authenticated), redirect to login.
             console.error("Authentication error on profile setup page, redirecting.", error);
             window.location.href = `${getBasePath()}index.html`;
         }
