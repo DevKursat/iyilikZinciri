@@ -22,5 +22,7 @@
   },
   "aws_cognito_verification_mechanisms": [
     "EMAIL"
-  ]
+  ],
+  "aws_mandatory_sign_in": false,
+  "aws_cognito_allow_guest_access": false
 }

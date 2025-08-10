@@ -160,9 +160,19 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             const password = loginPasswordInput.value;
 
             try {
+                // Debug: AWS'ye gönderilen giriş verilerini logla
+                console.log('AWS\'ye gönderilen giriş verileri:', {
+                    username: username,
+                    password: password ? '***' : 'BOŞ'
+                });
+
                 await signIn({ username, password });
+                console.log('Giriş başarılı');
+                
                 // After successful sign-in, get user attributes to decide the redirect.
                 const { attributes } = await getCurrentUser();
+                console.log('Kullanıcı özellikleri:', attributes);
+                
                 const isProfileComplete = attributes['custom:setup_complete'] && attributes['custom:setup_complete'].toLowerCase() === 'evet';
 
                 if (isProfileComplete) {
@@ -172,7 +182,12 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
                 }
 
             } catch (error) {
-                console.error('Giriş hatası:', error);
+                console.error('Giriş hatası detayları:', {
+                    name: error.name,
+                    message: error.message,
+                    code: error.code,
+                    stack: error.stack
+                });
                 loginPasswordInput.classList.remove('input-error'); // Clear previous errors
 
                 if (error.name === 'UserNotConfirmedException') {
@@ -182,7 +197,7 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
                     setTimeout(() => loginPasswordInput.classList.remove('input-error'), 500);
                     alert('Kullanıcı adı veya şifre hatalı.');
                 } else {
-                    alert(error.message);
+                    alert(`Giriş hatası: ${error.message}`);
                 }
             }
         });
@@ -193,12 +208,39 @@ if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith(
             const email = document.getElementById('signup-email').value;
             const password = signupPasswordInput.value;
             try {
-                await signUp({ username: email, password, attributes: { email } });
+                // Debug: AWS'ye gönderilecek verileri logla
+                console.log('AWS\'ye gönderilecek signUp verileri:', {
+                    username: email,
+                    password: password ? '***' : 'BOŞ',
+                    options: {
+                        userAttributes: { 
+                            email: email
+                        }
+                    }
+                });
+                
+                // AWS Amplify v6 - sadece email attribute'u gönder
+                const signUpResult = await signUp({ 
+                    username: email, 
+                    password, 
+                    options: {
+                        userAttributes: { 
+                            email: email
+                        }
+                    }
+                });
+                
+                console.log('SignUp başarılı:', signUpResult);
                 alert('Hesap başarıyla oluşturuldu! Doğrulama kodu e-postana gönderildi. Spam (gereksiz) klasörünü kontrol etmeyi unutma.');
                 window.location.href = `${getBasePath()}verify.html?email=${encodeURIComponent(email)}`;
             } catch (error) {
-                console.error('Kayıt hatası:', error);
-                alert(error.message);
+                console.error('Kayıt hatası detayları:', {
+                    name: error.name,
+                    message: error.message,
+                    code: error.code,
+                    stack: error.stack
+                });
+                alert(`Kayıt hatası: ${error.message}`);
             }
         });
     }
